@@ -1,3 +1,6 @@
+#   antlr4-4.13.1-complete.jar, because it's "illegal" to share or something?
+antlr4-4.13.1-complete.jar
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
