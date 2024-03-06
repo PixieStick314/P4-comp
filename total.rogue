@@ -13,19 +13,21 @@ print(myTime);
 var dateTime myDateTime = 2024-01-01,12:00:00;
 print(myDateTime);
 
+if (myBool) {
+    print(myString);}
+else {
+    print("False");
+};
+
+var int onePlusOne = 1 + 1;
+print(onePlusOne);
+
+for (var int i = 0; i < 5; i == i + 1) {
+    print(i);
+};
 
 var int[] myArray = {1, 2, 3, 4, 5};
 print(myArray);
-
-if (myDouble == 99.99) 
-    print(myString);
-else 
-    print("False");
-
-
-for (var int i = 0; i < 5; i = i + 1) {
-    print(i);
-}
 
 foreach (var int num in myArray) {
     print(num);

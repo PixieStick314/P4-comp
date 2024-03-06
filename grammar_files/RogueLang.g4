@@ -10,6 +10,7 @@ stat:   printStat
       | whileLoop
       | functionDecl
       | functionCall
+      | arrayInit
       | enumDecl
       | expr
       ;
@@ -24,17 +25,16 @@ foreachLoop       : 'foreach' '(' varDecl 'in' expr ')' '{' stat* '}' ';' ;
 whileLoop         : 'while' '(' expr ')' '{' stat* '}' ';' ;
 functionDecl      : 'function' ID '(' params? ')' '{' stat* '}' ';' ;
 functionCall      : ID '(' args? ')' ';' ;
-arrayInit         : '{' expr (',' expr)* '}' ';' //initialization with value
-                  | '[' ']' ; // Indicates a dynamically sized array without initial size
+arrayInit         : '{' expr (',' expr)* '}' ';' ; //initialization with value
 params            : param (',' param)* ;
 param             : dataType ID ;
 args              : expr (',' expr)* ;
 expr              : expr '[' expr ']'     //Accessing an array element
                   | expr '[' expr ']' '=' expr //Assinging to an array element
                   | expr '.add(' expr ')'   //Method to add an element to a dynamically sized array
-                  | expr ('*' | '/') expr
-                  | expr ('+' | '-') expr
-                  | expr ('<' | '<=' | '>' | '>=' | '==' | '!=') expr
+                  | expr op=('*' | '/') expr
+                  | expr op=('+' | '-') expr
+                  | expr op=('<' | '<=' | '>' | '>=' | '==' | '!=') expr
                   | '(' expr ')'
                   | ID
                   | INT
@@ -52,6 +52,10 @@ expr              : expr '[' expr ']'     //Accessing an array element
 
 
 // Lexer Rules
+PLUS              : '+' ;
+MINUS             : '-' ;
+MULT              : '*' ;
+DIV               : '/' ;
 ID                : LETTER (LETTER | NUMBER)* ;
 INT               : NUMBER+ ;
 STRING            : '"' (ESC | ~["\\])* '"' ; // Use fragment for escaped characters
