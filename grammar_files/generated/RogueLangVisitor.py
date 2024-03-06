@@ -1,4 +1,4 @@
-# Generated from C://Users//Muffin//Desktop//4.Semester//Project//Compiler_2//grammar_files//RogueLang.g4 by ANTLR 4.13.1
+# Generated from C://Users//Muffin//Documents//GitHub//P4-comp//grammar_files//RogueLang.g4 by ANTLR 4.13.1
 from antlr4 import *
 if "." in __name__:
     from .RogueLangParser import RogueLangParser
@@ -29,18 +29,93 @@ class RogueLangVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by RogueLangParser#dataType.
+    def visitDataType(self, ctx:RogueLangParser.DataTypeContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by RogueLangParser#baseType.
+    def visitBaseType(self, ctx:RogueLangParser.BaseTypeContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by RogueLangParser#ifStat.
     def visitIfStat(self, ctx:RogueLangParser.IfStatContext):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by RogueLangParser#forStat.
-    def visitForStat(self, ctx:RogueLangParser.ForStatContext):
+    # Visit a parse tree produced by RogueLangParser#forLoop.
+    def visitForLoop(self, ctx:RogueLangParser.ForLoopContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by RogueLangParser#foreachLoop.
+    def visitForeachLoop(self, ctx:RogueLangParser.ForeachLoopContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by RogueLangParser#whileLoop.
+    def visitWhileLoop(self, ctx:RogueLangParser.WhileLoopContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by RogueLangParser#functionDecl.
+    def visitFunctionDecl(self, ctx:RogueLangParser.FunctionDeclContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by RogueLangParser#functionCall.
+    def visitFunctionCall(self, ctx:RogueLangParser.FunctionCallContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by RogueLangParser#arrayInit.
+    def visitArrayInit(self, ctx:RogueLangParser.ArrayInitContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by RogueLangParser#params.
+    def visitParams(self, ctx:RogueLangParser.ParamsContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by RogueLangParser#param.
+    def visitParam(self, ctx:RogueLangParser.ParamContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by RogueLangParser#args.
+    def visitArgs(self, ctx:RogueLangParser.ArgsContext):
         return self.visitChildren(ctx)
 
 
     # Visit a parse tree produced by RogueLangParser#expr.
     def visitExpr(self, ctx:RogueLangParser.ExprContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by RogueLangParser#randomInt.
+    def visitRandomInt(self, ctx:RogueLangParser.RandomIntContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by RogueLangParser#randomChoice.
+    def visitRandomChoice(self, ctx:RogueLangParser.RandomChoiceContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by RogueLangParser#enumDecl.
+    def visitEnumDecl(self, ctx:RogueLangParser.EnumDeclContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by RogueLangParser#enumBody.
+    def visitEnumBody(self, ctx:RogueLangParser.EnumBodyContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by RogueLangParser#enumValue.
+    def visitEnumValue(self, ctx:RogueLangParser.EnumValueContext):
         return self.visitChildren(ctx)
 
 

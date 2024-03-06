@@ -1,5 +1,51 @@
-#   antlr4-4.13.1-complete.jar, because it's "illegal" to share or something?
-antlr4-4.13.1-complete.jar
+# General
+*.pyc
+__pycache__/
+*.class
+*.jar
+.DS_Store
+Thumbs.db
+
+# ANTLR generated files
+/grammar_files/generated
+
+# Python virtual environments
+venv/
+env/
+*.venv
+*.env
+
+# IDE specific files
+.vscode/
+.idea/
+
+# Operating system generated files
+desktop.ini
+ehthumbs.db
+Icon?
+
+# Node modules
+node_modules/
+
+# Build outputs
+dist/
+build/
+coverage/
+
+# Logs
+logs/
+*.log
+
+# Dependency directories
+jspm_packages/
+bower_components/
+
+# JetBrains IDEs
+*.iml
+.idea/
+*.ipr
+*.iws
+out/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
