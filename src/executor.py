@@ -10,7 +10,7 @@ from RogueLangVisitor import RogueLangVisitor
 from rogue_executor import RogueExecutor
 
 def main():
-    # if lenght of command is < 2, exit
+    # if length of command is < 2, exit
     if len(sys.argv) < 2:
         print("Usage: python executor.py <file name>")
         print("Type python executor.py --help, -help, -h for additional help") #TODO: actually implement this
