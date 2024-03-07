@@ -4,9 +4,9 @@ import os
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'grammar_files', 'generated'))
 
 from antlr4 import *
-from RogueLangLexer import RogueLangLexer
-from RogueLangParser import RogueLangParser
-from RogueLangVisitor import RogueLangVisitor
+from grammar_files.generated.RogueLangLexer import RogueLangLexer
+from grammar_files.generated.RogueLangParser import RogueLangParser
+from grammar_files.generated.RogueLangVisitor import RogueLangVisitor
 from rogue_executor import RogueExecutor
 
 def main():

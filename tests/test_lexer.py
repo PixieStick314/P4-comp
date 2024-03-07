@@ -9,9 +9,23 @@ def get_tokens_from_str(str):
     tokens = stream.tokens
     return tokens
 
+def test_lexer_ID():
+    code = 'myVar'
+    tokens = get_tokens_from_str(code)
+
+    assert tokens[0].type == 16
+    assert tokens[1].type == -1
+
 def test_lexer_INT():
     code = '1'
     tokens = get_tokens_from_str(code)
-    assert tokens == [
-        1 # This should be the token type INT and the value 1, but I don't know how the lexer formats it
-    ]
+
+    assert tokens[0].type == 17 # INT is currently type 17
+    assert tokens[1].type == -1 # -1 corresponds to type EOF
+
+def test_lexer_STRING():
+    code = '"hello"'
+    tokens = get_tokens_from_str(code)
+
+    assert tokens[0].type == 18
+    assert tokens[1].type == -1
