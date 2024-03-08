@@ -52,3 +52,10 @@ def test_lexer_multiple_tokens():
     assert tokens[1].type == get_token_number('INT')
     assert tokens[2].type == get_token_number('STRING')
     assert tokens[3].type == -1
+
+def test_lexer_TRUE():
+    code = 'true'
+    tokens = get_tokens_from_string(code)
+
+    assert tokens[0].type == get_token_number('TRUE')
+    assert tokens[1].type == -1

@@ -56,15 +56,16 @@ PLUS              : '+' ;
 MINUS             : '-' ;
 MULT              : '*' ;
 DIV               : '/' ;
-ID                : LETTER (LETTER | NUMBER)* ;
 INT               : NUMBER+ ;
 STRING            : '"' (ESC | ~["\\])* '"' ; // Use fragment for escaped characters
 DOUBLE            : NUMBER+ '.' NUMBER+ ;
 TRUE              : 'true' ;
 FALSE             : 'false' ;
+BOOL              : TRUE | FALSE ;
 DATE              : NUMBER NUMBER NUMBER NUMBER '-' NUMBER NUMBER '-' NUMBER NUMBER ;
 TIME              : NUMBER NUMBER ':' NUMBER NUMBER ':' NUMBER NUMBER ;
 DATETIME          : DATE ',' TIME ;
+ID                : LETTER (LETTER | NUMBER)* ;
 randomInt         : 'randomInt' '(' INT ',' INT ')' ;
 randomChoice      : 'randomChoice' '(' expr (',' expr)+ ')' ;
 enumDecl          : 'enum' ID '{' enumBody'}' ;
