@@ -1,6 +1,8 @@
 from RogueLangParser import RogueLangParser
 from RogueLangVisitor import RogueLangVisitor
 
+from modules.bsp_algorithm import bsp_partition
+
 class RogueExecutor(RogueLangVisitor):
     def __init__(self):
         super().__init__()
@@ -100,6 +102,15 @@ class RogueExecutor(RogueLangVisitor):
 
     def visitArrayInit(self,ctx):
         return[self.visit(expr) for expr in ctx.expr()]
+
+    def execute_bsp(self, dimensions, min_size):
+        # Validate inputs
+        if not dimensions or min_size <= 0:
+            print("Invalid BSP parameters. Please check the dimensions and minimum size.")
+            return
+        
+        bsp_tree = bsp_partition(dimensions, min_size)
+        
 
     def visitExpr(self, ctx):
         

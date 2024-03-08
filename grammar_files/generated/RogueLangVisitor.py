@@ -74,6 +74,11 @@ class RogueLangVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by RogueLangParser#bsp.
+    def visitBsp(self, ctx:RogueLangParser.BspContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by RogueLangParser#params.
     def visitParams(self, ctx:RogueLangParser.ParamsContext):
         return self.visitChildren(ctx)
@@ -116,6 +121,26 @@ class RogueLangVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by RogueLangParser#enumValue.
     def visitEnumValue(self, ctx:RogueLangParser.EnumValueContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by RogueLangParser#bspDimension.
+    def visitBspDimension(self, ctx:RogueLangParser.BspDimensionContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by RogueLangParser#bspParameters.
+    def visitBspParameters(self, ctx:RogueLangParser.BspParametersContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by RogueLangParser#dimensionList.
+    def visitDimensionList(self, ctx:RogueLangParser.DimensionListContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by RogueLangParser#minSize.
+    def visitMinSize(self, ctx:RogueLangParser.MinSizeContext):
         return self.visitChildren(ctx)
 
 
