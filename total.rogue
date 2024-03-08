@@ -18,25 +18,26 @@ if (myBool) {
 else {
     print("False");
 };
-
 var int onePlusOne = 1 + 1;
 print(onePlusOne);
-
-for (var int i = 0; i < 5; i == i + 1) {
-    print(i);
-};
-
-var int[] myArray = {1, 2, 3, 4, 5};
-print(myArray);
-
-foreach (var int num in myArray) {
-    print(num);
-}
-
 while (myInt > 0) {
     print(myInt);
     myInt = myInt - 1;
 }
+
+
+foreach (var int num in myArray) {
+    print(num);
+}
+for (var int i = 0; i < 5; i == i + 1) {
+    print(i);
+};
+var int[] myArray = {1, 2, 3, 4, 5};
+print(myArray);
+
+
+
+
 
 function greet(string name) {
     print("Hello, " + name);

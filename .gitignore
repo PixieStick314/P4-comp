@@ -5,6 +5,7 @@ __pycache__/
 *.jar
 .DS_Store
 Thumbs.db
+.egg-info
 
 # ANTLR generated files
 /grammar_files/generated

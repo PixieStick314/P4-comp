@@ -8,7 +8,7 @@ REM The root directory of the project, assuming this script runs from the projec
 set PROJECT_ROOT=%CD%
 
 REM The directory where your ANTLR grammar file is located
-set GRAMMAR_DIR=%PROJECT_ROOT%\grammar_files
+set GRAMMAR_DIR=%PROJECT_ROOT%\src\grammar_files
 
 REM The directory where you want the generated files to go
 set OUTPUT_DIR=%GRAMMAR_DIR%\generated
