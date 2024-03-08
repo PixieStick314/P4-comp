@@ -52,7 +52,6 @@ expr              : expr '[' expr ']'     //Accessing an array element
                   | enumValue
                   ;
 
-
 // Lexer Rules
 PLUS              : '+' ;
 MINUS             : '-' ;

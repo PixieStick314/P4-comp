@@ -1,4 +1,4 @@
-# Generated from C://Users//Muffin//Documents//GitHub//P4-comp//grammar_files//RogueLang.g4 by ANTLR 4.13.1
+# Generated from C://Users//Muffin//Documents//GitHub//P4-comp//src//grammar_files//RogueLang.g4 by ANTLR 4.13.1
 from antlr4 import *
 from io import StringIO
 import sys
