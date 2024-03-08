@@ -1,5 +1,6 @@
 grammar RogueLang;
 
+// Parser Rules
 prog:   stat+ ;
 
 stat:   printStat
@@ -50,6 +51,12 @@ expr              : expr '[' expr ']'     //Accessing an array element
                   | enumValue
                   ;
 
+randomInt         : 'randomInt' '(' INT ',' INT ')' ;
+randomChoice      : 'randomChoice' '(' expr (',' expr)+ ')' ;
+enumDecl          : 'enum' ID '{' enumBody'}' ;
+enumBody          : ID (',' ID)* ;
+enumValue         : ID '.' ID ;
+
 
 // Lexer Rules
 PLUS              : '+' ;
@@ -65,11 +72,6 @@ FALSE             : 'false' ;
 DATE              : NUMBER NUMBER NUMBER NUMBER '-' NUMBER NUMBER '-' NUMBER NUMBER ;
 TIME              : NUMBER NUMBER ':' NUMBER NUMBER ':' NUMBER NUMBER ;
 DATETIME          : DATE ',' TIME ;
-randomInt         : 'randomInt' '(' INT ',' INT ')' ;
-randomChoice      : 'randomChoice' '(' expr (',' expr)+ ')' ;
-enumDecl          : 'enum' ID '{' enumBody'}' ;
-enumBody          : ID (',' ID)* ;
-enumValue         : ID '.' ID ;
 
 fragment LETTER : [a-zA-Z_]; // 
 fragment ESC    : '\\' (['"\\tn]); // Define ESC for escape sequences in strings, doesn't work
