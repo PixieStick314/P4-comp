@@ -1,5 +1,5 @@
-from RogueLangParser import RogueLangParser
-from RogueLangVisitor import RogueLangVisitor
+from grammar_files.generated.RogueLangParser import RogueLangParser
+from grammar_files.generated.RogueLangVisitor import RogueLangVisitor
 
 from modules.bsp_algorithm import bsp_partition
 
