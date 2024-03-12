@@ -60,14 +60,14 @@ DIV               : '/' ;
 MOD               : '%' ;
 TRUE              : 'true' ;
 FALSE             : 'false' ;
-BOOL              : 'bool' ;
-ID                : LETTER (LETTER | NUMBER)* ;
+BOOL              : TRUE | FALSE ;
 INT               : NUMBER+ ;
 STRING            : '"' (ESC | ~["\\])* '"' ; // Use fragment for escaped characters
 DOUBLE            : NUMBER+ '.' NUMBER+ ;
 DATE              : NUMBER NUMBER NUMBER NUMBER '-' NUMBER NUMBER '-' NUMBER NUMBER ;
 TIME              : NUMBER NUMBER ':' NUMBER NUMBER ':' NUMBER NUMBER ;
 DATETIME          : DATE ',' TIME ;
+ID                : LETTER (LETTER | NUMBER)* ;
 randomInt         : 'randomInt' '(' INT ',' INT ')' ;
 randomChoice      : 'randomChoice' '(' expr (',' expr)+ ')' ;
 enumDecl          : 'enum' ID '{' enumBody'}' ;
