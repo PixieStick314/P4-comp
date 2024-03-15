@@ -14,8 +14,9 @@ def test_lexer_ID():
     code = 'my_var1'
     tokens = get_tokens_from_string(code)
 
+    # Doing it this way means if token order changes, we have to rewrite the tests
     assert tokens[0].type == RogueLangLexer.ID
-    assert tokens[1].type == -1
+    assert tokens[1].type == -1 # -1 corresponds to type EOF
 
 def test_lexer_INT():
     code = '1'
