@@ -1,4 +1,4 @@
-# Generated from C:/Users/lokes/PycharmProjects/P4-comp/src/grammar_files/RogueLang.g4 by ANTLR 4.13.1
+# Generated from C:/Users/Loke/PycharmProjects/P4-comp/src/grammar_files/RogueLang.g4 by ANTLR 4.13.1
 from antlr4 import *
 if "." in __name__:
     from .RogueLangParser import RogueLangParser
@@ -49,11 +49,6 @@ class RogueLangVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by RogueLangParser#foreachLoop.
-    def visitForeachLoop(self, ctx:RogueLangParser.ForeachLoopContext):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by RogueLangParser#whileLoop.
     def visitWhileLoop(self, ctx:RogueLangParser.WhileLoopContext):
         return self.visitChildren(ctx)
@@ -91,11 +86,6 @@ class RogueLangVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by RogueLangParser#args.
     def visitArgs(self, ctx:RogueLangParser.ArgsContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by RogueLangParser#expr.
-    def visitExpr(self, ctx:RogueLangParser.ExprContext):
         return self.visitChildren(ctx)
 
 
@@ -141,6 +131,11 @@ class RogueLangVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by RogueLangParser#minSize.
     def visitMinSize(self, ctx:RogueLangParser.MinSizeContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by RogueLangParser#expr.
+    def visitExpr(self, ctx:RogueLangParser.ExprContext):
         return self.visitChildren(ctx)
 
 
