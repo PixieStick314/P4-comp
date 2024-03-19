@@ -7,7 +7,7 @@ from antlr4 import *
 from grammar_files.generated.RogueLangLexer import RogueLangLexer
 from grammar_files.generated.RogueLangParser import RogueLangParser
 from grammar_files.generated.RogueLangVisitor import RogueLangVisitor
-from rogue_executor import RogueExecutor
+from rogue_visitor import RogueExecutor
 
 def main():
     # if length of command is < 2, exit
