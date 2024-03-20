@@ -3,7 +3,7 @@ from grammar_files.generated.RogueLangVisitor import RogueLangVisitor
 
 from modules.bsp_algorithm import bsp_partition
 
-class RogueExecutor(RogueLangVisitor):
+class RogueVisitor(RogueLangVisitor):
     def __init__(self):
         super().__init__()
         self.variables = {}  # For storing variables

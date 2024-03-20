@@ -7,7 +7,7 @@ from antlr4 import *
 from grammar_files.generated.RogueLangLexer import RogueLangLexer
 from grammar_files.generated.RogueLangParser import RogueLangParser
 from grammar_files.generated.RogueLangVisitor import RogueLangVisitor
-from rogue_visitor import RogueExecutor
+from rogue_visitor import RogueVisitor
 
 def main():
     # if length of command is < 2, exit
@@ -27,7 +27,7 @@ def main():
     tree = parser.prog()
 
     # Visit the parse tree
-    visitor = RogueExecutor()
+    visitor = RogueVisitor()
     visitor.visit(tree)
 
 # This is to enable testing, but does literally the same thing, it's just callable
@@ -38,7 +38,7 @@ def execute_rogue_script(file_path):
     parser = RogueLangParser(stream)
     tree = parser.prog()
 
-    visitor = RogueExecutor()
+    visitor = RogueVisitor()
     visitor.visit(tree)
 
 
