@@ -1,44 +1,134 @@
 print("---------------------------------------------------------------------------------------------")
-print("printStat:")
-x = "Hello World"
-print(x)
+print("Numbers:")
+a = 12
+b = 1.2
+c = -1
 
-print("---------------------------------------------------------------------------------------------")
-print("varDecl:")
-x = 1
-print(x)
+print("Should be 12:")
+print(a)
+print("Should be 1.2:")
+print(b)
+print("Should be -1:")
+print(c)
+print("<--------------------------------------------------------------------------------------------->")
+//Quotes have to be this specific font: ", also no Quotes inside Quotes
+print("String:")
+a = "Hello World!"
+b = "waddafuk"
+c = "@123@!?=()()=...."
 
-print("---------------------------------------------------------------------------------------------")
-print("ifStat:")
-y = 1.5
-a = 5
-b = 5
+print("Should be Hello World!:")
+print(a)
+print("Should be waddafuk:")
+print(b)
+print("Should be @123@!?=()()=....:")
+print(c)
 
- if(y > x) {
-    print("GREATER THAN IS WORKING")
- }
+print("<--------------------------------------------------------------------------------------------->")
+print("Bool:")
+a = true
+b = false
 
+print("Should be true:")
+print(a)
+print("Should be false:")
+print(b)
 
- if(a >= b) {
-    print("GREATER THAN OR EQUAL IS WORKING")
- }
+print("<--------------------------------------------------------------------------------------------->")
+print("None:")
+print("Should be None:")
+print(no)
 
-if(x < y) {
-    print("LESS THAN IS WORKING")
- }
+print("<--------------------------------------------------------------------------------------------->")
+print("Arrays:")
+//Waiting for Ron
 
-if(x <= y) {
-    print("LESS THAN OR EQUAL IS WORKING")
- }
+print("<--------------------------------------------------------------------------------------------->")
+print("Tuples:")
+//TBD
 
- if(a == b) {
-    print("EQUAL IS WORKING")
- }
+print("<--------------------------------------------------------------------------------------------->")
+print("Variable declarations:")
+a = 1
+b = 1
+c = a+b
 
- if(x != y) {
-    print("NOT EQUAL IS WORKING")
- }
+print("Should be 1:")
+print(a)
+print("Should be 2:")
+print(c)
+//Still waiting for arrays
 
-print("---------------------------------------------------------------------------------------------")
+print("<--------------------------------------------------------------------------------------------->")
 print("Arithmetic:")
+x = 5
+y = 10
+
+print("Should be 15:")
+print(x + y)
+print("Should be -5:")
+print(x - y)
+print("Should be 50:")
+print(x * y)
+print("Should be 0.5:")
+print(x / y)
+print("Should be 5.0:")
+print(x % y)
+
+print("<--------------------------------------------------------------------------------------------->")
+print("Comparisons:")
+x = 10
+y = 5
+
+print("Should be false:")
+print(x < y)
+print("Should be false:")
+print(x <= y)
+print("Should be true:")
+print(x > y)
+print("Should be true:")
+print(x >= y)
+print("Should be false:")
+print(x == y)
+print("Should be true:")
+print(x != y)
+
+print("<--------------------------------------------------------------------------------------------->")
+print("Arithmetic:")
+x = true
+y = false
+
+print("(not)Should return false:")
+print(not x)
+print("(and)Should return false:")
+print(x and y)
+print("(or)Should return true:")
+print(x or y)
+
+print("<--------------------------------------------------------------------------------------------->")
+x = true
+
+print("Should return i am true:")
+if(x) {
+    print("I am true")
+}
+else {
+    print("Nothing")
+}
+
+print("Should return Nothing:")
+if(not x) {
+    print("I am true")
+}
+else {
+    print("Nothing")
+}
+
+print("<--------------------------------------------------------------------------------------------->")
+
+print("<--------------------------------------------------------------------------------------------->")
+
+print("<--------------------------------------------------------------------------------------------->")
+
+print("<--------------------------------------------------------------------------------------------->")
 

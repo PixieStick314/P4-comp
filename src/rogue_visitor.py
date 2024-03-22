@@ -114,7 +114,6 @@ class RogueVisitor(RogueLangVisitor):
         
 
     def visitExpr(self, ctx):
-        
         # Part of visitExpr method for handling ID tokens
         if ctx.ID():
             var_name = ctx.ID().getText()
@@ -128,7 +127,6 @@ class RogueVisitor(RogueLangVisitor):
         #base case for string literals
         elif ctx.STRING():
             return ctx.STRING().getText()[1:-1]
-
         elif ctx.TRUE() or ctx.getText() == 'true':
             return True
         elif ctx.FALSE() or ctx.getText() == 'false':
@@ -150,8 +148,26 @@ class RogueVisitor(RogueLangVisitor):
             else:
                 return self.visitFunctionCall(ctx)
             
+        #handling logical operators
+        elif ctx.NOT():
+            left = self.visit(ctx.expr(0))
+            result = not left
+            return result
+        elif ctx.AND() or ctx.OR() or ctx.NOT():
+            if ctx.expr(0) and ctx.expr(1) is not None:
+                left = self.visit(ctx.expr(0))
+                right = self.visit(ctx.expr(1))
+                if ctx.op is not None:
+                    if ctx.op.type == RogueLangParser.AND: 
+                        return left and right
+                    elif ctx.op.type == RogueLangParser.OR:
+                        return left or right
+                    
+    
+           
+        
         #handling comparison operators
-        elif ctx.GT() or ctx.GTE or ctx.LT or ctx.LTE :
+        elif ctx.GT() or ctx.GTE() or ctx.LT() or ctx.LTE() or ctx.EQ() or ctx.NEQ() :
             if ctx.expr(0) and ctx.expr(1) is not None:
                 left = self.visit(ctx.expr(0))
                 right = self.visit(ctx.expr(1))
@@ -188,6 +204,8 @@ class RogueVisitor(RogueLangVisitor):
                         return left - right
                     elif ctx.op.type == RogueLangParser.MULT:
                         return left * right
+                    elif ctx.op.type == RogueLangParser.MOD:
+                        return left % right
                     elif ctx.op.type == RogueLangParser.DIV:
                         if right != 0:
                             return left / right

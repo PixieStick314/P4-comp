@@ -18,7 +18,8 @@ printStat         : 'print' openParenth expr closedParenth;
 varDecl           : ID  ('=' expr | arrayInit | args)?;
 dataType          : baseType (openBrack closedBrack )? ;
 baseType          : 'string' |'true' | 'false' | 'bool' | 'number' | ID; 
-ifStat            : 'if' openParenth expr closedParenth openCurlBrack stat* closedCurlBrack ('else' openCurlBrack stat* closedCurlBrack)?;
+ifStat            : 'if' openParenth expr closedParenth openCurlBrack stat* closedCurlBrack (elifStat)* ('else' openCurlBrack stat* closedCurlBrack)?;
+elifStat          : 'elif' openParenth expr closedParenth openCurlBrack stat* closedCurlBrack;
 forLoop           : 'for' varDecl 'in' expr openCurlBrack stat* closedCurlBrack;
 whileLoop         : 'while' openParenth expr closedParenth openCurlBrack stat* closedCurlBrack;
 functionDecl      : 'def' ID openParenth params? closedParenth openCurlBrack stat* closedCurlBrack;
@@ -40,9 +41,11 @@ minSize           : NUMBER ; // Minimum size for partitioning
 expr              : expr openBrack expr closedBrack     //Accessing an array element
                   | expr openBrack expr closedBrack '=' expr //Assinging to an array element
                   | expr '.add'openParenth expr closedParenth   //Method to add an element to a dynamically sized array
-                  | expr op=('*' | '/') expr
-                  | expr op=('+' | '-') expr
+                  | expr op=(MULT | DIV | MOD) expr
+                  | expr op=(PLUS| MINUS) expr
                   | expr op=(GT | GTE | LT | LTE | EQ | NEQ) expr
+                  | expr op=(AND | OR) expr
+                  | NOT expr
                   | openParenth expr closedParenth 
                   | ID
                   | STRING
@@ -75,9 +78,13 @@ LTE               : '<=';
 EQ                : '==';
 NEQ               : '!=';
 MOD               : '%' ;
+AND               : 'and';
+OR                : 'or';
+NOT               : 'not';
 TRUE              : 'true' ;
 FALSE             : 'false' ;
-NUMBER            : NUMB + | NUMB+ '.' NUMB+ ;
+COMMENT_SINGLELINE: '//' ~[\r\n]* -> skip ;
+NUMBER            : '-'? NUMB + | '-'? NUMB+ '.' NUMB+ ;
 STRING            : '"' (ESC | ~["\\])* '"' ; // Use fragment for escaped characters
 ID                : LETTER (LETTER | NUMB)* ;
 

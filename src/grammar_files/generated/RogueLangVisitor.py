@@ -44,6 +44,11 @@ class RogueLangVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by RogueLangParser#elifStat.
+    def visitElifStat(self, ctx:RogueLangParser.ElifStatContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by RogueLangParser#forLoop.
     def visitForLoop(self, ctx:RogueLangParser.ForLoopContext):
         return self.visitChildren(ctx)
