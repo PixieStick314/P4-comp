@@ -18,7 +18,8 @@ array             : '[' ( expr ( ',' expr )* )? ']';
 arrayAdd          : array '.add(' expr ')';
 arrayPop          : array '.pop(' expr ')';
 printStat         : 'print' '(' expr ')';
-varDecl           : dataType ID  ('=' expr | arrayInit | args)?;
+// shouldn't this not be optional? thought we were doing it by declaration
+varDecl           : dataType ID  ('=' expr | array | args)?;
 dataType          : baseType ('[' ']')? ;
 baseType          : 'int' | 'string' |'true' | 'false' | 'bool' | 'double' | ID | 'date' | 'time' | 'dateTime' ; 
 ifStat            : 'if' '(' expr ')' '{' stat* '}' ('else' '{' stat* '}')?;
