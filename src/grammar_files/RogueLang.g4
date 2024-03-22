@@ -42,7 +42,7 @@ expr              : expr openBrack expr closedBrack     //Accessing an array ele
                   | expr '.add'openParenth expr closedParenth   //Method to add an element to a dynamically sized array
                   | expr op=('*' | '/') expr
                   | expr op=('+' | '-') expr
-                  | expr op=(GT | GTE | LT | LTE) expr
+                  | expr op=(GT | GTE | LT | LTE | EQ | NEQ) expr
                   | openParenth expr closedParenth 
                   | ID
                   | INT
@@ -73,6 +73,8 @@ GT                : '>' ;
 GTE               : '>=';
 LT                : '<' ;
 LTE               : '<=';
+EQ                 : '==';
+NEQ                : '!=';
 MOD               : '%' ;
 TRUE              : 'true' ;
 FALSE             : 'false' ;

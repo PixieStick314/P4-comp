@@ -166,7 +166,11 @@ class RogueVisitor(RogueLangVisitor):
                     elif ctx.op.type == RogueLangParser.LT:
                         return left < right
                     elif ctx.op.type == RogueLangParser.LTE:
-                            return left <= right
+                        return left <= right
+                    elif ctx.op.type == RogueLangParser.EQ:
+                        return left == right
+                    elif ctx.op.type == RogueLangParser.NEQ:
+                        return left != right
             else:
                 # Handle cases where the expression doesn't lead to a binary operation
                 # This might involve handling unary operations or simply returning the result of a single child expression

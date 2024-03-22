@@ -30,3 +30,11 @@ if(x <= y) {
     print("LESS THAN OR EQUAL IS WORKING")
  }
 
+ if(a == b) {
+    print("EQUAL IS WORKING")
+ }
+
+ if(x != y) {
+    print("NOT EQUAL IS WORKING")
+ }
+

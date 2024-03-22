@@ -20,8 +20,9 @@ public class RogueLangParser extends Parser {
 		T__9=10, T__10=11, T__11=12, T__12=13, T__13=14, T__14=15, T__15=16, T__16=17, 
 		T__17=18, T__18=19, T__19=20, T__20=21, T__21=22, T__22=23, T__23=24, 
 		T__24=25, T__25=26, T__26=27, T__27=28, T__28=29, T__29=30, T__30=31, 
-		PLUS=32, MINUS=33, MULT=34, DIV=35, GT=36, GTE=37, LT=38, LTE=39, MOD=40, 
-		TRUE=41, FALSE=42, INT=43, DOUBLE=44, STRING=45, ID=46, WS=47;
+		PLUS=32, MINUS=33, MULT=34, DIV=35, GT=36, GTE=37, LT=38, LTE=39, EQ=40, 
+		NEQ=41, MOD=42, TRUE=43, FALSE=44, INT=45, DOUBLE=46, STRING=47, ID=48, 
+		WS=49;
 	public static final int
 		RULE_prog = 0, RULE_stat = 1, RULE_printStat = 2, RULE_varDecl = 3, RULE_dataType = 4, 
 		RULE_baseType = 5, RULE_ifStat = 6, RULE_forLoop = 7, RULE_whileLoop = 8, 
@@ -50,8 +51,8 @@ public class RogueLangParser extends Parser {
 			"'time'", "'dateTime'", "'if'", "'else'", "'for'", "'in'", "'while'", 
 			"'def'", "'BSP'", "'randomInt'", "'randomChoice'", "'enum'", "'.'", "'2D'", 
 			"'3D'", "'D'", "'.add'", "'('", "')'", "'['", "']'", "'{'", "'}'", "','", 
-			"'+'", "'-'", "'*'", "'/'", "'>'", "'>='", "'<'", "'<='", "'%'", "'true'", 
-			"'false'"
+			"'+'", "'-'", "'*'", "'/'", "'>'", "'>='", "'<'", "'<='", "'=='", "'!='", 
+			"'%'", "'true'", "'false'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
@@ -60,8 +61,8 @@ public class RogueLangParser extends Parser {
 			null, null, null, null, null, null, null, null, null, null, null, null, 
 			null, null, null, null, null, null, null, null, null, null, null, null, 
 			null, null, null, null, null, null, null, null, "PLUS", "MINUS", "MULT", 
-			"DIV", "GT", "GTE", "LT", "LTE", "MOD", "TRUE", "FALSE", "INT", "DOUBLE", 
-			"STRING", "ID", "WS"
+			"DIV", "GT", "GTE", "LT", "LTE", "EQ", "NEQ", "MOD", "TRUE", "FALSE", 
+			"INT", "DOUBLE", "STRING", "ID", "WS"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -149,7 +150,7 @@ public class RogueLangParser extends Parser {
 				setState(69); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 138539036497914L) != 0) );
+			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 554154431797242L) != 0) );
 			}
 		}
 		catch (RecognitionException re) {
@@ -474,7 +475,7 @@ public class RogueLangParser extends Parser {
 			{
 			setState(102);
 			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 76965813945336L) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 307863255778296L) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -550,7 +551,7 @@ public class RogueLangParser extends Parser {
 			setState(112);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 138539036497914L) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 554154431797242L) != 0)) {
 				{
 				{
 				setState(109);
@@ -575,7 +576,7 @@ public class RogueLangParser extends Parser {
 				setState(121);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 138539036497914L) != 0)) {
+				while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 554154431797242L) != 0)) {
 					{
 					{
 					setState(118);
@@ -650,7 +651,7 @@ public class RogueLangParser extends Parser {
 			setState(136);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 138539036497914L) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 554154431797242L) != 0)) {
 				{
 				{
 				setState(133);
@@ -725,7 +726,7 @@ public class RogueLangParser extends Parser {
 			setState(149);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 138539036497914L) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 554154431797242L) != 0)) {
 				{
 				{
 				setState(146);
@@ -797,7 +798,7 @@ public class RogueLangParser extends Parser {
 			setState(158);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 76965813945336L) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 307863255778296L) != 0)) {
 				{
 				setState(157);
 				params();
@@ -811,7 +812,7 @@ public class RogueLangParser extends Parser {
 			setState(165);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 138539036497914L) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 554154431797242L) != 0)) {
 				{
 				{
 				setState(162);
@@ -869,7 +870,7 @@ public class RogueLangParser extends Parser {
 			setState(173);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 138538499047424L) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 554153894346752L) != 0)) {
 				{
 				setState(172);
 				args();
@@ -1649,6 +1650,8 @@ public class RogueLangParser extends Parser {
 		public TerminalNode GTE() { return getToken(RogueLangParser.GTE, 0); }
 		public TerminalNode LT() { return getToken(RogueLangParser.LT, 0); }
 		public TerminalNode LTE() { return getToken(RogueLangParser.LTE, 0); }
+		public TerminalNode EQ() { return getToken(RogueLangParser.EQ, 0); }
+		public TerminalNode NEQ() { return getToken(RogueLangParser.NEQ, 0); }
 		public ExprContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1820,7 +1823,7 @@ public class RogueLangParser extends Parser {
 						setState(305);
 						((ExprContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
-						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 1030792151040L) != 0)) ) {
+						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 4329327034368L) != 0)) ) {
 							((ExprContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 						}
 						else {
@@ -2111,7 +2114,7 @@ public class RogueLangParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\u0004\u0001/\u0152\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
+		"\u0004\u00011\u0152\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
 		"\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004\u0002"+
 		"\u0005\u0007\u0005\u0002\u0006\u0007\u0006\u0002\u0007\u0007\u0007\u0002"+
 		"\b\u0007\b\u0002\t\u0007\t\u0002\n\u0007\n\u0002\u000b\u0007\u000b\u0002"+
@@ -2165,7 +2168,7 @@ public class RogueLangParser extends Parser {
 		"\u0001\u001d\u0001\u001e\u0001\u001e\u0001\u001f\u0001\u001f\u0001 \u0001"+
 		" \u0001 \u0000\u00012!\u0000\u0002\u0004\u0006\b\n\f\u000e\u0010\u0012"+
 		"\u0014\u0016\u0018\u001a\u001c\u001e \"$&(*,.02468:<>@\u0000\u0004\u0003"+
-		"\u0000\u0003\t)*..\u0001\u0000\"#\u0001\u0000 !\u0001\u0000$\'\u015d\u0000"+
+		"\u0000\u0003\t+,00\u0001\u0000\"#\u0001\u0000 !\u0001\u0000$)\u015d\u0000"+
 		"C\u0001\u0000\u0000\u0000\u0002Q\u0001\u0000\u0000\u0000\u0004S\u0001"+
 		"\u0000\u0000\u0000\u0006X\u0001\u0000\u0000\u0000\b`\u0001\u0000\u0000"+
 		"\u0000\nf\u0001\u0000\u0000\u0000\fh\u0001\u0000\u0000\u0000\u000e\u0080"+
@@ -2192,7 +2195,7 @@ public class RogueLangParser extends Parser {
 		"\u0000\u0000QO\u0001\u0000\u0000\u0000QP\u0001\u0000\u0000\u0000R\u0003"+
 		"\u0001\u0000\u0000\u0000ST\u0005\u0001\u0000\u0000TU\u00034\u001a\u0000"+
 		"UV\u00032\u0019\u0000VW\u00036\u001b\u0000W\u0005\u0001\u0000\u0000\u0000"+
-		"XY\u0003\b\u0004\u0000Y^\u0005.\u0000\u0000Z[\u0005\u0002\u0000\u0000"+
+		"XY\u0003\b\u0004\u0000Y^\u00050\u0000\u0000Z[\u0005\u0002\u0000\u0000"+
 		"[_\u00032\u0019\u0000\\_\u0003\u0016\u000b\u0000]_\u0003\u001e\u000f\u0000"+
 		"^Z\u0001\u0000\u0000\u0000^\\\u0001\u0000\u0000\u0000^]\u0001\u0000\u0000"+
 		"\u0000^_\u0001\u0000\u0000\u0000_\u0007\u0001\u0000\u0000\u0000`d\u0003"+
@@ -2222,7 +2225,7 @@ public class RogueLangParser extends Parser {
 		"\u0095\u0093\u0001\u0000\u0000\u0000\u0095\u0096\u0001\u0000\u0000\u0000"+
 		"\u0096\u0098\u0001\u0000\u0000\u0000\u0097\u0095\u0001\u0000\u0000\u0000"+
 		"\u0098\u0099\u0003>\u001f\u0000\u0099\u0011\u0001\u0000\u0000\u0000\u009a"+
-		"\u009b\u0005\u000f\u0000\u0000\u009b\u009c\u0005.\u0000\u0000\u009c\u009e"+
+		"\u009b\u0005\u000f\u0000\u0000\u009b\u009c\u00050\u0000\u0000\u009c\u009e"+
 		"\u00034\u001a\u0000\u009d\u009f\u0003\u001a\r\u0000\u009e\u009d\u0001"+
 		"\u0000\u0000\u0000\u009e\u009f\u0001\u0000\u0000\u0000\u009f\u00a0\u0001"+
 		"\u0000\u0000\u0000\u00a0\u00a1\u00036\u001b\u0000\u00a1\u00a5\u0003<\u001e"+
@@ -2230,7 +2233,7 @@ public class RogueLangParser extends Parser {
 		"\u0000\u00a4\u00a7\u0001\u0000\u0000\u0000\u00a5\u00a3\u0001\u0000\u0000"+
 		"\u0000\u00a5\u00a6\u0001\u0000\u0000\u0000\u00a6\u00a8\u0001\u0000\u0000"+
 		"\u0000\u00a7\u00a5\u0001\u0000\u0000\u0000\u00a8\u00a9\u0003>\u001f\u0000"+
-		"\u00a9\u0013\u0001\u0000\u0000\u0000\u00aa\u00ab\u0005.\u0000\u0000\u00ab"+
+		"\u00a9\u0013\u0001\u0000\u0000\u0000\u00aa\u00ab\u00050\u0000\u0000\u00ab"+
 		"\u00ad\u00034\u001a\u0000\u00ac\u00ae\u0003\u001e\u000f\u0000\u00ad\u00ac"+
 		"\u0001\u0000\u0000\u0000\u00ad\u00ae\u0001\u0000\u0000\u0000\u00ae\u00af"+
 		"\u0001\u0000\u0000\u0000\u00af\u00b0\u00036\u001b\u0000\u00b0\u0015\u0001"+
@@ -2247,15 +2250,15 @@ public class RogueLangParser extends Parser {
 		"\u00c5\u00c2\u0001\u0000\u0000\u0000\u00c6\u00c9\u0001\u0000\u0000\u0000"+
 		"\u00c7\u00c5\u0001\u0000\u0000\u0000\u00c7\u00c8\u0001\u0000\u0000\u0000"+
 		"\u00c8\u001b\u0001\u0000\u0000\u0000\u00c9\u00c7\u0001\u0000\u0000\u0000"+
-		"\u00ca\u00cb\u0003\b\u0004\u0000\u00cb\u00cc\u0005.\u0000\u0000\u00cc"+
+		"\u00ca\u00cb\u0003\b\u0004\u0000\u00cb\u00cc\u00050\u0000\u0000\u00cc"+
 		"\u001d\u0001\u0000\u0000\u0000\u00cd\u00d3\u00032\u0019\u0000\u00ce\u00cf"+
 		"\u0003@ \u0000\u00cf\u00d0\u00032\u0019\u0000\u00d0\u00d2\u0001\u0000"+
 		"\u0000\u0000\u00d1\u00ce\u0001\u0000\u0000\u0000\u00d2\u00d5\u0001\u0000"+
 		"\u0000\u0000\u00d3\u00d1\u0001\u0000\u0000\u0000\u00d3\u00d4\u0001\u0000"+
 		"\u0000\u0000\u00d4\u001f\u0001\u0000\u0000\u0000\u00d5\u00d3\u0001\u0000"+
 		"\u0000\u0000\u00d6\u00d7\u0005\u0011\u0000\u0000\u00d7\u00d8\u00034\u001a"+
-		"\u0000\u00d8\u00d9\u0005+\u0000\u0000\u00d9\u00da\u0003@ \u0000\u00da"+
-		"\u00db\u0005+\u0000\u0000\u00db\u00dc\u00036\u001b\u0000\u00dc!\u0001"+
+		"\u0000\u00d8\u00d9\u0005-\u0000\u0000\u00d9\u00da\u0003@ \u0000\u00da"+
+		"\u00db\u0005-\u0000\u0000\u00db\u00dc\u00036\u001b\u0000\u00dc!\u0001"+
 		"\u0000\u0000\u0000\u00dd\u00de\u0005\u0012\u0000\u0000\u00de\u00df\u0003"+
 		"4\u001a\u0000\u00df\u00e3\u00032\u0019\u0000\u00e0\u00e1\u0003@ \u0000"+
 		"\u00e1\u00e2\u00032\u0019\u0000\u00e2\u00e4\u0001\u0000\u0000\u0000\u00e3"+
@@ -2263,32 +2266,32 @@ public class RogueLangParser extends Parser {
 		"\u00e3\u0001\u0000\u0000\u0000\u00e5\u00e6\u0001\u0000\u0000\u0000\u00e6"+
 		"\u00e7\u0001\u0000\u0000\u0000\u00e7\u00e8\u00036\u001b\u0000\u00e8#\u0001"+
 		"\u0000\u0000\u0000\u00e9\u00ea\u0005\u0013\u0000\u0000\u00ea\u00eb\u0005"+
-		".\u0000\u0000\u00eb\u00ec\u0003<\u001e\u0000\u00ec\u00ed\u0003&\u0013"+
+		"0\u0000\u0000\u00eb\u00ec\u0003<\u001e\u0000\u00ec\u00ed\u0003&\u0013"+
 		"\u0000\u00ed\u00ee\u0003>\u001f\u0000\u00ee%\u0001\u0000\u0000\u0000\u00ef"+
-		"\u00f5\u0005.\u0000\u0000\u00f0\u00f1\u0003@ \u0000\u00f1\u00f2\u0005"+
-		".\u0000\u0000\u00f2\u00f4\u0001\u0000\u0000\u0000\u00f3\u00f0\u0001\u0000"+
+		"\u00f5\u00050\u0000\u0000\u00f0\u00f1\u0003@ \u0000\u00f1\u00f2\u0005"+
+		"0\u0000\u0000\u00f2\u00f4\u0001\u0000\u0000\u0000\u00f3\u00f0\u0001\u0000"+
 		"\u0000\u0000\u00f4\u00f7\u0001\u0000\u0000\u0000\u00f5\u00f3\u0001\u0000"+
 		"\u0000\u0000\u00f5\u00f6\u0001\u0000\u0000\u0000\u00f6\'\u0001\u0000\u0000"+
-		"\u0000\u00f7\u00f5\u0001\u0000\u0000\u0000\u00f8\u00f9\u0005.\u0000\u0000"+
-		"\u00f9\u00fa\u0005\u0014\u0000\u0000\u00fa\u00fb\u0005.\u0000\u0000\u00fb"+
+		"\u0000\u00f7\u00f5\u0001\u0000\u0000\u0000\u00f8\u00f9\u00050\u0000\u0000"+
+		"\u00f9\u00fa\u0005\u0014\u0000\u0000\u00fa\u00fb\u00050\u0000\u0000\u00fb"+
 		")\u0001\u0000\u0000\u0000\u00fc\u0101\u0005\u0015\u0000\u0000\u00fd\u0101"+
-		"\u0005\u0016\u0000\u0000\u00fe\u00ff\u0005+\u0000\u0000\u00ff\u0101\u0005"+
+		"\u0005\u0016\u0000\u0000\u00fe\u00ff\u0005-\u0000\u0000\u00ff\u0101\u0005"+
 		"\u0017\u0000\u0000\u0100\u00fc\u0001\u0000\u0000\u0000\u0100\u00fd\u0001"+
 		"\u0000\u0000\u0000\u0100\u00fe\u0001\u0000\u0000\u0000\u0101+\u0001\u0000"+
 		"\u0000\u0000\u0102\u0103\u00034\u001a\u0000\u0103\u0104\u0003.\u0017\u0000"+
 		"\u0104\u0105\u0003@ \u0000\u0105\u0106\u00030\u0018\u0000\u0106\u0107"+
-		"\u00036\u001b\u0000\u0107-\u0001\u0000\u0000\u0000\u0108\u010e\u0005+"+
-		"\u0000\u0000\u0109\u010a\u0003@ \u0000\u010a\u010b\u0005+\u0000\u0000"+
+		"\u00036\u001b\u0000\u0107-\u0001\u0000\u0000\u0000\u0108\u010e\u0005-"+
+		"\u0000\u0000\u0109\u010a\u0003@ \u0000\u010a\u010b\u0005-\u0000\u0000"+
 		"\u010b\u010d\u0001\u0000\u0000\u0000\u010c\u0109\u0001\u0000\u0000\u0000"+
 		"\u010d\u0110\u0001\u0000\u0000\u0000\u010e\u010c\u0001\u0000\u0000\u0000"+
 		"\u010e\u010f\u0001\u0000\u0000\u0000\u010f/\u0001\u0000\u0000\u0000\u0110"+
-		"\u010e\u0001\u0000\u0000\u0000\u0111\u0112\u0005+\u0000\u0000\u01121\u0001"+
+		"\u010e\u0001\u0000\u0000\u0000\u0111\u0112\u0005-\u0000\u0000\u01121\u0001"+
 		"\u0000\u0000\u0000\u0113\u0114\u0006\u0019\uffff\uffff\u0000\u0114\u0115"+
 		"\u00034\u001a\u0000\u0115\u0116\u00032\u0019\u0000\u0116\u0117\u00036"+
-		"\u001b\u0000\u0117\u0122\u0001\u0000\u0000\u0000\u0118\u0122\u0005.\u0000"+
-		"\u0000\u0119\u0122\u0005+\u0000\u0000\u011a\u0122\u0005-\u0000\u0000\u011b"+
-		"\u0122\u0005,\u0000\u0000\u011c\u0122\u0005)\u0000\u0000\u011d\u0122\u0005"+
-		"*\u0000\u0000\u011e\u0122\u0003 \u0010\u0000\u011f\u0122\u0003\"\u0011"+
+		"\u001b\u0000\u0117\u0122\u0001\u0000\u0000\u0000\u0118\u0122\u00050\u0000"+
+		"\u0000\u0119\u0122\u0005-\u0000\u0000\u011a\u0122\u0005/\u0000\u0000\u011b"+
+		"\u0122\u0005.\u0000\u0000\u011c\u0122\u0005+\u0000\u0000\u011d\u0122\u0005"+
+		",\u0000\u0000\u011e\u0122\u0003 \u0010\u0000\u011f\u0122\u0003\"\u0011"+
 		"\u0000\u0120\u0122\u0003(\u0014\u0000\u0121\u0113\u0001\u0000\u0000\u0000"+
 		"\u0121\u0118\u0001\u0000\u0000\u0000\u0121\u0119\u0001\u0000\u0000\u0000"+
 		"\u0121\u011a\u0001\u0000\u0000\u0000\u0121\u011b\u0001\u0000\u0000\u0000"+
