@@ -12,12 +12,21 @@ print(" ")
 print("ifStat:")
 int y = 2
 
-if(y > x) {
-print(x)
-} else if (y < x) {
-print(y)
-} else {
-print("no")
-}
+ if(y > x) {
+    print("GREATER THAN IS WORKING")
+ }
+int a = 5
+int b = 5
 
+ if(a >= b) {
+    print("GREATER THAN OR EQUAL IS WORKING")
+ }
+
+if(x < y) {
+    print("LESS THAN IS WORKING")
+ }
+
+if(x <= y) {
+    print("LESS THAN OR EQUAL IS WORKING")
+ }
 

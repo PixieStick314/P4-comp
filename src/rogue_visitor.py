@@ -136,7 +136,6 @@ class RogueVisitor(RogueLangVisitor):
             return True
         elif ctx.FALSE() or ctx.getText() == 'false':
             return False
-        
         elif ctx.DOUBLE():
             return float(ctx.DOUBLE().getText())
         
@@ -153,6 +152,28 @@ class RogueVisitor(RogueLangVisitor):
                 return len(array)
             else:
                 return self.visitFunctionCall(ctx)
+            
+        #handling comparison operators
+        elif ctx.GT() or ctx.GTE or ctx.LT or ctx.LTE :
+            if ctx.expr(0) and ctx.expr(1) is not None:
+                left = self.visit(ctx.expr(0))
+                right = self.visit(ctx.expr(1))
+                if ctx.op is not None:
+                    if ctx.op.type == RogueLangParser.GT: 
+                        return left > right
+                    elif ctx.op.type == RogueLangParser.GTE:
+                        return left >= right
+                    elif ctx.op.type == RogueLangParser.LT:
+                        return left < right
+                    elif ctx.op.type == RogueLangParser.LTE:
+                            return left <= right
+            else:
+                # Handle cases where the expression doesn't lead to a binary operation
+                # This might involve handling unary operations or simply returning the result of a single child expression
+                # Example:
+                if ctx.expr(0) is not None:
+                    return self.visit(ctx.expr(0))
+
         
         # arithmetic expression handlers:
         else:
