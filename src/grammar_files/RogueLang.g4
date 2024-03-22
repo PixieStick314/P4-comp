@@ -14,6 +14,7 @@ stat:   printStat
       | expr
       ;
 
+array             : '[' ( expr ( ',' expr )* )? ']';
 printStat         : 'print' '(' expr ')';
 varDecl           : dataType ID  ('=' expr | arrayInit | args)?;
 dataType          : baseType ('[' ']')? ;
