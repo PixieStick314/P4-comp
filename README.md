@@ -35,7 +35,7 @@ Steps:
 ## Steps: 
 1. `pip3 install -r requirements.txt`
 2. `pip3 -e .`
-3. > To run tests
+3. To run tests
     `pytest .`
 
 
