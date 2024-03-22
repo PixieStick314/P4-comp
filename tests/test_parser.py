@@ -122,18 +122,13 @@ def test_array_init():
 def test_array_add():
     code = '[1, 2, 3].add(4)'
     parser = setup_parser(code)
-    tree = parser.array()
+    tree = parser.arrayAdd()
 
-    assert (tree.getRuleIndex() == RogueLangParser.RULE_array)
-    assert tree.getChild(0).getText() == '['
-    assert tree.getChild(1).getRuleIndex() == RogueLangParser.RULE_expr
-    assert tree.getChild(2).getText() == ','
-    assert tree.getChild(3).getRuleIndex() == RogueLangParser.RULE_expr
-    assert tree.getChild(4).getText() == ','
-    assert tree.getChild(5).getRuleIndex() == RogueLangParser.RULE_expr
-    assert tree.getChild(6).getText() == ','
-    assert tree.getChild(7).getRuleIndex() == RogueLangParser.RULE_expr
-    assert tree.getChild(8).getText() == ']'
+    assert (tree.getRuleIndex() == RogueLangParser.RULE_arrayAdd)
+    assert tree.getChild(0).getRuleIndex() == RogueLangParser.RULE_array
+    assert tree.getChild(1).getText() == '.add('
+    assert tree.getChild(2).getRuleIndex() == RogueLangParser.RULE_expr
+    assert tree.getChild(3).getText() == ')'
 
 def test_bsp():
     code = 'BSP 2D (10, 10, 2)'
