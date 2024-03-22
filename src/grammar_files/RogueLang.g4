@@ -15,6 +15,8 @@ stat:   printStat
       ;
 
 array             : '[' ( expr ( ',' expr )* )? ']';
+arrayAdd          : array '.add(' expr ')';
+arrayPop          : array '.pop(' expr ')';
 printStat         : 'print' '(' expr ')';
 varDecl           : dataType ID  ('=' expr | arrayInit | args)?;
 dataType          : baseType ('[' ']')? ;
@@ -40,7 +42,9 @@ dimensionList     : INT (',' INT)* ; // A list of integers representing the size
 minSize           : INT ; // Minimum size for partitioning
 expr              : expr '[' expr ']'     //Accessing an array element
                   | expr '[' expr ']' '=' expr //Assinging to an array element
+                  // Shouldn't these be outside of expr otherwise they can be called on ints etc?
                   | expr '.add(' expr ')'   //Method to add an element to a dynamically sized array
+                  | expr '.pop(' INT ')' //Method to remove element from array by index
                   | expr op=('*' | '/') expr
                   | expr op=('+' | '-') expr
                   | expr op=('<' | '<=' | '>' | '>=' | '==' | '!=') expr
@@ -54,6 +58,7 @@ expr              : expr '[' expr ']'     //Accessing an array element
                   | randomInt
                   | randomChoice
                   | enumValue
+                  | array
                   ;
 
 // Lexer Rules

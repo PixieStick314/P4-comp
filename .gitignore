@@ -8,7 +8,8 @@ Thumbs.db
 .egg-info
 
 # ANTLR generated files
-src/grammar_files/generated
+src/grammar_files/generated/
+src/RogueLang.egg-info/
 
 # Python virtual environments
 venv/

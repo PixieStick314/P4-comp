@@ -21,10 +21,13 @@ class RogueVisitor(RogueLangVisitor):
     def visitVarDecl(self, ctx):
         # Handling variable declaration
         name = ctx.ID().getText()
+        # Remove this once I get other array thing working with pop
         if ctx.arrayInit() :
             value = self.visitArrayInit(ctx.arrayInit())
         elif ctx.expr(): 
             value = self.visit(ctx.expr())  # Evaluate the expression on the right-hand side
+        elif ctx.array() :
+            value = self.visitArray(ctx.array())
         else:
             value = None
         self.variables[name] = value
@@ -101,6 +104,9 @@ class RogueVisitor(RogueLangVisitor):
         
 
     def visitArrayInit(self,ctx):
+        return[self.visit(expr) for expr in ctx.expr()]
+
+    def visitArray(self, ctx):
         return[self.visit(expr) for expr in ctx.expr()]
 
     def execute_bsp(self, dimensions, min_size):
