@@ -1,3 +1,4 @@
+from tokenize import Double
 from grammar_files.generated.RogueLangParser import RogueLangParser
 from grammar_files.generated.RogueLangVisitor import RogueLangVisitor
 
@@ -114,12 +115,8 @@ class RogueVisitor(RogueLangVisitor):
 
     def visitExpr(self, ctx):
         
-        #base case for integer literals
-        if ctx.INT():
-            return int(ctx.INT().getText())
-
         # Part of visitExpr method for handling ID tokens
-        elif ctx.ID():
+        if ctx.ID():
             var_name = ctx.ID().getText()
             if var_name in self.variables:
                 return self.variables[var_name]
@@ -136,8 +133,8 @@ class RogueVisitor(RogueLangVisitor):
             return True
         elif ctx.FALSE() or ctx.getText() == 'false':
             return False
-        elif ctx.DOUBLE():
-            return float(ctx.DOUBLE().getText())
+        elif ctx.NUMBER():
+            return float(ctx.NUMBER().getText())
         
         #base case for array element literals
         elif ctx.getChildCount() == 3 and ctx.getChild(1).getText() == '[':

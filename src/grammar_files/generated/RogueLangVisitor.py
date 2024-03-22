@@ -89,8 +89,8 @@ class RogueLangVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by RogueLangParser#randomInt.
-    def visitRandomInt(self, ctx:RogueLangParser.RandomIntContext):
+    # Visit a parse tree produced by RogueLangParser#randomNumber.
+    def visitRandomNumber(self, ctx:RogueLangParser.RandomNumberContext):
         return self.visitChildren(ctx)
 
 

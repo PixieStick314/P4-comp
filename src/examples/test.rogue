@@ -4,19 +4,20 @@ print("Hello World!")
 print(" ")
 
 print("varDecl:")
-int x = 1
+number x = 1
 print(x)
 
 print(" ")
 
 print("ifStat:")
-int y = 2
+number y = 1.5
+print(y)
 
  if(y > x) {
     print("GREATER THAN IS WORKING")
  }
-int a = 5
-int b = 5
+number a = 5
+number b = 5
 
  if(a >= b) {
     print("GREATER THAN OR EQUAL IS WORKING")
@@ -37,4 +38,5 @@ if(x <= y) {
  if(x != y) {
     print("NOT EQUAL IS WORKING")
  }
+
 
