@@ -1,0 +1,23 @@
+print("printStat:")
+print("Hello World!")
+
+print(" ")
+
+print("varDecl:")
+int x = 1
+print(x)
+
+print(" ")
+
+print("ifStat:")
+int y = 2
+
+if(y > x) {
+print(x)
+} else if (y < x) {
+print(y)
+} else {
+print("no")
+}
+
+

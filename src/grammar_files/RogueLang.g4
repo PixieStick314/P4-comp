@@ -61,6 +61,7 @@ MINUS             : '-' ;
 MULT              : '*' ;
 DIV               : '/' ;
 MOD               : '%' ;
+GREATER_THAN      : '>' ;
 TRUE              : 'true' ;
 FALSE             : 'false' ;
 INT               : NUMBER+ ;

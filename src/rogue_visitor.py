@@ -140,18 +140,6 @@ class RogueVisitor(RogueLangVisitor):
         elif ctx.DOUBLE():
             return float(ctx.DOUBLE().getText())
         
-        #base case for date literals
-        elif ctx.DATE():
-            return ctx.DATE().getText()
-        
-        #base case for time literals
-        elif ctx.TIME():
-            return ctx.TIME().getText()
-        
-        #the remix
-        elif ctx.DATETIME():
-            return ctx.DATETIME().getText()
-        
         #base case for array element literals
         elif ctx.getChildCount() == 3 and ctx.getChild(1).getText() == '[':
             arrayName = self.visit(ctx.getChild(0))
