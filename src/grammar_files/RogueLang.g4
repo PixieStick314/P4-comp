@@ -15,9 +15,9 @@ stat:   printStat
       ;
 
 printStat         : 'print' openParenth expr closedParenth;
-varDecl           : dataType ID  ('=' expr | arrayInit | args)?;
+varDecl           : ID  ('=' expr | arrayInit | args)?;
 dataType          : baseType (openBrack closedBrack )? ;
-baseType          : 'string' |'true' | 'false' | 'bool' | 'number' | ID | 'date' | 'time' | 'dateTime' ; 
+baseType          : 'string' |'true' | 'false' | 'bool' | 'number' | ID; 
 ifStat            : 'if' openParenth expr closedParenth openCurlBrack stat* closedCurlBrack ('else' openCurlBrack stat* closedCurlBrack)?;
 forLoop           : 'for' varDecl 'in' expr openCurlBrack stat* closedCurlBrack;
 whileLoop         : 'while' openParenth expr closedParenth openCurlBrack stat* closedCurlBrack;
@@ -72,8 +72,8 @@ GT                : '>' ;
 GTE               : '>=';
 LT                : '<' ;
 LTE               : '<=';
-EQ                 : '==';
-NEQ                : '!=';
+EQ                : '==';
+NEQ               : '!=';
 MOD               : '%' ;
 TRUE              : 'true' ;
 FALSE             : 'false' ;

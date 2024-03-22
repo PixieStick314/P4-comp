@@ -1,23 +1,23 @@
+print("---------------------------------------------------------------------------------------------")
 print("printStat:")
-print("Hello World!")
-
-print(" ")
-
-print("varDecl:")
-number x = 1
+x = "Hello World"
 print(x)
 
-print(" ")
+print("---------------------------------------------------------------------------------------------")
+print("varDecl:")
+x = 1
+print(x)
 
+print("---------------------------------------------------------------------------------------------")
 print("ifStat:")
-number y = 1.5
-print(y)
+y = 1.5
+a = 5
+b = 5
 
  if(y > x) {
     print("GREATER THAN IS WORKING")
  }
-number a = 5
-number b = 5
+
 
  if(a >= b) {
     print("GREATER THAN OR EQUAL IS WORKING")
@@ -39,4 +39,6 @@ if(x <= y) {
     print("NOT EQUAL IS WORKING")
  }
 
+print("---------------------------------------------------------------------------------------------")
+print("Arithmetic:")
 
