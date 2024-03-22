@@ -28,6 +28,17 @@ Steps:
         python .\tests\test_executor.py to run the whole shebang at once. For now, doesn't work.
     6:  That's fucking it!
 
+# How to run the bash script
+`./antlr4_run.sh`
+
+# How to install packages and run tests
+## Steps: 
+1. `pip3 install -r requirements.txt`
+2. `pip3 -e .`
+3. > To run tests
+    `pytest .`
+
+
 TODO:
     Figure out why the fuck test_executor.py isn't fucking working!
     executor.py:
