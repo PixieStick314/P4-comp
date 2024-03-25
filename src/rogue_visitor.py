@@ -34,11 +34,14 @@ class RogueVisitor(RogueLangVisitor):
         pass
  
     def visitIfStat(self, ctx):
-        condition = self.visit(ctx.expr())
-        
-        if condition :
-            self.visit(ctx.stat())
-
+        conditions = ctx.expr()
+        for condition in conditions:
+            if self.visit(condition):
+                stats = ctx.block()
+                for stat in stats:
+                    self.visit(stat)
+                break
+            
     def visitForLoop(self, ctx):
         self.visit(ctx.varDecl())
         while self.visit(ctx.expr(0)):
@@ -61,7 +64,9 @@ class RogueVisitor(RogueLangVisitor):
 
     def visitWhileLoop(self, ctx):
         while(self.visit(ctx.expr())):
-            self.visit(ctx.stat())
+            stats = ctx.stat()
+            for stat in stats:
+                self.visit(stat)
         
     def visitFunctionDecl(self, ctx):
         name = ctx.ID().getText()
@@ -88,6 +93,7 @@ class RogueVisitor(RogueLangVisitor):
             # Map arguments to parameters
             for param_name, arg_value in zip(params, args):
                 self.variables[param_name] = arg_value
+                
             
             # Execute the function body
             result = self.visit(body)

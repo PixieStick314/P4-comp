@@ -94,7 +94,7 @@ print("Should be true:")
 print(x != y)
 
 print("<--------------------------------------------------------------------------------------------->")
-print("Arithmetic:")
+print("Logic")
 x = true
 y = false
 
@@ -106,37 +106,25 @@ print("(or)Should return true:")
 print(x or y)
 
 print("<--------------------------------------------------------------------------------------------->")
-x = true
-
-print("Should return i am true:")
-if(x) {
-    print("I am true")
-    print("I am true man")
-}
-else {
-    print("Nothing")
-}
-
-print("Should return i am true:")
-if(not x) {
-    print("Nothing")
-}
-else {
-    print("I am true")
-}
-
-print("Should return i am true")
-if(not x) {
-    print("Nothing")
-}
-else if(x) {
-    print("I am true")
-}
-
+print("Conditional statements")
 
 print("<--------------------------------------------------------------------------------------------->")
+print("Loops")
+i = 10
+while(i >= 5) {
+    print(i)
+    i = i - 1
+}
 
 print("<--------------------------------------------------------------------------------------------->")
+def myFunction(x, y) {
+    a = 2
+    print(a)
+    x = x + y
+    print(x)
+}
+
+myFunction(1, 1)
 
 print("<--------------------------------------------------------------------------------------------->")
 

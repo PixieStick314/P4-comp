@@ -18,7 +18,8 @@ printStat         : 'print' openParenth expr closedParenth;
 varDecl           : ID  ('=' expr | arrayInit | args)?;
 dataType          : baseType (openBrack closedBrack )? ;
 baseType          : 'string' |'true' | 'false' | 'bool' | 'number' | ID; 
-ifStat            : 'if' openParenth expr closedParenth openCurlBrack stat* closedCurlBrack (ELIF openParenth expr closedParenth openCurlBrack stat* closedBrack)* (ELSE openCurlBrack stat* closedCurlBrack)?;
+ifStat            : IF openParenth expr closedParenth openCurlBrack block closedCurlBrack (ELIF openParenth expr closedParenth openCurlBrack block closedBrack)* (ELSE openCurlBrack block closedCurlBrack)?;
+block             : stat* ;
 forLoop           : 'for' varDecl 'in' expr openCurlBrack stat* closedCurlBrack;
 whileLoop         : 'while' openParenth expr closedParenth openCurlBrack stat* closedCurlBrack;
 functionDecl      : 'def' ID openParenth params? closedParenth openCurlBrack stat* closedCurlBrack;
@@ -26,7 +27,7 @@ functionCall      : ID openParenth args? closedParenth;
 arrayInit         : openCurlBrack expr (comma expr)* closedCurlBrack; //initialization with value
 bsp               : 'BSP' bspDimension bspParameters ;
 params            : param (comma param)* ;
-param             : dataType ID ;
+param             : ID ;
 args              : expr (comma expr)* ;
 randomNumber      : 'randomNumber' openParenth NUMBER comma NUMBER closedParenth ;
 randomChoice      : 'randomChoice' openParenth expr (comma expr)+ closedParenth ;
@@ -66,6 +67,7 @@ closedCurlBrack  : '}' ;
 comma            : ',' ;
 
 // keywords
+IF               : 'if';
 ELIF             : 'elif';
 ELSE             : 'else';              
 
