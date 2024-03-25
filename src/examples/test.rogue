@@ -111,6 +111,7 @@ x = true
 print("Should return i am true:")
 if(x) {
     print("I am true")
+    print("I am true man")
 }
 else {
     print("Nothing")

@@ -35,10 +35,9 @@ class RogueVisitor(RogueLangVisitor):
  
     def visitIfStat(self, ctx):
         condition = self.visit(ctx.expr())
-        if condition:
-            self.visit(ctx.stat(0))
-        elif ctx.stat(1):
-            self.visit(ctx.stat(1))
+        
+        if condition :
+            self.visit(ctx.stat())
 
     def visitForLoop(self, ctx):
         self.visit(ctx.varDecl())

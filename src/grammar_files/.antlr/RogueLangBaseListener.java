@@ -1,4 +1,4 @@
-// Generated from c:/Users/Lenovo/Documents/GitHub/P4-comp/src/grammar_files/RogueLang.g4 by ANTLR 4.13.1
+// Generated from c:/Users/nedim/Documents/GitHub/P4-comp/src/grammar_files/RogueLang.g4 by ANTLR 4.13.1
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
@@ -95,18 +95,6 @@ public class RogueLangBaseListener implements RogueLangListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitIfStat(RogueLangParser.IfStatContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterElifStat(RogueLangParser.ElifStatContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitElifStat(RogueLangParser.ElifStatContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

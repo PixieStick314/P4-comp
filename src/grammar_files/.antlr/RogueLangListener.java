@@ -1,4 +1,4 @@
-// Generated from c:/Users/Lenovo/Documents/GitHub/P4-comp/src/grammar_files/RogueLang.g4 by ANTLR 4.13.1
+// Generated from c:/Users/nedim/Documents/GitHub/P4-comp/src/grammar_files/RogueLang.g4 by ANTLR 4.13.1
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -76,16 +76,6 @@ public interface RogueLangListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitIfStat(RogueLangParser.IfStatContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link RogueLangParser#elifStat}.
-	 * @param ctx the parse tree
-	 */
-	void enterElifStat(RogueLangParser.ElifStatContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link RogueLangParser#elifStat}.
-	 * @param ctx the parse tree
-	 */
-	void exitElifStat(RogueLangParser.ElifStatContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link RogueLangParser#forLoop}.
 	 * @param ctx the parse tree
