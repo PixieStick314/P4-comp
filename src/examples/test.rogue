@@ -116,13 +116,22 @@ else {
     print("Nothing")
 }
 
-print("Should return Nothing:")
+print("Should return i am true:")
 if(not x) {
-    print("I am true")
-}
-else {
     print("Nothing")
 }
+else {
+    print("I am true")
+}
+
+print("Should return i am true")
+if(not x) {
+    print("Nothing")
+}
+else if(x) {
+    print("I am true")
+}
+
 
 print("<--------------------------------------------------------------------------------------------->")
 

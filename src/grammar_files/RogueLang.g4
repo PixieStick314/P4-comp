@@ -18,8 +18,7 @@ printStat         : 'print' openParenth expr closedParenth;
 varDecl           : ID  ('=' expr | arrayInit | args)?;
 dataType          : baseType (openBrack closedBrack )? ;
 baseType          : 'string' |'true' | 'false' | 'bool' | 'number' | ID; 
-ifStat            : 'if' openParenth expr closedParenth openCurlBrack stat* closedCurlBrack (elifStat)* ('else' openCurlBrack stat* closedCurlBrack)?;
-elifStat          : 'elif' openParenth expr closedParenth openCurlBrack stat* closedCurlBrack;
+ifStat            : 'if' openParenth expr closedParenth openCurlBrack stat* closedCurlBrack (ELIF openParenth expr closedParenth openCurlBrack stat* closedBrack)* (ELSE openCurlBrack stat* closedCurlBrack)?;
 forLoop           : 'for' varDecl 'in' expr openCurlBrack stat* closedCurlBrack;
 whileLoop         : 'while' openParenth expr closedParenth openCurlBrack stat* closedCurlBrack;
 functionDecl      : 'def' ID openParenth params? closedParenth openCurlBrack stat* closedCurlBrack;
@@ -64,7 +63,11 @@ openBrack        : '[' ;
 closedBrack      : ']' ;
 openCurlBrack    : '{' ;
 closedCurlBrack  : '}' ;
-comma            : ',' ;              
+comma            : ',' ;
+
+// keywords
+ELIF             : 'elif';
+ELSE             : 'else';              
 
 // Lexer Rules
 PLUS              : '+' ;
