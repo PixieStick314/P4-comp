@@ -13,13 +13,18 @@ stat:   printStat
       | enumDecl
       | expr
       ;
+      
 
 printStat         : 'print' openParenth expr closedParenth;
 varDecl           : ID  ('=' expr | arrayInit | args)?;
 dataType          : baseType (openBrack closedBrack )? ;
 baseType          : 'string' |'true' | 'false' | 'bool' | 'number' | ID; 
-ifStat            : IF openParenth expr closedParenth openCurlBrack block closedCurlBrack (ELIF openParenth expr closedParenth openCurlBrack block closedBrack)* (ELSE openCurlBrack block closedCurlBrack)?;
-block             : stat* ;
+ifStat            : IF openParenth ifExpr closedParenth openCurlBrack ifBlock closedCurlBrack (ELIF openParenth elifExpr closedParenth openCurlBrack elifBlock closedBrack)* (ELSE openCurlBrack elseBlock closedCurlBrack)? ';';
+ifExpr            : expr;
+ifBlock           : stat* ;
+elifExpr          : expr;
+elifBlock         : stat* ;
+elseBlock         : stat* ;
 forLoop           : 'for' varDecl 'in' expr openCurlBrack stat* closedCurlBrack;
 whileLoop         : 'while' openParenth expr closedParenth openCurlBrack stat* closedCurlBrack;
 functionDecl      : 'def' ID openParenth params? closedParenth openCurlBrack stat* closedCurlBrack;

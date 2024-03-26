@@ -107,6 +107,48 @@ print(x or y)
 
 print("<--------------------------------------------------------------------------------------------->")
 print("Conditional statements")
+x = true
+y = false
+
+if(x) {
+    print("I am true") 
+    print("I am an if statement")
+    print("")
+} 
+
+if(y) {
+    print("I am false") 
+} else {
+    print("I am true")
+    print("I am an else statement")
+    print("")
+}
+
+if(y) {
+    print("I am false") 
+} else if(x) {
+    print("I am true") 
+    print("I am an if else statement")
+    print("")
+} else {
+    print("I am false(2)")
+}
+
+if(y) {
+    print("I am false") 
+} else if(y) {
+    print("I am false(2)")
+} else if(y) {
+    print("I am false(3)")
+} else if(x) {
+    print("I am true") 
+    print("I am the 3. if else statement")
+    print("") 
+} else {
+    print("I am false(4)")
+}
+
+
 
 print("<--------------------------------------------------------------------------------------------->")
 print("Loops")
@@ -123,8 +165,6 @@ def myFunction(x, y) {
     x = x + y
     print(x)
 }
-
-myFunction(1, 1)
 
 print("<--------------------------------------------------------------------------------------------->")
 

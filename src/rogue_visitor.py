@@ -34,14 +34,26 @@ class RogueVisitor(RogueLangVisitor):
         pass
  
     def visitIfStat(self, ctx):
-        conditions = ctx.expr()
-        for condition in conditions:
-            if self.visit(condition):
-                stats = ctx.block()
-                for stat in stats:
+         # Get the if expression
+        if_expr = ctx.ifExpr()
+        # Evaluate the if condition
+        if_condition = self.visit(if_expr)
+  
+        # If the if condition is true, visit and execute each statement in the if block
+        if if_condition:
+            if_block = ctx.ifBlock()
+            for stat in if_block.stat():
+                self.visit(stat)
+        elif ctx.ELIF():
+            print("HI")
+        
+        else :
+            if ctx.ELSE():
+                else_block = ctx.elseBlock()
+                for stat in else_block.stat():
                     self.visit(stat)
-                break
-            
+
+
     def visitForLoop(self, ctx):
         self.visit(ctx.varDecl())
         while self.visit(ctx.expr(0)):
