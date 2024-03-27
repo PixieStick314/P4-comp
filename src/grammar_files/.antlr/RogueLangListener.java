@@ -77,6 +77,56 @@ public interface RogueLangListener extends ParseTreeListener {
 	 */
 	void exitIfStat(RogueLangParser.IfStatContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link RogueLangParser#ifExpr}.
+	 * @param ctx the parse tree
+	 */
+	void enterIfExpr(RogueLangParser.IfExprContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RogueLangParser#ifExpr}.
+	 * @param ctx the parse tree
+	 */
+	void exitIfExpr(RogueLangParser.IfExprContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RogueLangParser#ifBlock}.
+	 * @param ctx the parse tree
+	 */
+	void enterIfBlock(RogueLangParser.IfBlockContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RogueLangParser#ifBlock}.
+	 * @param ctx the parse tree
+	 */
+	void exitIfBlock(RogueLangParser.IfBlockContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RogueLangParser#elifExpr}.
+	 * @param ctx the parse tree
+	 */
+	void enterElifExpr(RogueLangParser.ElifExprContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RogueLangParser#elifExpr}.
+	 * @param ctx the parse tree
+	 */
+	void exitElifExpr(RogueLangParser.ElifExprContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RogueLangParser#elifBlock}.
+	 * @param ctx the parse tree
+	 */
+	void enterElifBlock(RogueLangParser.ElifBlockContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RogueLangParser#elifBlock}.
+	 * @param ctx the parse tree
+	 */
+	void exitElifBlock(RogueLangParser.ElifBlockContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RogueLangParser#elseBlock}.
+	 * @param ctx the parse tree
+	 */
+	void enterElseBlock(RogueLangParser.ElseBlockContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RogueLangParser#elseBlock}.
+	 * @param ctx the parse tree
+	 */
+	void exitElseBlock(RogueLangParser.ElseBlockContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link RogueLangParser#forLoop}.
 	 * @param ctx the parse tree
 	 */

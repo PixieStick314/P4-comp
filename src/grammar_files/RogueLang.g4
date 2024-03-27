@@ -28,7 +28,7 @@ elseBlock         : stat* ;
 forLoop           : 'for' varDecl 'in' expr openCurlBrack stat* closedCurlBrack;
 whileLoop         : 'while' openParenth expr closedParenth openCurlBrack stat* closedCurlBrack;
 functionDecl      : 'def' ID openParenth params? closedParenth openCurlBrack stat* closedCurlBrack;
-functionCall      : ID openParenth args? closedParenth;
+functionCall      : ID openParenth args? RETURN? closedParenth;
 arrayInit         : openCurlBrack expr (comma expr)* closedCurlBrack; //initialization with value
 bsp               : 'BSP' bspDimension bspParameters ;
 params            : param (comma param)* ;
@@ -74,7 +74,8 @@ comma            : ',' ;
 // keywords
 IF               : 'if';
 ELIF             : 'elif';
-ELSE             : 'else';              
+ELSE             : 'else';         
+RETURN           : 'return';     
 
 // Lexer Rules
 PLUS              : '+' ;

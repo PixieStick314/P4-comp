@@ -106,9 +106,12 @@ class RogueVisitor(RogueLangVisitor):
             for param_name, arg_value in zip(params, args):
                 self.variables[param_name] = arg_value
                 
-            
             # Execute the function body
-            result = self.visit(body)
+            result = None
+            for statement in body:
+                if self.visit(statement) == ctx.RETURN():
+                    print(ctx.RETURN)
+                result = self.visit(statement)
             
             # Restore the previous variables state
             self.variables = variables_backup
