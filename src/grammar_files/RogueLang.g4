@@ -19,7 +19,7 @@ printStat         : 'print' openParenth expr closedParenth;
 varDecl           : ID  ('=' expr | arrayInit | args)?;
 dataType          : baseType (openBrack closedBrack )? ;
 baseType          : 'string' |'true' | 'false' | 'bool' | 'number' | ID; 
-ifStat            : IF openParenth ifExpr closedParenth openCurlBrack ifBlock closedCurlBrack (ELIF openParenth elifExpr closedParenth openCurlBrack elifBlock closedBrack)* (ELSE openCurlBrack elseBlock closedCurlBrack)? ';';
+ifStat            : IF openParenth ifExpr closedParenth openCurlBrack ifBlock closedCurlBrack (ELIF openParenth elifExpr closedParenth openCurlBrack elifBlock closedBrack)* (ELSE openCurlBrack elseBlock closedCurlBrack)?;
 ifExpr            : expr;
 ifBlock           : stat* ;
 elifExpr          : expr;

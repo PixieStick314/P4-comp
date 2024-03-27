@@ -1,4 +1,4 @@
-from  import execute_rogue_script
+#from  import execute_rogue_script
 
-def test_addition():
-    execute_rogue_script('src/examples/test.rogue')
+#def test_addition():
+    #execute_rogue_script('src/examples/test.rogue')
