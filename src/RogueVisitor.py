@@ -1,3 +1,4 @@
+#   RogueVisitor.py
 from tokenize import Double
 from grammar_files.generated.RogueLangParser import RogueLangParser
 from grammar_files.generated.RogueLangVisitor import RogueLangVisitor
@@ -5,7 +6,7 @@ from grammar_files.generated.RogueLangVisitor import RogueLangVisitor
 from modules.Algorithms.bsp_algorithm import bsp_partition
 
 class RogueVisitor(RogueLangVisitor):
-    def __init__(self, strategy, LanguageStrategy):
+    def __init__(self, strategy):
         super().__init__()
         self.strategy = strategy
         self.output_buffer = "" # for storing the shit to print
@@ -34,24 +35,14 @@ class RogueVisitor(RogueLangVisitor):
         pass
  
     def visitIfStat(self, ctx):
-         # Get the if expression
-        if_expr = ctx.ifExpr()
-        # Evaluate the if condition
-        if_condition = self.visit(if_expr)
-  
-        # If the if condition is true, visit and execute each statement in the if block
-        if if_condition:
-            if_block = ctx.ifBlock()
-            for stat in if_block.stat():
-                self.visit(stat)
-        elif ctx.ELIF():
-            print("HI")
+        if_expr_code = self.visit(ctx.ifExpr())
+        if_body_code = "\n".join([self.visit(stat) for stat in ctx.ifBlock().stat()])  # Process if body
+        else_body_code = "\n".join([self.visit(stat) for stat in ctx.elseBlock().stat()]) if ctx.ELSE() else None
+
+        # Using the strategy to generate if statement code
+        if_code = self.strategy.if_statement(if_expr_code, if_body_code, else_body=else_body_code)
         
-        else :
-            if ctx.ELSE():
-                else_block = ctx.elseBlock()
-                for stat in else_block.stat():
-                    self.visit(stat)
+        self.output_buffer += if_code
 
 
     def visitForLoop(self, ctx):
