@@ -2,33 +2,33 @@ from tokenize import Double
 from grammar_files.generated.RogueLangParser import RogueLangParser
 from grammar_files.generated.RogueLangVisitor import RogueLangVisitor
 
-from modules.bsp_algorithm import bsp_partition
+from modules.Algorithms.bsp_algorithm import bsp_partition
 
 class RogueVisitor(RogueLangVisitor):
-    def __init__(self):
+    def __init__(self, strategy, LanguageStrategy):
         super().__init__()
+        self.strategy = strategy
+        self.output_buffer = "" # for storing the shit to print
         self.variables = {}  # For storing variables
         self.functions = {}  # For storing functions
 
     def visitProg(self, ctx):
-        return self.visitChildren(ctx)
+        result = self.visitChildren(ctx)
+        return result
 
-    # Override methods from RogueLangVisitor as needed
     def visitPrintStat(self, ctx):
-        # Handling a print statement
-        text = self.visit(ctx.expr())
-        print(text)
+        expr_code = self.visit(ctx.expr())
+        self.output_buffer += self.strategy.function_call("print", [expr_code])
 
     def visitVarDecl(self, ctx):
-        # Handling variable declaration
         name = ctx.ID().getText()
-        if ctx.arrayInit() :
+        value = 'None'
+        if ctx.arrayInit():
             value = self.visitArrayInit(ctx.arrayInit())
-        elif ctx.expr(): 
-            value = self.visit(ctx.expr())  # Evaluate the expression on the right-hand side
-        else:
-            value = None
-        self.variables[name] = value
+        elif ctx.expr():
+            value = self.visit(ctx.expr())
+        var_decl_code = self.strategy.variable_declaration(name, value)
+        self.output_buffer += var_decl_code
     
     def visitDataType(self, ctx):
         pass
@@ -79,15 +79,15 @@ class RogueVisitor(RogueLangVisitor):
             stats = ctx.stat()
             for stat in stats:
                 self.visit(stat)
-        
+
     def visitFunctionDecl(self, ctx):
         name = ctx.ID().getText()
-        # Collect parameter names
         params = [param.ID().getText() for param in ctx.params().param()]
-        # Store the function with its name, parameters, and body for later use
-        self.functions[name] = {"params": params, "body": ctx.stat()}
+        body_code = self.visit(ctx.body())
+        func_decl_code = self.strategy.function_definition(name, params, body_code)
+        self.output_buffer += func_decl_code + "\n"
 
-    
+
     def visitFunctionCall(self, ctx):
         name = ctx.ID().getText()
         if name in self.functions:

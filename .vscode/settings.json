@@ -1,5 +1,0 @@
-{
-    "python.analysis.extraPaths": [
-        "./grammar_files/generated"
-    ]
-}
