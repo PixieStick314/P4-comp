@@ -162,7 +162,7 @@ class RogueLangParser ( Parser ):
                      "']'", "'{'", "'}'", "','", "'if'", "'elif'", "'else'", 
                      "'return'", "'+'", "'-'", "'*'", "'/'", "'>'", "'>='", 
                      "'<'", "'<='", "'=='", "'!='", "'%'", "'and'", "'or'", 
-                     "'not'", "'true'", "'false'" ]
+                     "'not'", "'True'", "'False'" ]
 
     symbolicNames = [ "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
                       "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
