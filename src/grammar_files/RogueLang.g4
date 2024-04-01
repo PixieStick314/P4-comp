@@ -18,7 +18,7 @@ stat:   printStat
 printStat         : 'print' openParenth expr closedParenth;
 varDecl           : ID  ('=' expr | arrayInit | args)?;
 dataType          : baseType (openBrack closedBrack )? ;
-baseType          : 'string' |'true' | 'false' | 'bool' | 'number' | ID; 
+baseType          : 'string' |'True' | 'False' | 'bool' | 'number' | ID; 
 ifStat            : IF openParenth ifExpr closedParenth openCurlBrack ifBlock closedCurlBrack (ELIF openParenth elifExpr closedParenth openCurlBrack elifBlock closedBrack)* (ELSE openCurlBrack elseBlock closedCurlBrack)?;
 ifExpr            : expr;
 ifBlock           : stat* ;
@@ -92,8 +92,8 @@ MOD               : '%' ;
 AND               : 'and';
 OR                : 'or';
 NOT               : 'not';
-TRUE              : 'true' ;
-FALSE             : 'false' ;
+TRUE              : 'True' ;
+FALSE             : 'False' ;
 COMMENT_SINGLELINE: '//' ~[\r\n]* -> skip ;
 NUMBER            : '-'? NUMB + | '-'? NUMB+ '.' NUMB+ ;
 STRING            : '"' (ESC | ~["\\])* '"' ; // Use fragment for escaped characters
