@@ -1,3 +1,7 @@
+#   Using the Language
+
+
+
 #   Extending the language
 
 This guide outlines the process of adding new functionalities to the programming language: RogueLang, including extending the grammar, updating the parser and visitor classes, and enhancing the language strategies to support code generation in multiple target languages.
