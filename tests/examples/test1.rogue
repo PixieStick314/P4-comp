@@ -33,6 +33,21 @@ not x
 x and y
 x or y
 
-if(true) {
+if(x < y) {
     print("hello")
+    print("hello")
+    x + y
+    x < y
+} 
+elif(x > y) {
+    print("hello")
+    print("hello")
+    x + y
+    x < y
+} 
+else {
+    print("hello")
+    print("hello")
+    x + y
+    x < y
 }

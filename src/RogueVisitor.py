@@ -32,14 +32,24 @@ class RogueVisitor(RogueLangVisitor):
         pass
  
     def visitIfStat(self, ctx):
-        if_expr_code = self.visit(ctx.ifExpr())
-        if_body_code = "\n".join([self.visit(stat) for stat in ctx.ifBlock().stat()])  # Process if body
-        else_body_code = "\n".join([self.visit(stat) for stat in ctx.elseBlock().stat()]) if ctx.ELSE() else None
+        if_expr_code = "if" + "(" + ctx.ifExpr().getText() + ")" + ":" + "\n"
+        if_block = ctx.ifBlock()
+        for stat in if_block.stat():
+            if_expr_code += "   " + stat.getText() + "\n"
 
-        # Using the strategy to generate if statement code
-        if_code = self.strategy.if_statement(if_expr_code, if_body_code, else_body=else_body_code)
+        if ctx.ELIF():
+            if_expr_code += "elif" + "(" + ctx.ifExpr().getText() + ")" + ":" + "\n"
+            if_block = ctx.ifBlock()
+            for stat in if_block.stat():
+                if_expr_code += "   " + stat.getText() + "\n"
         
-        self.output_buffer += if_code
+        if ctx.ELSE():
+            if_expr_code += "else" + ":" + "\n"
+            else_block = ctx.elseBlock()
+            for stat in else_block.stat():
+                if_expr_code += "   " + stat.getText() + "\n"
+        #self.output_buffer += if_expr_code
+        self.output_buffer += if_expr_code 
 
 
     def visitForLoop(self, ctx):
