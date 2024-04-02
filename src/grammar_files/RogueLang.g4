@@ -18,8 +18,14 @@ stat:   printStat
 printStat         : 'print' openParenth expr closedParenth;
 varDecl           : ID  ('=' expr | arrayInit | args)?;
 dataType          : baseType (openBrack closedBrack )? ;
+<<<<<<< Updated upstream
 baseType          : 'string' |'true' | 'false' | 'bool' | 'number' | ID; 
 ifStat            : IF openParenth ifExpr closedParenth openCurlBrack ifBlock closedCurlBrack (ELIF openParenth elifExpr closedParenth openCurlBrack elifBlock closedBrack)* (ELSE openCurlBrack elseBlock closedCurlBrack)?;
+=======
+baseType          : 'string' |'True' | 'False' | 'bool' | 'number' | ID; 
+ifStat            : IF openParenth ifExpr closedParenth openCurlBrack ifBlock closedCurlBrack elifBlockstat* (ELSE openCurlBrack elseBlock closedCurlBrack)?;
+elifBlockstat     : ELIF openParenth elifExpr closedParenth openCurlBrack elifBlock closedCurlBrack ;
+>>>>>>> Stashed changes
 ifExpr            : expr;
 ifBlock           : stat* ;
 elifExpr          : expr;
