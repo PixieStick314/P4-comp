@@ -36,12 +36,15 @@ class RogueVisitor(RogueLangVisitor):
         if_block = ctx.ifBlock()
         for stat in if_block.stat():
             if_expr_code += "   " + stat.getText() + "\n"
+        
+        if ctx.ELIF():
+            for i in range(len(ctx.elifExpr())):
+                elif_expr = ctx.elifExpr(i)
+                elif_block = ctx.elifBlock(i)
+                if_expr_code += "elif" + " " + elif_expr.getText() + ":" + "\n"
+                for stat in elif_block.stat():
+                    if_expr_code += "   " + stat.getText() + "\n"
 
-        if ctx.elifBlockstat():
-            if_expr_code += "elif" + " " + ctx.elifExpr().getText() + ":" + "\n"
-            elif_block = ctx.elifBlock()
-            for stat in elif_block.stat():
-                if_expr_code += "   " + stat.getText() + "\n"
         
         if ctx.ELSE():
             if_expr_code += "else" + ":" + "\n"
@@ -50,7 +53,6 @@ class RogueVisitor(RogueLangVisitor):
                 if_expr_code += "   " + stat.getText() + "\n"
     
         self.output_buffer += if_expr_code 
-
 
     def visitForLoop(self, ctx):
         self.visit(ctx.varDecl())
@@ -71,20 +73,28 @@ class RogueVisitor(RogueLangVisitor):
         else:
             del self.variables[name]
 
-
+    
     def visitWhileLoop(self, ctx):
-        while(self.visit(ctx.expr())):
-            stats = ctx.stat()
-            for stat in stats:
-                self.visit(stat)
+        while_Loop_Code = "while" + " " +ctx.expr().getText() + ":" + "\n"
+
+        for stat in ctx.stat():
+            while_Loop_Code += "   " + stat.getText() + "\n"
+
+        self.output_buffer += while_Loop_Code 
 
     def visitFunctionDecl(self, ctx):
+        function_decl_code = "def" + " " + ctx.ID().getText() + "(" 
+
+        function_decl_code += ctx.params()
+
+        self.output_buffer += function_decl_code
+        """
         name = ctx.ID().getText()
         params = [param.ID().getText() for param in ctx.params().param()]
         body_code = self.visit(ctx.body())
         func_decl_code = self.strategy.function_definition(name, params, body_code)
         self.output_buffer += func_decl_code + "\n"
-
+        """
 
     def visitFunctionCall(self, ctx):
         name = ctx.ID().getText()

@@ -1,4 +1,4 @@
-# Generated from C:/Users/Lenovo/Documents/GitHub/P4-comp/src/grammar_files/RogueLang.g4 by ANTLR 4.13.1
+# Generated from C:/Users/nedim/Documents/GitHub/P4-comp/src/grammar_files/RogueLang.g4 by ANTLR 4.13.1
 from antlr4 import *
 if "." in __name__:
     from .RogueLangParser import RogueLangParser
@@ -41,11 +41,6 @@ class RogueLangVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by RogueLangParser#ifStat.
     def visitIfStat(self, ctx:RogueLangParser.IfStatContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by RogueLangParser#elifBlockstat.
-    def visitElifBlockstat(self, ctx:RogueLangParser.ElifBlockstatContext):
         return self.visitChildren(ctx)
 
 

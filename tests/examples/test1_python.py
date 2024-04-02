@@ -24,18 +24,31 @@ x == y
 not x
 x and y
 x or y
-if(x<y):
+if x<y:
    print("hello")
    print("hello")
    x+y
    x<y
-elif(x<y):
+elif x>y:
    print("hello")
    print("hello")
    x+y
    x<y
+elif x:
+   print("THIS")
+elif y:
+   print("WORKS")
 else:
    print("hello")
    print("hello")
    x+y
    x<y
+while x>y:
+   x=1
+   x=2
+   x=3
+   x=112312
+while x<y:
+   x=1
+   x=54
+   x="YES"

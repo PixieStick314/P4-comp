@@ -39,15 +39,43 @@ if(x < y) {
     x + y
     x < y
 } 
+
 elif(x > y) {
     print("hello")
     print("hello")
     x + y
     x < y
 } 
+elif(x) {
+    print("THIS")
+}
+elif(y) {
+    print("WORKS")
+}
 else {
     print("hello")
     print("hello")
     x + y
     x < y
 }
+
+while(x > y) {
+    x = 1
+    x = 2
+    x = 3
+    x = 112312 
+}
+
+while (x<y) {
+    x=1
+   x=54
+   x="YES"
+}
+
+def function(x, y) {
+    x = 1
+    x = 2
+    x = 3
+    x = "whaat"
+}
+   
