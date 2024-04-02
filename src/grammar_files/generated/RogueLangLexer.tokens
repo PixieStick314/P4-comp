@@ -91,5 +91,5 @@ WS=50
 'and'=41
 'or'=42
 'not'=43
-'true'=44
-'false'=45
+'True'=44
+'False'=45

@@ -1,3 +1,4 @@
+#   BSP-Algorithm
 class Node3D:
     def __init__(self, x, y, z, width, height, depth, parent=None):
         self.x = x

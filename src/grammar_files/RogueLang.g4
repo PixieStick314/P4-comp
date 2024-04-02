@@ -93,8 +93,8 @@ MOD               : '%' ;
 AND               : 'and';
 OR                : 'or';
 NOT               : 'not';
-TRUE              : 'true' ;
-FALSE             : 'false' ;
+TRUE              : 'True' ;
+FALSE             : 'False' ;
 COMMENT_SINGLELINE: '//' ~[\r\n]* -> skip ;
 NUMBER            : '-'? NUMB + | '-'? NUMB+ '.' NUMB+ ;
 STRING            : '"' (ESC | ~["\\])* '"' ; // Use fragment for escaped characters

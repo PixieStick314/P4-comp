@@ -1,34 +1,32 @@
+#   RogueVisitor.py
 from tokenize import Double
 from grammar_files.generated.RogueLangParser import RogueLangParser
 from grammar_files.generated.RogueLangVisitor import RogueLangVisitor
 
-from modules.bsp_algorithm import bsp_partition
+from modules.Algorithms.bsp_algorithm import bsp_partition
 
 class RogueVisitor(RogueLangVisitor):
-    def __init__(self):
+    def __init__(self, strategy):
         super().__init__()
+        self.strategy = strategy
+        self.output_buffer = "" # for storing the shit to print
         self.variables = {}  # For storing variables
         self.functions = {}  # For storing functions
 
     def visitProg(self, ctx):
-        return self.visitChildren(ctx)
+        result = self.visitChildren(ctx)
+        return result
 
-    # Override methods from RogueLangVisitor as needed
     def visitPrintStat(self, ctx):
-        # Handling a print statement
-        text = self.visit(ctx.expr())
-        print(text)
+        expr_code = ctx.expr().getText()
+        self.output_buffer += self.strategy.function_call("print", [expr_code])  
+        
 
     def visitVarDecl(self, ctx):
-        # Handling variable declaration
         name = ctx.ID().getText()
-        if ctx.arrayInit() :
-            value = self.visitArrayInit(ctx.arrayInit())
-        elif ctx.expr(): 
-            value = self.visit(ctx.expr())  # Evaluate the expression on the right-hand side
-        else:
-            value = None
-        self.variables[name] = value
+        value = ctx.expr().getText()
+        var_decl_code = self.strategy.variable_declaration(name, value)
+        self.output_buffer += var_decl_code
     
     def visitDataType(self, ctx):
         pass
@@ -79,15 +77,15 @@ class RogueVisitor(RogueLangVisitor):
             stats = ctx.stat()
             for stat in stats:
                 self.visit(stat)
-        
+
     def visitFunctionDecl(self, ctx):
         name = ctx.ID().getText()
-        # Collect parameter names
         params = [param.ID().getText() for param in ctx.params().param()]
-        # Store the function with its name, parameters, and body for later use
-        self.functions[name] = {"params": params, "body": ctx.stat()}
+        body_code = self.visit(ctx.body())
+        func_decl_code = self.strategy.function_definition(name, params, body_code)
+        self.output_buffer += func_decl_code + "\n"
 
-    
+
     def visitFunctionCall(self, ctx):
         name = ctx.ID().getText()
         if name in self.functions:
@@ -123,14 +121,6 @@ class RogueVisitor(RogueLangVisitor):
 
     def visitArrayInit(self,ctx):
         return[self.visit(expr) for expr in ctx.expr()]
-
-    def execute_bsp(self, dimensions, min_size):
-        # Validate inputs
-        if not dimensions or min_size <= 0:
-            print("Invalid BSP parameters. Please check the dimensions and minimum size.")
-            return
-        
-        bsp_tree = bsp_partition(dimensions, min_size)
         
 
     def visitExpr(self, ctx):
@@ -170,18 +160,19 @@ class RogueVisitor(RogueLangVisitor):
             
         #handling logical operators
         elif ctx.NOT():
-            left = self.visit(ctx.expr(0))
-            result = not left
-            return result
-        elif ctx.AND() or ctx.OR() or ctx.NOT():
+            if ctx.expr(0) is not None:
+                left = ctx.expr(0).getText()
+                self.output_buffer += "not " + left + "\n"
+
+        elif ctx.AND() or ctx.OR():
             if ctx.expr(0) and ctx.expr(1) is not None:
-                left = self.visit(ctx.expr(0))
-                right = self.visit(ctx.expr(1))
+                left = ctx.expr(0).getText()
+                right = ctx.expr(1).getText()
                 if ctx.op is not None:
                     if ctx.op.type == RogueLangParser.AND: 
-                        return left and right
+                        self.output_buffer += left + " and " + right + "\n" 
                     elif ctx.op.type == RogueLangParser.OR:
-                        return left or right
+                        self.output_buffer += left + " or " + right + "\n" 
                     
     
            
@@ -189,21 +180,21 @@ class RogueVisitor(RogueLangVisitor):
         #handling comparison operators
         elif ctx.GT() or ctx.GTE() or ctx.LT() or ctx.LTE() or ctx.EQ() or ctx.NEQ() :
             if ctx.expr(0) and ctx.expr(1) is not None:
-                left = self.visit(ctx.expr(0))
-                right = self.visit(ctx.expr(1))
+                left = ctx.expr(0).getText()
+                right = ctx.expr(1).getText()
                 if ctx.op is not None:
                     if ctx.op.type == RogueLangParser.GT: 
-                        return left > right
+                        self.output_buffer += left + " > " + right + "\n" 
                     elif ctx.op.type == RogueLangParser.GTE:
-                        return left >= right
+                        self.output_buffer += left + " >= " + right + "\n" 
                     elif ctx.op.type == RogueLangParser.LT:
-                        return left < right
+                        self.output_buffer += left + " < " + right + "\n" 
                     elif ctx.op.type == RogueLangParser.LTE:
-                        return left <= right
+                        self.output_buffer += left + " <= " + right + "\n" 
                     elif ctx.op.type == RogueLangParser.EQ:
-                        return left == right
+                        self.output_buffer += left + " == " + right + "\n" 
                     elif ctx.op.type == RogueLangParser.NEQ:
-                        return left != right
+                        self.output_buffer += left + " != " + right + "\n" 
             else:
                 # Handle cases where the expression doesn't lead to a binary operation
                 # This might involve handling unary operations or simply returning the result of a single child expression
@@ -215,20 +206,24 @@ class RogueVisitor(RogueLangVisitor):
         # arithmetic expression handlers:
         else:
             if ctx.expr(0) is not None and ctx.expr(1) is not None:
-                left = self.visit(ctx.expr(0))
-                right = self.visit(ctx.expr(1))
+                left = ctx.expr(0).getText()
+                right = ctx.expr(1).getText()
                 if ctx.op is not None:
-                    if ctx.op.type == RogueLangParser.PLUS: 
-                        return left + right
+                    if ctx.op.type == RogueLangParser.PLUS:  
+                        self.output_buffer += left + " + " + right + "\n" 
+
                     elif ctx.op.type == RogueLangParser.MINUS:
-                        return left - right
+                        self.output_buffer += left + " - " + right + "\n"
+
                     elif ctx.op.type == RogueLangParser.MULT:
-                        return left * right
+                        self.output_buffer += left + " * " + right + "\n"
+
                     elif ctx.op.type == RogueLangParser.MOD:
-                        return left % right
+                        self.output_buffer += left + " % " + right + "\n"
+
                     elif ctx.op.type == RogueLangParser.DIV:
                         if right != 0:
-                            return left / right
+                            self.output_buffer += left + " / " + right + "\n"
                         else:
                             raise Exception("Division by 0")
             else:
