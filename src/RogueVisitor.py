@@ -20,39 +20,56 @@ class RogueVisitor(RogueLangVisitor):
     def visitPrintStat(self, ctx):
         expr_code = ctx.expr().getText()
         self.output_buffer += self.strategy.function_call("print", [expr_code])  
-        
 
     def visitVarDecl(self, ctx):
         name = ctx.ID().getText()
         value = ctx.expr().getText()
-        var_decl_code = self.strategy.variable_declaration(name, value)
-        self.output_buffer += var_decl_code
-    
+        self.output_buffer += self.strategy.variable_declaration(name, value)
+
     def visitDataType(self, ctx):
         pass
  
     def visitIfStat(self, ctx):
-        if_expr_code = "if" + " " + ctx.ifExpr().getText() + ":" + "\n"
+        if_condition = ctx.ifExpr().getText()
+        if_block = ctx.ifBlock()
+        if_body = ""
+        for stat in if_block.stat():
+            if_body += stat.getText() + "\n"
+        self.output_buffer += self.strategy.if_statement(if_condition, if_body)
+
+        for i in range(len(ctx.elifExpr())):
+            elif_block = ""
+            elif_expr = ctx.elifExpr(i).getText()
+            elif_block_stats = ctx.elifBlock(i)
+            for stat in elif_block_stats.stat():
+                elif_block += stat.getText() + "\n"
+            self.output_buffer += self.strategy.elif_statement(elif_expr, elif_block)
+
+
+        '''
+        if_expr_code = "if " + ctx.ifExpr().getText() + ":\n"
         if_block = ctx.ifBlock()
         for stat in if_block.stat():
-            if_expr_code += "   " + stat.getText() + "\n"
-        
+            if_expr_code += "    " + stat.getText() + "\n"
+
         if ctx.ELIF():
             for i in range(len(ctx.elifExpr())):
                 elif_expr = ctx.elifExpr(i)
                 elif_block = ctx.elifBlock(i)
-                if_expr_code += "elif" + " " + elif_expr.getText() + ":" + "\n"
+                if_expr_code += "elif " + elif_expr.getText() + ":\n"
                 for stat in elif_block.stat():
-                    if_expr_code += "   " + stat.getText() + "\n"
+                    if stat.getText() == "if":
+                        self.functions.add(stat)
+                    if_expr_code += "    " + stat.getText() + "\n"
 
-        
         if ctx.ELSE():
-            if_expr_code += "else" + ":" + "\n"
+            if_expr_code += "else:\n"
             else_block = ctx.elseBlock()
             for stat in else_block.stat():
-                if_expr_code += "   " + stat.getText() + "\n"
-    
-        self.output_buffer += if_expr_code 
+                if_expr_code += "    " + stat.getText() + "\n"
+
+            self.output_buffer += if_expr_code
+        '''
 
     def visitForLoop(self, ctx):
         self.visit(ctx.varDecl())
@@ -75,26 +92,20 @@ class RogueVisitor(RogueLangVisitor):
 
     
     def visitWhileLoop(self, ctx):
-        while_Loop_Code = "while" + " " +ctx.expr().getText() + ":" + "\n"
-
+        while_loop_code = "while " + ctx.expr().getText() + ":\n"
         for stat in ctx.stat():
-            while_Loop_Code += "   " + stat.getText() + "\n"
-
-        self.output_buffer += while_Loop_Code 
+            while_loop_code += "    " + stat.getText() + "\n"
+        self.output_buffer += while_loop_code
 
     def visitFunctionDecl(self, ctx):
         function_decl_code = "def" + " " + ctx.ID().getText() + "(" 
 
-        function_decl_code += ctx.params()
+        function_decl_code += ctx.params().getText() + ")" + ":" + "\n"
+        
+        for stat in ctx.stat():
+            function_decl_code += "   " + stat.getText() + "\n" 
 
         self.output_buffer += function_decl_code
-        """
-        name = ctx.ID().getText()
-        params = [param.ID().getText() for param in ctx.params().param()]
-        body_code = self.visit(ctx.body())
-        func_decl_code = self.strategy.function_definition(name, params, body_code)
-        self.output_buffer += func_decl_code + "\n"
-        """
 
     def visitFunctionCall(self, ctx):
         name = ctx.ID().getText()
