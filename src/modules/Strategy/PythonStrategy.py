@@ -3,9 +3,8 @@ from modules.Strategy.LanguageStrategy import LanguageStrategy
 
 class PythonStrategy(LanguageStrategy):
     def function_definition(self, name, params, body):
-        params_str = ", ".join(params)
         body_str = "\n    ".join(body.splitlines())
-        return f"def {name}({params_str}):\n    {body_str}\n"
+        return f"def {name}({params}):\n    {body_str}\n"
 
     def function_call(self, name, args):
         arg_code = ", ".join(args)
@@ -18,6 +17,7 @@ class PythonStrategy(LanguageStrategy):
     def while_loop(self, condition, body):
         body_indent = "\n".join(["    " + line for line in body.splitlines()])
         return f"while {condition}:\n{body_indent}\n"
+    
 
     def if_statement(self, if_condition, if_body):
         if_body_indent = "\n".join(["    " + line for line in if_body.splitlines()])

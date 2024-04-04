@@ -6,6 +6,8 @@ x = "Hello world"
 x = "waddafuk"
 x = "@123@!?=()()=...."
 
+print("hello")
+
 x = True
 
 x = 1
@@ -29,3 +31,10 @@ while(x < y) {
     print("Hello")
     print("hi!!")
 }
+
+def myfunction(x, y) {
+    print("hii")
+    print("How u")
+}
+
+myfunction(1, 2)

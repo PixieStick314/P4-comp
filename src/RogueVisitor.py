@@ -19,7 +19,7 @@ class RogueVisitor(RogueLangVisitor):
 
     def visitPrintStat(self, ctx):
         expr_code = ctx.expr().getText()
-        self.output_buffer += self.strategy.function_call("print", [expr_code])  
+        self.output_buffer += self.strategy.function_call("print", [expr_code])
 
     def visitVarDecl(self, ctx):
         name = ctx.ID().getText()
@@ -30,21 +30,21 @@ class RogueVisitor(RogueLangVisitor):
         pass
  
     def visitIfStat(self, ctx):
-        if_condition = self.visit(ctx.ifExpr())
+        if_condition = self.visit(ctx.expr())
         if_block = ctx.ifBlock()
         if_body = ""
         for stat in if_block.stat():
-            if_body += stat.getText() + "\n"
+            if_body += stat.getText() + "\n"   
         self.output_buffer += self.strategy.if_statement(if_condition, if_body)
 
         if ctx.ELIF():
             for i in range(len(ctx.elifExpr())):
-                elif_block = ""
-                elif_expr = ctx.elifExpr(i).getText()
+                elif_condition = self.visit(ctx.elifExpr(i))
                 elif_block_stats = ctx.elifBlock(i)
+                elif_block = ""
                 for stat in elif_block_stats.stat():
                     elif_block += stat.getText() + "\n"
-                self.output_buffer += self.strategy.elif_statement(elif_expr, elif_block)
+                self.output_buffer += self.strategy.elif_statement(elif_condition, elif_block)
         
         if ctx.ELSE():
             else_block = ctx.elseBlock()
@@ -52,12 +52,34 @@ class RogueVisitor(RogueLangVisitor):
             for stat in else_block.stat():
                 else_body += stat.getText() + "\n"
             self.output_buffer += self.strategy.else_statement(else_body)
+    
+    def visitIfBlock(self, ctx):
+        return self.visit(ctx.stat())
 
-    def visitIfExpr(self, ctx):
+    def visitElifExpr(self, ctx):
         return self.visit(ctx.expr())
     
-    def visitIfExpr(self, ctx):
-        return self.visit(ctx.expr())
+    def visitStat(self, ctx):
+        if ctx.printStat():
+            return self.visit(ctx.printStat())
+        elif ctx.varDecl():
+            return self.visit(ctx.varDecl())
+        elif ctx.ifStat():
+            return self.visit(ctx.ifStat())
+        elif ctx.forLoop():
+            return self.visit(ctx.forLoop())
+        elif ctx.whileLoop():
+            return self.visit(ctx.whileLoop())
+        elif ctx.functionDecl():
+            return self.visit(ctx.functionDecl())
+        elif ctx.functionCall():
+            return self.visit(ctx.functionCall())
+        elif ctx.arrayInit():
+            return self.visit(ctx.arrayInit())
+        elif ctx.enumDecl():
+            return self.visit(ctx.enumDecl())
+        elif ctx.expr():
+            return self.visit(ctx.expr())
 
     def visitForLoop(self, ctx):
         self.visit(ctx.varDecl())
@@ -87,17 +109,19 @@ class RogueVisitor(RogueLangVisitor):
         self.output_buffer += self.strategy.while_loop(while_condition, while_body)
 
     def visitFunctionDecl(self, ctx):
-        function_decl_code = "def" + " " + ctx.ID().getText() + "(" 
-
-        function_decl_code += ctx.params().getText() + ")" + ":" + "\n"
+        func_name = ctx.ID().getText()
+        func_params = ctx.params().getText()
+        function_body = ""
         
         for stat in ctx.stat():
-            function_decl_code += "   " + stat.getText() + "\n" 
+            function_body += stat.getText() + "\n"
 
-        self.output_buffer += function_decl_code
+        self.functions[func_name] = {"params": func_params, "body": ctx.stat()}
+        self.output_buffer += self.strategy.function_definition(func_name, func_params, function_body)
 
     def visitFunctionCall(self, ctx):
         name = ctx.ID().getText()
+
         if name in self.functions:
             # Retrieve function definition
             function = self.functions[name]
@@ -115,16 +139,14 @@ class RogueVisitor(RogueLangVisitor):
                 self.variables[param_name] = arg_value
                 
             # Execute the function body
-            result = None
+            args = ""
             for statement in body:
-                if self.visit(statement) == ctx.RETURN():
-                    print(ctx.RETURN)
-                result = self.visit(statement)
+                args = self.visit(statement)
             
             # Restore the previous variables state
             self.variables = variables_backup
             
-            return result
+            self.output_buffer += self.strategy.function_call(name, args)
         else:
             raise Exception(f"Function '{name}' is not defined.")
         

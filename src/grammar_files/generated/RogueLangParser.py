@@ -65,7 +65,7 @@ def serializedATN():
         0,105,109,3,10,5,0,106,107,3,66,33,0,107,108,3,68,34,0,108,110,1,
         0,0,0,109,106,1,0,0,0,109,110,1,0,0,0,110,9,1,0,0,0,111,112,7,0,
         0,0,112,11,1,0,0,0,113,114,5,26,0,0,114,115,3,62,31,0,115,116,3,
-        14,7,0,116,117,3,64,32,0,117,118,3,70,35,0,118,119,3,16,8,0,119,
+        60,30,0,116,117,3,64,32,0,117,118,3,70,35,0,118,119,3,16,8,0,119,
         130,3,72,36,0,120,121,5,27,0,0,121,122,3,62,31,0,122,123,3,18,9,
         0,123,124,3,64,32,0,124,125,3,70,35,0,125,126,3,20,10,0,126,127,
         3,72,36,0,127,129,1,0,0,0,128,120,1,0,0,0,129,132,1,0,0,0,130,128,
@@ -726,8 +726,8 @@ class RogueLangParser ( Parser ):
                 return self.getTypedRuleContext(RogueLangParser.OpenParenthContext,i)
 
 
-        def ifExpr(self):
-            return self.getTypedRuleContext(RogueLangParser.IfExprContext,0)
+        def expr(self):
+            return self.getTypedRuleContext(RogueLangParser.ExprContext,0)
 
 
         def closedParenth(self, i:int=None):
@@ -806,7 +806,7 @@ class RogueLangParser ( Parser ):
             self.state = 114
             self.openParenth()
             self.state = 115
-            self.ifExpr()
+            self.expr(0)
             self.state = 116
             self.closedParenth()
             self.state = 117
