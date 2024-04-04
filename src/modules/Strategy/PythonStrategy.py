@@ -18,21 +18,24 @@ class PythonStrategy(LanguageStrategy):
     def while_loop(self, condition, body):
         body_indent = "\n".join(["    " + line for line in body.splitlines()])
         return f"while {condition}:\n{body_indent}\n"
-    
-    def if_statement(self, condition, body, else_body=None):
-        if_body_indent = "\n".join(["    " + line for line in body.splitlines()])
-        result = f"if {condition}:\n{if_body_indent}\n"
-        
-        if else_body:
-            else_body_indent = "\n".join(["    " + line for line in else_body.splitlines()])
-            result += f"else:\n{else_body_indent}\n"
+
+    def if_statement(self, if_condition, if_body):
+        if_body_indent = "\n".join(["    " + line for line in if_body.splitlines()])
+        result = f"if {if_condition}:\n{if_body_indent}\n"
         
         return result
     
     def elif_statement(self, elif_condition, elif_body):
         elif_condition_indent = "\n".join([line for line in elif_condition.splitlines()])
         elif_body_indent = "\n".join(["    " + line for line in elif_body.splitlines()])
-        return f"elif {elif_condition_indent}:\n{elif_body_indent}\n" 
+
+        return f"elif {elif_condition_indent}:\n{elif_body_indent}\n"
+
+    def else_statement(self, else_body):
+        else_body_indent = "\n".join(["    " + line for line in else_body.splitlines()])
+        result = f"else:\n{else_body_indent}\n"
+        
+        return result
                        
 
     def variable_declaration(self, name, value=None):

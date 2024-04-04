@@ -30,46 +30,34 @@ class RogueVisitor(RogueLangVisitor):
         pass
  
     def visitIfStat(self, ctx):
-        if_condition = ctx.ifExpr().getText()
+        if_condition = self.visit(ctx.ifExpr())
         if_block = ctx.ifBlock()
         if_body = ""
         for stat in if_block.stat():
             if_body += stat.getText() + "\n"
         self.output_buffer += self.strategy.if_statement(if_condition, if_body)
 
-        for i in range(len(ctx.elifExpr())):
-            elif_block = ""
-            elif_expr = ctx.elifExpr(i).getText()
-            elif_block_stats = ctx.elifBlock(i)
-            for stat in elif_block_stats.stat():
-                elif_block += stat.getText() + "\n"
-            self.output_buffer += self.strategy.elif_statement(elif_expr, elif_block)
-
-
-        '''
-        if_expr_code = "if " + ctx.ifExpr().getText() + ":\n"
-        if_block = ctx.ifBlock()
-        for stat in if_block.stat():
-            if_expr_code += "    " + stat.getText() + "\n"
-
         if ctx.ELIF():
             for i in range(len(ctx.elifExpr())):
-                elif_expr = ctx.elifExpr(i)
-                elif_block = ctx.elifBlock(i)
-                if_expr_code += "elif " + elif_expr.getText() + ":\n"
-                for stat in elif_block.stat():
-                    if stat.getText() == "if":
-                        self.functions.add(stat)
-                    if_expr_code += "    " + stat.getText() + "\n"
-
+                elif_block = ""
+                elif_expr = ctx.elifExpr(i).getText()
+                elif_block_stats = ctx.elifBlock(i)
+                for stat in elif_block_stats.stat():
+                    elif_block += stat.getText() + "\n"
+                self.output_buffer += self.strategy.elif_statement(elif_expr, elif_block)
+        
         if ctx.ELSE():
-            if_expr_code += "else:\n"
             else_block = ctx.elseBlock()
+            else_body = ""
             for stat in else_block.stat():
-                if_expr_code += "    " + stat.getText() + "\n"
+                else_body += stat.getText() + "\n"
+            self.output_buffer += self.strategy.else_statement(else_body)
 
-            self.output_buffer += if_expr_code
-        '''
+    def visitIfExpr(self, ctx):
+        return self.visit(ctx.expr())
+    
+    def visitIfExpr(self, ctx):
+        return self.visit(ctx.expr())
 
     def visitForLoop(self, ctx):
         self.visit(ctx.varDecl())
@@ -92,10 +80,11 @@ class RogueVisitor(RogueLangVisitor):
 
     
     def visitWhileLoop(self, ctx):
-        while_loop_code = "while " + ctx.expr().getText() + ":\n"
+        while_condition = ctx.expr().getText()
+        while_body = ""
         for stat in ctx.stat():
-            while_loop_code += "    " + stat.getText() + "\n"
-        self.output_buffer += while_loop_code
+            while_body += stat.getText() + "\n"
+        self.output_buffer += self.strategy.while_loop(while_condition, while_body)
 
     def visitFunctionDecl(self, ctx):
         function_decl_code = "def" + " " + ctx.ID().getText() + "(" 
@@ -183,17 +172,17 @@ class RogueVisitor(RogueLangVisitor):
         elif ctx.NOT():
             if ctx.expr(0) is not None:
                 left = ctx.expr(0).getText()
-                self.output_buffer += "not " + left + "\n"
-
+                return "not " + left
+            
         elif ctx.AND() or ctx.OR():
             if ctx.expr(0) and ctx.expr(1) is not None:
                 left = ctx.expr(0).getText()
                 right = ctx.expr(1).getText()
                 if ctx.op is not None:
                     if ctx.op.type == RogueLangParser.AND: 
-                        self.output_buffer += left + " and " + right + "\n" 
+                        return left + " and " + right + "\n" 
                     elif ctx.op.type == RogueLangParser.OR:
-                        self.output_buffer += left + " or " + right + "\n" 
+                        return left + " or " + right + "\n" 
                     
     
            
@@ -205,17 +194,17 @@ class RogueVisitor(RogueLangVisitor):
                 right = ctx.expr(1).getText()
                 if ctx.op is not None:
                     if ctx.op.type == RogueLangParser.GT: 
-                        self.output_buffer += left + " > " + right + "\n" 
+                        return left + " > " + right + "\n" 
                     elif ctx.op.type == RogueLangParser.GTE:
-                        self.output_buffer += left + " >= " + right + "\n" 
+                        return left + " >= " + right + "\n" 
                     elif ctx.op.type == RogueLangParser.LT:
-                        self.output_buffer += left + " < " + right + "\n" 
+                        return left + " < " + right + "\n" 
                     elif ctx.op.type == RogueLangParser.LTE:
-                        self.output_buffer += left + " <= " + right + "\n" 
+                        return left + " <= " + right + "\n" 
                     elif ctx.op.type == RogueLangParser.EQ:
-                        self.output_buffer += left + " == " + right + "\n" 
+                        return left + " == " + right + "\n" 
                     elif ctx.op.type == RogueLangParser.NEQ:
-                        self.output_buffer += left + " != " + right + "\n" 
+                        return left + " != " + right + "\n" 
             else:
                 # Handle cases where the expression doesn't lead to a binary operation
                 # This might involve handling unary operations or simply returning the result of a single child expression
@@ -231,20 +220,20 @@ class RogueVisitor(RogueLangVisitor):
                 right = ctx.expr(1).getText()
                 if ctx.op is not None:
                     if ctx.op.type == RogueLangParser.PLUS:  
-                        self.output_buffer += left + " + " + right + "\n" 
+                        return left + " + " + right + "\n" 
 
                     elif ctx.op.type == RogueLangParser.MINUS:
-                        self.output_buffer += left + " - " + right + "\n"
+                        return left + " - " + right + "\n"
 
                     elif ctx.op.type == RogueLangParser.MULT:
-                        self.output_buffer += left + " * " + right + "\n"
+                        return left + " * " + right + "\n"
 
                     elif ctx.op.type == RogueLangParser.MOD:
-                        self.output_buffer += left + " % " + right + "\n"
+                        return left + " % " + right + "\n"
 
                     elif ctx.op.type == RogueLangParser.DIV:
                         if right != 0:
-                            self.output_buffer += left + " / " + right + "\n"
+                            return left + " / " + right + "\n"
                         else:
                             raise Exception("Division by 0")
             else:
