@@ -164,40 +164,5 @@ class RogueLangVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by RogueLangParser#openParenth.
-    def visitOpenParenth(self, ctx:RogueLangParser.OpenParenthContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by RogueLangParser#closedParenth.
-    def visitClosedParenth(self, ctx:RogueLangParser.ClosedParenthContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by RogueLangParser#openBrack.
-    def visitOpenBrack(self, ctx:RogueLangParser.OpenBrackContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by RogueLangParser#closedBrack.
-    def visitClosedBrack(self, ctx:RogueLangParser.ClosedBrackContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by RogueLangParser#openCurlBrack.
-    def visitOpenCurlBrack(self, ctx:RogueLangParser.OpenCurlBrackContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by RogueLangParser#closedCurlBrack.
-    def visitClosedCurlBrack(self, ctx:RogueLangParser.ClosedCurlBrackContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by RogueLangParser#comma.
-    def visitComma(self, ctx:RogueLangParser.CommaContext):
-        return self.visitChildren(ctx)
-
-
 
 del RogueLangParser
