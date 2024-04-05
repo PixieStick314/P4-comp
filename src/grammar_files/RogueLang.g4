@@ -13,63 +13,94 @@ stat:   printStat
       | enumDecl
       | expr
       ;
+      
 
-printStat         : 'print' '(' expr ')';
-varDecl           : dataType ID  ('=' expr | arrayInit | args)?;
-dataType          : baseType ('[' ']')? ;
-baseType          : 'int' | 'string' |'true' | 'false' | 'bool' | 'double' | ID | 'date' | 'time' | 'dateTime' ; 
-ifStat            : 'if' '(' expr ')' '{' stat* '}' ('else' '{' stat* '}')?;
-forLoop           : 'for' varDecl 'in' expr '{' stat* '}';
-whileLoop         : 'while' '(' expr ')' '{' stat* '}';
-functionDecl      : 'def' ID '(' params? ')' '{' stat* '}';
-functionCall      : ID '(' args? ')';
-arrayInit         : '{' expr (',' expr)* '}'; //initialization with value
+printStat         : 'print' openParenth expr closedParenth;
+varDecl           : ID  ('=' expr | arrayInit | args)?;
+dataType          : baseType (openBrack closedBrack )? ;
+baseType          : 'string' |'True' | 'False' | 'bool' | 'number' | ID; 
+ifStat            : IF openParenth expr closedParenth openCurlBrack ifBlock closedCurlBrack (ELIF openParenth elifExpr closedParenth openCurlBrack elifBlock closedCurlBrack)* (ELSE openCurlBrack elseBlock closedCurlBrack)?;
+ifExpr            : expr;
+ifBlock           : stat* ;
+elifExpr          : expr;
+elifBlock         : stat* ;
+elseBlock         : stat* ;
+forLoop           : 'for' varDecl 'in' expr openCurlBrack stat* closedCurlBrack;
+whileLoop         : 'while' openParenth expr closedParenth openCurlBrack stat* closedCurlBrack;
+functionDecl      : 'def' ID openParenth params? closedParenth openCurlBrack stat* closedCurlBrack;
+functionCall      : ID openParenth args? RETURN? closedParenth;
+arrayInit         : openCurlBrack expr (comma expr)* closedCurlBrack; //initialization with value
 bsp               : 'BSP' bspDimension bspParameters ;
-params            : param (',' param)* ;
-param             : dataType ID ;
-args              : expr (',' expr)* ;
-randomInt         : 'randomInt' '(' INT ',' INT ')' ;
-randomChoice      : 'randomChoice' '(' expr (',' expr)+ ')' ;
-enumDecl          : 'enum' ID '{' enumBody'}' ;
-enumBody          : ID (',' ID)* ;
+params            : param (comma param)* ;
+param             : ID ;
+args              : expr (comma expr)* ;
+randomNumber      : 'randomNumber' openParenth NUMBER comma NUMBER closedParenth ;
+randomChoice      : 'randomChoice' openParenth expr (comma expr)+ closedParenth ;
+enumDecl          : 'enum' ID openCurlBrack enumBody closedCurlBrack ;
+enumBody          : ID (comma ID)* ;
 enumValue         : ID '.' ID ;
-bspDimension      : '2D' | '3D' | INT 'D' ; // INT 'D' allows for specifying dimensions beyond 3
-bspParameters     : '(' dimensionList ',' minSize ')' ;
-dimensionList     : INT (',' INT)* ; // A list of integers representing the sizes in each dimension
-minSize           : INT ; // Minimum size for partitioning
-expr              : expr '[' expr ']'     //Accessing an array element
-                  | expr '[' expr ']' '=' expr //Assinging to an array element
-                  | expr '.add(' expr ')'   //Method to add an element to a dynamically sized array
-                  | expr op=('*' | '/') expr
-                  | expr op=('+' | '-') expr
-                  | expr op=('<' | '<=' | '>' | '>=' | '==' | '!=') expr
-                  | '(' expr ')'
+bspDimension      : '2D' | '3D' | NUMBER 'D' ; // INT 'D' allows for specifying dimensions beyond 3
+bspParameters     : openParenth dimensionList comma minSize closedParenth ;
+dimensionList     : NUMBER (comma NUMBER)* ; // A list of integers representing the sizes in each dimension
+minSize           : NUMBER ; // Minimum size for partitioning
+expr              : expr openBrack expr closedBrack     //Accessing an array element
+                  | expr openBrack expr closedBrack '=' expr //Assinging to an array element
+                  | expr '.add'openParenth expr closedParenth   //Method to add an element to a dynamically sized array
+                  | expr op=(MULT | DIV | MOD) expr
+                  | expr op=(PLUS| MINUS) expr
+                  | expr op=(GT | GTE | LT | LTE | EQ | NEQ) expr
+                  | expr op=(AND | OR) expr
+                  | NOT expr
+                  | openParenth expr closedParenth 
                   | ID
-                  | INT
                   | STRING
-                  | DOUBLE
+                  | NUMBER
                   | TRUE
                   | FALSE
-                  | randomInt
+                  | randomNumber
                   | randomChoice
-                  | enumValue
+                  | enumValue 
                   ;
+
+
+openParenth      : '(' ;
+closedParenth    : ')' ;
+openBrack        : '[' ;
+closedBrack      : ']' ;
+openCurlBrack    : '{' ;
+closedCurlBrack  : '}' ;
+comma            : ',' ;
+
+// keywords
+IF               : 'if';
+ELIF             : 'elif';
+ELSE             : 'else';         
+RETURN           : 'return';     
 
 // Lexer Rules
 PLUS              : '+' ;
 MINUS             : '-' ;
 MULT              : '*' ;
 DIV               : '/' ;
+GT                : '>' ;
+GTE               : '>=';
+LT                : '<' ;
+LTE               : '<=';
+EQ                : '==';
+NEQ               : '!=';
 MOD               : '%' ;
-TRUE              : 'true' ;
-FALSE             : 'false' ;
-INT               : NUMBER+ ;
-DOUBLE            : NUMBER+ '.' NUMBER+ ;
+AND               : 'and';
+OR                : 'or';
+NOT               : 'not';
+TRUE              : 'True' ;
+FALSE             : 'False' ;
+COMMENT_SINGLELINE: '//' ~[\r\n]* -> skip ;
+NUMBER            : '-'? NUMB + | '-'? NUMB+ '.' NUMB+ ;
 STRING            : '"' (ESC | ~["\\])* '"' ; // Use fragment for escaped characters
-ID                : LETTER (LETTER | NUMBER)* ;
+ID                : LETTER (LETTER | NUMB)* ;
 
 fragment LETTER   : [a-zA-Z_]; //
 fragment ESC      : '\\' (['"\\tn]); // Define ESC for escape sequences in strings, doesn't work
-fragment NUMBER   : [0-9_]; //
+fragment NUMB   : [0-9_]; //
 
 WS       : [ \t\r\n]+ -> skip ; // skip spaces, tabs, newlines

@@ -1,3 +1,4 @@
+#   test_lexer.py
 from _pytest.mark.expression import TokenType
 
 from grammar_files.generated.RogueLangLexer import RogueLangLexer
@@ -57,14 +58,14 @@ def test_lexer_INT():
     code = '1'
     tokens = get_tokens_from_string(code)
 
-    assert tokens[0].type == RogueLangLexer.INT
+    assert tokens[0].type == RogueLangLexer.NUMBER
     assert tokens[1].type == -1
 
 def test_lexer_DOUBLE():
     code = '1.1'
     tokens = get_tokens_from_string(code)
 
-    assert tokens[0].type == RogueLangLexer.DOUBLE
+    assert tokens[0].type == RogueLangLexer.NUMBER
     assert tokens[1].type == -1
 
 def test_lexer_STRING():
@@ -79,19 +80,19 @@ def test_lexer_multiple_tokens():
     tokens = get_tokens_from_string(code)
 
     assert tokens[0].type == RogueLangLexer.ID
-    assert tokens[1].type == RogueLangLexer.INT
+    assert tokens[1].type == RogueLangLexer.NUMBER
     assert tokens[2].type == RogueLangLexer.STRING
     assert tokens[3].type == -1
 
 def test_lexer_TRUE():
-    code = 'true'
+    code = 'True'
     tokens = get_tokens_from_string(code)
 
     assert tokens[0].type == RogueLangLexer.TRUE
     assert tokens[1].type == -1
 
 def test_lexer_FALSE():
-    code = 'false'
+    code = 'False'
     tokens = get_tokens_from_string(code)
 
     assert tokens[0].type == RogueLangLexer.FALSE
@@ -101,7 +102,7 @@ def test_lexer_whitespace():
     code = '  1  1  \n  1'
     tokens = get_tokens_from_string(code)
 
-    assert tokens[0].type == RogueLangLexer.INT
-    assert tokens[1].type == RogueLangLexer.INT
-    assert tokens[2].type == RogueLangLexer.INT
+    assert tokens[0].type == RogueLangLexer.NUMBER
+    assert tokens[1].type == RogueLangLexer.NUMBER
+    assert tokens[2].type == RogueLangLexer.NUMBER
     assert tokens[3].type == -1
