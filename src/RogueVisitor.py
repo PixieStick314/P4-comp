@@ -38,7 +38,6 @@ class RogueVisitor(RogueLangVisitor):
             if_body += stat.getText() + "\n"
         self.output_buffer += self.strategy.if_statement(if_condition, if_body)
 
-
         if ctx.ELIF():
             for i in range(len(ctx.elifExpr())):
                 elif_condition = self.visit(ctx.elifExpr(i))
@@ -82,7 +81,6 @@ class RogueVisitor(RogueLangVisitor):
             return self.visit(ctx.enumDecl())
         elif ctx.expr():
             return self.visit(ctx.expr())
-
     def visitForLoop(self, ctx):
         self.visit(ctx.varDecl())
         while self.visit(ctx.expr(0)):
@@ -129,7 +127,7 @@ class RogueVisitor(RogueLangVisitor):
             self.output_buffer += self.strategy.function_call(name, args)
         else:
             raise Exception(f"Function '{name}' is not defined.")
-        
+   
     def visitArrayInit(self,ctx):
         return[self.visit(expr) for expr in ctx.expr()]
         
@@ -174,7 +172,6 @@ class RogueVisitor(RogueLangVisitor):
             if ctx.expr(0) is not None:
                 left = ctx.expr(0).getText()
                 return "not " + left
-            
         elif ctx.AND() or ctx.OR():
             if ctx.expr(0) and ctx.expr(1) is not None:
                 left = ctx.expr(0).getText()
@@ -186,8 +183,7 @@ class RogueVisitor(RogueLangVisitor):
                         return left + " or " + right + "\n" 
                     
     
-           
-        
+         
         #handling comparison operators
         elif ctx.GT() or ctx.GTE() or ctx.LT() or ctx.LTE() or ctx.EQ() or ctx.NEQ() :
             if ctx.expr(0) and ctx.expr(1) is not None:

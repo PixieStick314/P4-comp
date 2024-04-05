@@ -21,19 +21,21 @@ def test_print_stat():
     tree = parser.printStat()
     # the following lines check if the tree and its nodes fit the specific rules defined in the grammar file
     assert (tree.getRuleIndex() == RogueLangParser.RULE_printStat)
-    assert tree.getChild(0).getText() == 'print'
-    assert tree.getChild(1).getRuleIndex() == RogueLangParser.RULE_openParenth
+    assert tree.getChild(0).getSymbol().type == RogueLangParser.PRINT
+    assert tree.getChild(1).getSymbol().type == RogueLangParser.OPEN_PARENTH
     assert tree.getChild(2).getRuleIndex() == RogueLangParser.RULE_expr
-    assert tree.getChild(3).getRuleIndex() == RogueLangParser.RULE_closedParenth
+    assert tree.getChild(3).getSymbol().type == RogueLangParser.CLOSED_PARENTH
 
 def test_var_decl():
     test = 'variable = 3'
     parser = setup_parser(test)
     tree = parser.varDecl()
 
+    print(tree.toStringTree(tree, RogueLangParser))
+
     assert (tree.getRuleIndex() == RogueLangParser.RULE_varDecl)
-    assert tree.getChild(0).getText() == 'variable'
-    assert tree.getChild(1).getText() == '='
+    assert tree.getChild(0).getSymbol().type == RogueLangParser.ID
+    assert tree.getChild(1).getSymbol().type == RogueLangParser.EQUAL_SIGN
     assert tree.getChild(2).getRuleIndex() == RogueLangParser.RULE_expr
 
 def test_if_stat():
@@ -42,17 +44,17 @@ def test_if_stat():
     tree = parser.ifStat()
 
     assert (tree.getRuleIndex() == RogueLangParser.RULE_ifStat)
-    assert tree.getChild(0).getText() == 'if'
-    assert tree.getChild(1).getRuleIndex() == RogueLangParser.RULE_openParenth
+    assert tree.getChild(0).getSymbol().type == RogueLangParser.IF
+    assert tree.getChild(1).getSymbol().type == RogueLangParser.OPEN_PARENTH
     assert tree.getChild(2).getRuleIndex() == RogueLangParser.RULE_ifExpr
-    assert tree.getChild(3).getRuleIndex() == RogueLangParser.RULE_closedParenth
-    assert tree.getChild(4).getRuleIndex() == RogueLangParser.RULE_openCurlBrack
+    assert tree.getChild(3).getSymbol().type == RogueLangParser.CLOSED_PARENTH
+    assert tree.getChild(4).getSymbol().type == RogueLangParser.OPEN_CURL
     assert tree.getChild(5).getRuleIndex() == RogueLangParser.RULE_ifBlock
-    assert tree.getChild(6).getRuleIndex() == RogueLangParser.RULE_closedCurlBrack
-    assert tree.getChild(7).getText() == 'else'
-    assert tree.getChild(8).getRuleIndex() == RogueLangParser.RULE_openCurlBrack
+    assert tree.getChild(6).getSymbol().type == RogueLangParser.CLOSED_CURL
+    assert tree.getChild(7).getSymbol().type == RogueLangParser.ELSE
+    assert tree.getChild(8).getSymbol().type == RogueLangParser.OPEN_CURL
     assert tree.getChild(9).getRuleIndex() == RogueLangParser.RULE_elseBlock
-    assert tree.getChild(10).getRuleIndex() == RogueLangParser.RULE_closedCurlBrack
+    assert tree.getChild(10).getSymbol().type == RogueLangParser.CLOSED_CURL
 
 def test_for_loop():
     code = 'for int i in x {print(i)}'
@@ -60,13 +62,13 @@ def test_for_loop():
     tree = parser.forLoop()
 
     assert (tree.getRuleIndex() == RogueLangParser.RULE_forLoop)
-    assert tree.getChild(0).getText() == 'for'
+    assert tree.getChild(0).getSymbol().type == RogueLangParser.FOR
     assert tree.getChild(1).getRuleIndex() == RogueLangParser.RULE_varDecl
-    assert tree.getChild(2).getText() == 'in'
+    assert tree.getChild(2).getSymbol().type == RogueLangParser.IN
     assert tree.getChild(3).getRuleIndex() == RogueLangParser.RULE_expr
-    assert tree.getChild(4).getRuleIndex() == RogueLangParser.RULE_openCurlBrack
+    assert tree.getChild(4).getSymbol().type == RogueLangParser.OPEN_CURL
     assert tree.getChild(5).getRuleIndex() == RogueLangParser.RULE_stat
-    assert tree.getChild(6).getRuleIndex() == RogueLangParser.RULE_closedCurlBrack
+    assert tree.getChild(6).getSymbol().type == RogueLangParser.CLOSED_CURL
 
 def test_while_loop():
     code = 'while (true){print("true")}'
@@ -74,28 +76,30 @@ def test_while_loop():
     tree = parser.whileLoop()
 
     assert (tree.getRuleIndex() == RogueLangParser.RULE_whileLoop)
-    assert tree.getChild(0).getText() == 'while'
-    assert tree.getChild(1).getRuleIndex() == RogueLangParser.RULE_openParenth
+    assert tree.getChild(0).getSymbol().type == RogueLangParser.WHILE
+    assert tree.getChild(1).getSymbol().type == RogueLangParser.OPEN_PARENTH
     assert tree.getChild(2).getRuleIndex() == RogueLangParser.RULE_expr
-    assert tree.getChild(3).getRuleIndex() == RogueLangParser.RULE_closedParenth
-    assert tree.getChild(4).getRuleIndex() == RogueLangParser.RULE_openCurlBrack
+    assert tree.getChild(3).getSymbol().type == RogueLangParser.CLOSED_PARENTH
+    assert tree.getChild(4).getSymbol().type == RogueLangParser.OPEN_CURL
     assert tree.getChild(5).getRuleIndex() == RogueLangParser.RULE_stat
-    assert tree.getChild(6).getRuleIndex() == RogueLangParser.RULE_closedCurlBrack
+    assert tree.getChild(6).getSymbol().type == RogueLangParser.CLOSED_CURL
 
 def test_function_decl():
-    code = 'def printText (string text) {print(text)}'
+    code = 'def printText(text) {print(text)}'
     parser = setup_parser(code)
     tree = parser.functionDecl()
 
+    print(tree.toStringTree(tree, RogueLangParser))
+
     assert (tree.getRuleIndex() == RogueLangParser.RULE_functionDecl)
-    assert tree.getChild(0).getText() == 'def'
-    assert tree.getChild(1).getText() == 'printText'
-    assert tree.getChild(2).getRuleIndex() == RogueLangParser.RULE_openParenth
+    assert tree.getChild(0).getSymbol().type == RogueLangParser.DEF
+    assert tree.getChild(1).getSymbol().type == RogueLangParser.ID
+    assert tree.getChild(2).getSymbol().type == RogueLangParser.OPEN_PARENTH
     assert tree.getChild(3).getRuleIndex() == RogueLangParser.RULE_params
-    assert tree.getChild(4).getRuleIndex() == RogueLangParser.RULE_closedParenth
-    assert tree.getChild(5).getRuleIndex() == RogueLangParser.RULE_openCurlBrack
+    assert tree.getChild(4).getSymbol().type == RogueLangParser.CLOSED_PARENTH
+    assert tree.getChild(5).getSymbol().type == RogueLangParser.OPEN_CURL
     assert tree.getChild(6).getRuleIndex() == RogueLangParser.RULE_stat
-    assert tree.getChild(7).getRuleIndex() == RogueLangParser.RULE_closedCurlBrack
+    assert tree.getChild(7).getSymbol().type == RogueLangParser.CLOSED_CURL
 
 def test_function_call():
     code = 'readFile(path)'
@@ -103,10 +107,10 @@ def test_function_call():
     tree = parser.functionCall()
 
     assert (tree.getRuleIndex() == RogueLangParser.RULE_functionCall)
-    assert tree.getChild(0).getText() == 'readFile'
-    assert tree.getChild(1).getRuleIndex() == RogueLangParser.RULE_openParenth
+    assert tree.getChild(0).getSymbol().type == RogueLangParser.ID
+    assert tree.getChild(1).getSymbol().type == RogueLangParser.OPEN_PARENTH
     assert tree.getChild(2).getRuleIndex() == RogueLangParser.RULE_args
-    assert tree.getChild(3).getRuleIndex() == RogueLangParser.RULE_closedParenth
+    assert tree.getChild(3).getSymbol().type == RogueLangParser.CLOSED_PARENTH
 
 def test_array_init():
     code = '{1, 2, 3}'
@@ -114,13 +118,13 @@ def test_array_init():
     tree = parser.arrayInit()
 
     assert (tree.getRuleIndex() == RogueLangParser.RULE_arrayInit)
-    assert tree.getChild(0).getRuleIndex() == RogueLangParser.RULE_openCurlBrack
+    assert tree.getChild(0).getSymbol().type == RogueLangParser.OPEN_CURL
     assert tree.getChild(1).getRuleIndex() == RogueLangParser.RULE_expr
-    assert tree.getChild(2).getRuleIndex() == RogueLangParser.RULE_comma
+    assert tree.getChild(2).getSymbol().type == RogueLangParser.COMMA
     assert tree.getChild(3).getRuleIndex() == RogueLangParser.RULE_expr
-    assert tree.getChild(4).getRuleIndex() == RogueLangParser.RULE_comma
+    assert tree.getChild(4).getSymbol().type == RogueLangParser.COMMA
     assert tree.getChild(5).getRuleIndex() == RogueLangParser.RULE_expr
-    assert tree.getChild(6).getRuleIndex() == RogueLangParser.RULE_closedCurlBrack
+    assert tree.getChild(6).getSymbol().type == RogueLangParser.CLOSED_CURL
 
 def test_bsp():
     code = 'BSP 2D (10, 10, 2)'
@@ -132,18 +136,18 @@ def test_bsp():
     assert tree.getChild(1).getRuleIndex() == RogueLangParser.RULE_bspDimension
     assert tree.getChild(2).getRuleIndex() == RogueLangParser.RULE_bspParameters
 
-def test_randomInt():
-    code = 'randomInt(1, 10)'
+def test_randomNumber():
+    code = 'randomNumber(1, 10)'
     parser = setup_parser(code)
-    tree = parser.randomInt()
+    tree = parser.randomNumber()
 
-    assert (tree.getRuleIndex() == RogueLangParser.RULE_randomInt)
-    assert tree.getChild(0).getText() == 'randomInt'
-    assert tree.getChild(1).getRuleIndex() == RogueLangParser.RULE_openParenth
-    assert tree.getChild(2).getText() == '1'
-    assert tree.getChild(3).getRuleIndex() == RogueLangParser.RULE_comma
-    assert tree.getChild(4).getText() == '10'
-    assert tree.getChild(5).getRuleIndex() == RogueLangParser.RULE_closedParenth
+    assert (tree.getRuleIndex() == RogueLangParser.RULE_randomNumber)
+    assert tree.getChild(0).getSymbol().type == RogueLangParser.RANDOM_NUMBER
+    assert tree.getChild(1).getSymbol().type == RogueLangParser.OPEN_PARENTH
+    assert tree.getChild(2).getSymbol().type == RogueLangParser.NUMBER
+    assert tree.getChild(3).getSymbol().type == RogueLangParser.COMMA
+    assert tree.getChild(4).getSymbol().type == RogueLangParser.NUMBER
+    assert tree.getChild(5).getSymbol().type == RogueLangParser.CLOSED_PARENTH
 
 def test_random_choice():
     code = 'randomChoice(1, 2)'
@@ -151,12 +155,12 @@ def test_random_choice():
     tree = parser.randomChoice()
 
     assert (tree.getRuleIndex() == RogueLangParser.RULE_randomChoice)
-    assert tree.getChild(0).getText() == 'randomChoice'
-    assert tree.getChild(1).getRuleIndex() == RogueLangParser.RULE_openParenth
+    assert tree.getChild(0).getSymbol().type == RogueLangParser.RANDOM_CHOICE
+    assert tree.getChild(1).getSymbol().type == RogueLangParser.OPEN_PARENTH
     assert tree.getChild(2).getRuleIndex() == RogueLangParser.RULE_expr
-    assert tree.getChild(3).getRuleIndex() == RogueLangParser.RULE_comma
+    assert tree.getChild(3).getSymbol().type == RogueLangParser.COMMA
     assert tree.getChild(4).getRuleIndex() == RogueLangParser.RULE_expr
-    assert tree.getChild(5).getRuleIndex() == RogueLangParser.RULE_closedParenth
+    assert tree.getChild(5).getSymbol().type == RogueLangParser.CLOSED_PARENTH
 
 def test_enum_decl():
     code = 'enum my_enum {type_1, type_2}'
@@ -164,11 +168,11 @@ def test_enum_decl():
     tree = parser.enumDecl()
 
     assert (tree.getRuleIndex() == RogueLangParser.RULE_enumDecl)
-    assert tree.getChild(0).getText() == 'enum'
-    assert tree.getChild(1).getText() == 'my_enum'
-    assert tree.getChild(2).getRuleIndex() == RogueLangParser.RULE_openCurlBrack
+    assert tree.getChild(0).getSymbol().type == RogueLangParser.ENUM
+    assert tree.getChild(1).getSymbol().type == RogueLangParser.ID
+    assert tree.getChild(2).getSymbol().type == RogueLangParser.OPEN_CURL
     assert tree.getChild(3).getRuleIndex() == RogueLangParser.RULE_enumBody
-    assert tree.getChild(4).getRuleIndex() == RogueLangParser.RULE_closedCurlBrack
+    assert tree.getChild(4).getSymbol().type == RogueLangParser.CLOSED_CURL
 
 def test_enum_value():
     code = 'my_enum.type_1'
@@ -176,6 +180,6 @@ def test_enum_value():
     tree = parser.enumValue()
 
     assert (tree.getRuleIndex() == RogueLangParser.RULE_enumValue)
-    assert tree.getChild(0).getText() == 'my_enum'
-    assert tree.getChild(1).getText() == '.'
-    assert tree.getChild(2).getText() == 'type_1'
+    assert tree.getChild(0).getSymbol().type == RogueLangParser.ID
+    assert tree.getChild(1).getSymbol().type == RogueLangParser.DOT
+    assert tree.getChild(2).getSymbol().type == RogueLangParser.ID

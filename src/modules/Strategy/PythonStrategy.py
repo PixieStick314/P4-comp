@@ -16,7 +16,6 @@ class PythonStrategy(LanguageStrategy):
     def while_loop(self, condition, body):
         body_indent = "\n".join(["    " + line for line in body.splitlines()])
         return f"while {condition}:\n{body_indent}\n"
-    
 
     def if_statement(self, if_condition, if_body):
         if_body_indent = "\n".join(["    " + line for line in if_body.splitlines()])
@@ -36,7 +35,6 @@ class PythonStrategy(LanguageStrategy):
         
         return result
                        
-
     def variable_declaration(self, name, value=None):
         if value is None:
             return f"{name} = None\n"
