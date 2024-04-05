@@ -62,11 +62,11 @@ expr              : expr OPEN_BRACK expr CLOSED_BRACK     //Accessing an array e
                   | enumValue 
                   ;
 
-
 // keywords
 IF               : 'if';
 ELIF             : 'elif';
 ELSE             : 'else';         
+
 RETURN           : 'return';
 PRINT            : 'print' ;
 FOR              : 'for' ;
