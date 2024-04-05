@@ -7,8 +7,7 @@ class PythonStrategy(LanguageStrategy):
         return f"def {name}({params}):\n    {body_str}\n"
 
     def function_call(self, name, args):
-        arg_code = ", ".join(args)
-        return f"{name}({arg_code})\n"
+        return f"{name}({args})\n"
     
     def for_loop(self, variable, iterable, body):
         body_indent = "\n".join(["    " + line for line in body.splitlines()])

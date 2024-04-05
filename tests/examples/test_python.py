@@ -4,7 +4,7 @@ x = -1
 x = "Hello world"
 x = "waddafuk"
 x = "@123@!?=()()=...."
-print("hello")
+print(['"hello"'])
 x = True
 x = 1
 y = 2
@@ -26,5 +26,4 @@ while x<y:
 def myfunction(x,y):
     print("hii")
     print("How u")
-myfunction(p, r, i, n, t, (, ", H, o, w,  , u, ", ))
-print("hello")
+myfunction(1,2)

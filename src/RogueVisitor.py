@@ -20,6 +20,7 @@ class RogueVisitor(RogueLangVisitor):
     def visitPrintStat(self, ctx):
         expr_code = ctx.expr().getText()
         self.output_buffer += self.strategy.function_call("print", [expr_code])
+        return "hii"
 
     def visitVarDecl(self, ctx):
         name = ctx.ID().getText()
@@ -34,22 +35,23 @@ class RogueVisitor(RogueLangVisitor):
         if_block = ctx.ifBlock()
         if_body = ""
         for stat in if_block.stat():
-            if_body += stat.getText() + "\n"   
+            if_body += stat.getText() + "\n"
         self.output_buffer += self.strategy.if_statement(if_condition, if_body)
+
 
         if ctx.ELIF():
             for i in range(len(ctx.elifExpr())):
                 elif_condition = self.visit(ctx.elifExpr(i))
-                elif_block_stats = ctx.elifBlock(i)
+                elif_block_stats = ctx.elifBlock(i).stat()
                 elif_block = ""
-                for stat in elif_block_stats.stat():
+                for stat in elif_block_stats:
                     elif_block += stat.getText() + "\n"
                 self.output_buffer += self.strategy.elif_statement(elif_condition, elif_block)
-        
+
         if ctx.ELSE():
-            else_block = ctx.elseBlock()
+            else_block_stats = ctx.elseBlock().stat()
             else_body = ""
-            for stat in else_block.stat():
+            for stat in else_block_stats:
                 else_body += stat.getText() + "\n"
             self.output_buffer += self.strategy.else_statement(else_body)
     
@@ -121,36 +123,13 @@ class RogueVisitor(RogueLangVisitor):
 
     def visitFunctionCall(self, ctx):
         name = ctx.ID().getText()
+        args = ctx.args().getText()
 
         if name in self.functions:
-            # Retrieve function definition
-            function = self.functions[name]
-            params = function["params"]
-            body = function["body"]
-            
-            # Evaluate arguments
-            args = [self.visit(arg) for arg in ctx.args().expr()]
-            
-            # Backup current variables state
-            variables_backup = self.variables.copy()
-            
-            # Map arguments to parameters
-            for param_name, arg_value in zip(params, args):
-                self.variables[param_name] = arg_value
-                
-            # Execute the function body
-            args = ""
-            for statement in body:
-                args = self.visit(statement)
-            
-            # Restore the previous variables state
-            self.variables = variables_backup
-            
             self.output_buffer += self.strategy.function_call(name, args)
         else:
             raise Exception(f"Function '{name}' is not defined.")
         
-
     def visitArrayInit(self,ctx):
         return[self.visit(expr) for expr in ctx.expr()]
         
