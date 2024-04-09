@@ -1,4 +1,4 @@
-# Generated from C:/Users/nedim/Documents/GitHub/P4-comp/src/grammar_files/RogueLang.g4 by ANTLR 4.13.1
+# Generated from C://Users//Muffin//Documents//GitHub//P4-comp//src//grammar_files//RogueLang.g4 by ANTLR 4.13.1
 from antlr4 import *
 if "." in __name__:
     from .RogueLangParser import RogueLangParser
@@ -44,28 +44,8 @@ class RogueLangVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by RogueLangParser#ifExpr.
-    def visitIfExpr(self, ctx:RogueLangParser.IfExprContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by RogueLangParser#ifBlock.
-    def visitIfBlock(self, ctx:RogueLangParser.IfBlockContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by RogueLangParser#elifExpr.
-    def visitElifExpr(self, ctx:RogueLangParser.ElifExprContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by RogueLangParser#elifBlock.
-    def visitElifBlock(self, ctx:RogueLangParser.ElifBlockContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by RogueLangParser#elseBlock.
-    def visitElseBlock(self, ctx:RogueLangParser.ElseBlockContext):
+    # Visit a parse tree produced by RogueLangParser#statBlock.
+    def visitStatBlock(self, ctx:RogueLangParser.StatBlockContext):
         return self.visitChildren(ctx)
 
 
@@ -94,11 +74,6 @@ class RogueLangVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by RogueLangParser#bsp.
-    def visitBsp(self, ctx:RogueLangParser.BspContext):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by RogueLangParser#params.
     def visitParams(self, ctx:RogueLangParser.ParamsContext):
         return self.visitChildren(ctx)
@@ -111,51 +86,6 @@ class RogueLangVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by RogueLangParser#args.
     def visitArgs(self, ctx:RogueLangParser.ArgsContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by RogueLangParser#randomNumber.
-    def visitRandomNumber(self, ctx:RogueLangParser.RandomNumberContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by RogueLangParser#randomChoice.
-    def visitRandomChoice(self, ctx:RogueLangParser.RandomChoiceContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by RogueLangParser#enumDecl.
-    def visitEnumDecl(self, ctx:RogueLangParser.EnumDeclContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by RogueLangParser#enumBody.
-    def visitEnumBody(self, ctx:RogueLangParser.EnumBodyContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by RogueLangParser#enumValue.
-    def visitEnumValue(self, ctx:RogueLangParser.EnumValueContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by RogueLangParser#bspDimension.
-    def visitBspDimension(self, ctx:RogueLangParser.BspDimensionContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by RogueLangParser#bspParameters.
-    def visitBspParameters(self, ctx:RogueLangParser.BspParametersContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by RogueLangParser#dimensionList.
-    def visitDimensionList(self, ctx:RogueLangParser.DimensionListContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by RogueLangParser#minSize.
-    def visitMinSize(self, ctx:RogueLangParser.MinSizeContext):
         return self.visitChildren(ctx)
 
 

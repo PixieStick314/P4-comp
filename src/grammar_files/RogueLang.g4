@@ -10,40 +10,25 @@ stat:   printStat
       | functionDecl
       | functionCall
       | arrayInit
-      | enumDecl
       | expr
       ;
-      
 
 printStat         : PRINT OPEN_PARENTH expr CLOSED_PARENTH;
 varDecl           : ID  (EQUAL_SIGN expr | arrayInit | args)?;
 dataType          : baseType (OPEN_BRACK CLOSED_BRACK )? ;
 baseType          : 'string' |'True' | 'False' | 'bool' | 'number' | ID;
-ifStat            : IF OPEN_PARENTH ifExpr CLOSED_PARENTH OPEN_CURL ifBlock CLOSED_CURL (ELIF OPEN_PARENTH elifExpr CLOSED_PARENTH OPEN_CURL elifBlock CLOSED_CURL)* (ELSE OPEN_CURL elseBlock CLOSED_CURL)?;
-ifExpr            : expr;
-ifBlock           : stat* ;
-elifExpr          : expr;
-elifBlock         : stat* ;
-elseBlock         : stat* ;
+ifStat            : IF OPEN_PARENTH expr CLOSED_PARENTH statBlock (ELIF OPEN_PARENTH expr CLOSED_PARENTH statBlock)* (ELSE statBlock)?;
+statBlock         : OPEN_CURL stat* CLOSED_CURL;
 forLoop           : FOR varDecl IN expr OPEN_CURL stat* CLOSED_CURL;
 whileLoop         : WHILE OPEN_PARENTH expr CLOSED_PARENTH OPEN_CURL stat* CLOSED_CURL;
 functionDecl      : DEF ID OPEN_PARENTH params? CLOSED_PARENTH OPEN_CURL stat* CLOSED_CURL;
-functionCall      : ID OPEN_PARENTH args? RETURN? CLOSED_PARENTH;
-arrayInit         : OPEN_CURL expr (COMMA expr)* CLOSED_CURL; //initialization with value
-bsp               : 'BSP' bspDimension bspParameters ;
+functionCall      : ID OPEN_PARENTH args? CLOSED_PARENTH;
+arrayInit         : OPEN_CURL expr (COMMA expr)* CLOSED_CURL;
 params            : param (COMMA param)* ;
 param             : ID ;
 args              : expr (COMMA expr)* ;
-randomNumber      : RANDOM_NUMBER OPEN_PARENTH NUMBER COMMA NUMBER CLOSED_PARENTH ;
-randomChoice      : RANDOM_CHOICE OPEN_PARENTH expr (COMMA expr)+ CLOSED_PARENTH ;
-enumDecl          : ENUM ID OPEN_CURL enumBody CLOSED_CURL ;
-enumBody          : ID (COMMA ID)* ;
-enumValue         : ID DOT ID ;
-bspDimension      : '2D' | '3D' | NUMBER 'D' ; // INT 'D' allows for specifying dimensions beyond 3
-bspParameters     : OPEN_PARENTH dimensionList COMMA minSize CLOSED_PARENTH ;
-dimensionList     : NUMBER (COMMA NUMBER)* ; // A list of integers representing the sizes in each dimension
-minSize           : NUMBER ; // Minimum size for partitioning
-expr              : expr OPEN_BRACK expr CLOSED_BRACK     //Accessing an array element
+expr              : functionCall
+                  | expr OPEN_BRACK expr CLOSED_BRACK     //Accessing an array element
                   | expr OPEN_BRACK expr CLOSED_BRACK EQUAL_SIGN expr //Assinging to an array element
                   | expr DOT 'add' OPEN_PARENTH expr CLOSED_PARENTH   //Method to add an element to a dynamically sized array
                   | expr op=(MULT | DIV | MOD) expr
@@ -57,9 +42,6 @@ expr              : expr OPEN_BRACK expr CLOSED_BRACK     //Accessing an array e
                   | NUMBER
                   | TRUE
                   | FALSE
-                  | randomNumber
-                  | randomChoice
-                  | enumValue 
                   ;
 
 // keywords
@@ -73,9 +55,6 @@ FOR              : 'for' ;
 IN               : 'in' ;
 WHILE            : 'while' ;
 DEF              : 'def' ;
-RANDOM_NUMBER    : 'randomNumber' ;
-RANDOM_CHOICE    : 'randomChoice' ;
-ENUM             : 'enum' ;
 
 // Lexer Rules
 PLUS              : '+' ;
@@ -109,8 +88,8 @@ COMMA            : ',' ;
 DOT              : '.' ;
 EQUAL_SIGN       : '=' ;
 
-fragment LETTER           : [a-zA-Z_]; //
+fragment LETTER           : [a-zA-Z_];
 fragment ESC              : '\\' (['"\\tn]); // Define ESC for escape sequences in strings, doesn't work
-fragment NUMB             : [0-9_]; //
+fragment NUMB             : [0-9_];
 
 WS       : [ \t\r\n]+ -> skip ; // skip spaces, tabs, newlines
