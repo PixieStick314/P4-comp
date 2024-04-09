@@ -45,12 +45,12 @@ class PythonVisitor(RogueLangVisitor):
         return output
 
     def visitForLoop(self, ctx):
-        loop_var = self.visit(ctx.varDecl())
+        loop_var = ctx.varDecl().ID().getText()
         iterable = self.visit(ctx.expr(0))
-        body_statements = '\n'.join(self.visit(stat) for stat in ctx.stat())
-        update_expr = self.visit(ctx.expr(1))
-        body = self.add_indentation(body_statements + '\n' + update_expr)
+        body_statements = '\n'.join([self.visit(stat) for stat in ctx.stat()])
+        body = self.add_indentation(body_statements)
         return f'for {loop_var} in {iterable}:\n{body}'
+
     
     def visitWhileLoop(self, ctx):
         while_condition = self.visit(ctx.expr())

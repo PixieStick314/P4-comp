@@ -1,17 +1,8 @@
-x = 12
-x = 1.2
-x = -1
+// Define variables
+x = 10
+y = "Hello, world"
+z = True
 
-x = "Hello world"
-x = "waddafuk"
-x = "@123@!?=()()=...."
-
-print("hello")
-
-x = True
-
-x = 1
-y = 2
 not x
 if(not x) {
     print("HI")
@@ -38,3 +29,73 @@ def myfunction(x, y) {
 }
 
 myfunction(1, 2)
+
+// Array initialization
+emptyArray = []
+myArray = [1, 2, 3, 4]
+
+// Print statement
+print("Starting the program")
+
+// If statement with elif and else
+if (x > 5) {
+    print("x is greater than 5")
+} elif (x < 5) {
+    print("x is less than 5")
+} else {
+    print("x is equal to 5")
+}
+
+//for i in 10 {
+//    print("simple loop iteration")
+//}
+
+// For loop with array
+//for i in [1, 2, 3, 4] {
+//    print("Loop iteration")
+//}
+
+// While loop
+while (x < 20) {
+    print("x is less than 20")
+    x = x + 1
+}
+
+// Function declaration and call
+def greet(name) {
+    print("Hello, " + name)
+}
+
+greet("RogueLang User")
+
+// Function using array and arithmetic operations
+//def calculateSum(arr) {
+//    sum = 0
+//    for num in arr {
+//        sum = sum + num
+//    }
+//    return sum
+//}
+
+//print(calculateSum(myArray))
+
+// Using expressions
+result = (x * 2) + (y / 2)
+notTrue = not z
+comparison = x >= y
+
+// Nested if and loops
+if notTrue {
+    if x < 5 {
+        print(x)
+        x = x + 1
+    }
+//} else {
+//    for num in myArray {
+//        if num % 2 == 0 {
+//            print(num + " is even")
+//        } else {
+//            print(num + " is odd")
+//        }
+//    }
+//}
