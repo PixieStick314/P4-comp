@@ -1,8 +1,6 @@
 # ExecutorHelper.py
 import sys
-from modules.Visitors.PythonVisitor import PythonVisitor
-from modules.Visitors.CppVisitor import CppVisitor
-from modules.Visitors.RustVisitor import RustVisitor
+from modules.Interpreter.Visitor import Visitor
 
 def print_help():
     help_message = """
@@ -47,12 +45,6 @@ def parse_arguments():
 def get_visitor(language):
     if language == "python":
         suffix = '.py'
-        return suffix, PythonVisitor()
-    elif language == "cpp":
-        suffix = '.cpp'
-        return suffix, CppVisitor()
-    elif language == "rust":
-        suffix = 'rs'
-        return suffix, RustVisitor()
+        return suffix, Visitor()
     else:
         raise ValueError(f"Unsupported language: {language}")

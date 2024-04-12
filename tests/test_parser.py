@@ -57,7 +57,7 @@ def test_if_stat():
     assert tree.getChild(10).getSymbol().type == RogueLangParser.CLOSED_CURL
 
 def test_for_loop():
-    code = 'for int i in x {print(i)}'
+    code = 'for i in x {print(i)}'
     parser = setup_parser(code)
     tree = parser.forLoop()
 

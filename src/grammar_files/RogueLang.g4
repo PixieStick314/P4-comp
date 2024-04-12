@@ -1,29 +1,32 @@
 grammar RogueLang;
 
-prog:   stat+ ;
+prog:   object+ ;
+
+object: ID OPEN_CURL procedure (field | stat)* CLOSED_CURL;
+
+procedure: PROCEDURE statBlock;
 
 stat:   printStat
       | varDecl
+      | functionDecl
       | ifStat
       | forLoop
       | whileLoop
-      | functionDecl
       | functionCall
-      | arrayInit
-      | expr
-      ;
+      | statBlock
+      | returnStat
+      | expr;
 
+field             : 'field' varDecl;
+varDecl           : ID  (EQUAL_SIGN (expr | args | functionCall))?;
+functionDecl      : DEF ID OPEN_PARENTH params? CLOSED_PARENTH statBlock;
 printStat         : PRINT OPEN_PARENTH expr CLOSED_PARENTH;
-varDecl           : ID  (EQUAL_SIGN (expr | arrayInit | args))?;
-dataType          : baseType (OPEN_BRACK CLOSED_BRACK )? ;
-baseType          : 'string' |'True' | 'False' | 'bool' | 'number' | ID;
 ifStat            : IF OPEN_PARENTH expr CLOSED_PARENTH statBlock (ELIF OPEN_PARENTH expr CLOSED_PARENTH statBlock)* (ELSE statBlock)?;
 statBlock         : OPEN_CURL stat* CLOSED_CURL;
-forLoop           : FOR varDecl IN expr OPEN_CURL stat* CLOSED_CURL;
-whileLoop         : WHILE OPEN_PARENTH expr CLOSED_PARENTH OPEN_CURL stat* CLOSED_CURL;
-functionDecl      : DEF ID OPEN_PARENTH params? CLOSED_PARENTH OPEN_CURL stat* CLOSED_CURL;
+forLoop           : FOR varDecl IN expr statBlock;
+whileLoop         : WHILE OPEN_PARENTH expr CLOSED_PARENTH OPEN_CURL stat+ CLOSED_CURL;
 functionCall      : ID OPEN_PARENTH args? CLOSED_PARENTH;
-arrayInit         : OPEN_BRACK (expr (COMMA expr)*)? CLOSED_BRACK;
+returnStat        : RETURN expr;
 params            : param (COMMA param)* ;
 param             : ID ;
 args              : expr (COMMA expr)* ;
@@ -55,6 +58,8 @@ FOR              : 'for' ;
 IN               : 'in' ;
 WHILE            : 'while' ;
 DEF              : 'def' ;
+
+PROCEDURE        : 'procedure';
 
 // Lexer Rules
 PLUS              : '+' ;

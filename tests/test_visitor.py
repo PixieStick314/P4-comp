@@ -3,6 +3,9 @@ from grammar_files.generated.RogueLangParser import RogueLangParser
 from grammar_files.generated.RogueLangLexer import RogueLangLexer
 from antlr4 import *
 
+from modules.Interpreter.Visitor import Visitor
+
+
 def setup_parser(str):
     lexer = RogueLangLexer(InputStream(str))
     stream = CommonTokenStream(lexer)
@@ -76,3 +79,16 @@ def test_array_init():
     output = get_output(tree)
 
     assert output == '[1, 2, 3]'
+
+def test_jsonify():
+    code = '''Map {
+    procedure {
+    }
+    field x = 5
+    }
+    '''
+    parser = setup_parser(code)
+    tree = parser.object_()
+    visitor = Visitor()
+    output = visitor.visit(tree)
+    print(output)

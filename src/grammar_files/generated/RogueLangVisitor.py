@@ -1,4 +1,4 @@
-# Generated from C://Users//Muffin//Documents//GitHub//P4-comp//src//grammar_files//RogueLang.g4 by ANTLR 4.13.1
+# Generated from C:/Users/Loke/PycharmProjects/P4-comp/src/grammar_files/RogueLang.g4 by ANTLR 4.13.1
 from antlr4 import *
 if "." in __name__:
     from .RogueLangParser import RogueLangParser
@@ -14,13 +14,23 @@ class RogueLangVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by RogueLangParser#object.
+    def visitObject(self, ctx:RogueLangParser.ObjectContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by RogueLangParser#procedure.
+    def visitProcedure(self, ctx:RogueLangParser.ProcedureContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by RogueLangParser#stat.
     def visitStat(self, ctx:RogueLangParser.StatContext):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by RogueLangParser#printStat.
-    def visitPrintStat(self, ctx:RogueLangParser.PrintStatContext):
+    # Visit a parse tree produced by RogueLangParser#field.
+    def visitField(self, ctx:RogueLangParser.FieldContext):
         return self.visitChildren(ctx)
 
 
@@ -29,13 +39,13 @@ class RogueLangVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by RogueLangParser#dataType.
-    def visitDataType(self, ctx:RogueLangParser.DataTypeContext):
+    # Visit a parse tree produced by RogueLangParser#functionDecl.
+    def visitFunctionDecl(self, ctx:RogueLangParser.FunctionDeclContext):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by RogueLangParser#baseType.
-    def visitBaseType(self, ctx:RogueLangParser.BaseTypeContext):
+    # Visit a parse tree produced by RogueLangParser#printStat.
+    def visitPrintStat(self, ctx:RogueLangParser.PrintStatContext):
         return self.visitChildren(ctx)
 
 
@@ -59,18 +69,13 @@ class RogueLangVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by RogueLangParser#functionDecl.
-    def visitFunctionDecl(self, ctx:RogueLangParser.FunctionDeclContext):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by RogueLangParser#functionCall.
     def visitFunctionCall(self, ctx:RogueLangParser.FunctionCallContext):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by RogueLangParser#arrayInit.
-    def visitArrayInit(self, ctx:RogueLangParser.ArrayInitContext):
+    # Visit a parse tree produced by RogueLangParser#returnStat.
+    def visitReturnStat(self, ctx:RogueLangParser.ReturnStatContext):
         return self.visitChildren(ctx)
 
 
