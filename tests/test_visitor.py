@@ -119,16 +119,3 @@ def test_json_function():
     print(visitor.environment.values)
 
     assert output == json.dumps({"x": 3.0})
-
-def test_sanity():
-    x = 0
-
-    try:
-        test_exception()
-    except Exception as e:
-        x = e.args[0]
-
-    assert x == 3
-
-def test_exception():
-    raise Exception(3)
