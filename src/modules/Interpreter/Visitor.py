@@ -42,12 +42,7 @@ class Visitor(RogueLangVisitor):
 
     def visitVarDecl(self, ctx:RogueLangParser.VarDeclContext):
         name = ctx.ID().getText()
-        if ctx.expr() is not None:
-            value = self.visit(ctx.expr())
-        elif ctx.functionCall() is not None:
-            value = self.visit(ctx.functionCall())
-        else:
-            raise RuntimeError("Assignment not valid.")
+        value = self.visit(ctx.expr())
 
         try:
             self.environment.assign(name, value)
@@ -63,16 +58,21 @@ class Visitor(RogueLangVisitor):
         self.environment = previous
 
     def visitIfStat(self, ctx:RogueLangParser.IfStatContext):
-        # Initialize output with the 'if' condition and block.
-        if self.visit(ctx.expr(0)):
-            self.visit(ctx.statBlock(0))
-        elif len(ctx.ELIF())>0:
-            if self.visit(ctx.expr(1)):
-                for i in range(0,len(ctx.ELIF())):
-                    self.visit(ctx.statBlock(i+1))
-        elif len(ctx.ELSE())>0:
-            if self.visit(ctx.expr(len(ctx.expr()))):
-                self.visit(ctx.statBlock(len(ctx.statBlock())))
+        if self.visit(ctx.expr()) is True:
+            self.visit(ctx.statBlock())
+        elif ctx.elifStat():
+            self.visit(ctx.elifStat())
+        elif ctx.elseStat():
+            self.visit(ctx.elseStat())
+
+    def visitElifStat(self, ctx:RogueLangParser.ElifStatContext):
+        if self.visit(ctx.expr()) is True:
+            self.visit(ctx.statBlock())
+        elif self.visit(ctx.elifStat()):
+            self.visit(ctx.elifStat())
+
+    def visitElseStat(self, ctx:RogueLangParser.ElseStatContext):
+        self.visit(ctx.statBlock())
 
     def visitForLoop(self, ctx):
         name = ctx.varDecl().ID().getText()
@@ -89,7 +89,7 @@ class Visitor(RogueLangVisitor):
 
     def visitWhileLoop(self, ctx):
         while self.visit(ctx.expr()):
-            self.visit(ctx.stat())
+            self.visit(ctx.statBlock())
 
     def visitFunctionDecl(self, ctx:RogueLangParser.FunctionDeclContext):
         name = ctx.ID().getText()
@@ -113,9 +113,8 @@ class Visitor(RogueLangVisitor):
             for i in range(len(args)):
                 self.environment.define(previous.get(name).params[i], args[i])
 
-        func = previous.get(name)
         try:
-            self.visit(func.body)
+            self.visit(previous.get(name).body)
         except Exception as e:
             return e.args[0]
         finally:
@@ -135,7 +134,7 @@ class Visitor(RogueLangVisitor):
 
     def visitExpr(self, ctx):
         if ctx.ID():
-            return ctx.ID().getText()
+            return self.environment.get(ctx.ID().getText())
         elif ctx.STRING():
             return ctx.STRING().getText()
         elif ctx.TRUE() or ctx.getText().lower() == 'true':
@@ -146,26 +145,41 @@ class Visitor(RogueLangVisitor):
             return float(ctx.NUMBER().getText())
         elif ctx.functionCall():
             return self.visit(ctx.functionCall())
-        
-        elif ctx.getChildCount() == 3:
-            left = self.visit(ctx.expr(0)) if ctx.expr(0) else ''
-            right = self.visit(ctx.expr(1)) if ctx.expr(1) else ''
-            op = ctx.getChild(1).getText()
-            if op == '[':
-                return f'{left}[{right}]'
-            else:
-                return f'{left} {op} {right}'
 
-        elif ctx.op:
+        elif ctx.getChildCount() == 3:
             left = self.visit(ctx.expr(0))
-            right = self.visit(ctx.expr(1)) if ctx.expr(1) else ''
-            operator = {'+': '+', '-': '-', '*': '*', '/': '/', '%': '%',
-                        '>': '>', '>=': '>=', '<': '<', '<=': '<=',
-                        '==': '==', '!=': '!=', 'and': 'and', 'or': 'or', 'not': 'not'}.get(ctx.op.text, ctx.op.text)
+            right = self.visit(ctx.expr(1)) if ctx.expr(1) else None
+            operator = ctx.getChild(1).getText()
             if ctx.NOT():
-                return f'not {left}'
+                return not left
             elif right:  # Binary operation
-                return f'{left} {operator} {right}'
+                match operator:
+                    case '+':
+                        return left + right
+                    case '-':
+                        return left - right
+                    case '*':
+                        return left * right
+                    case '/':
+                        return left / right
+                    case '>':
+                        return left > right
+                    case '<':
+                        return left < right
+                    case '>=':
+                        return left >= right
+                    case '<=':
+                        return left <= right
+                    case '==':
+                        return left == right
+                    case '!=':
+                        return left != right
+                    case '%':
+                        return left % right
+                    case 'and':
+                        return left and right
+                    case 'or':
+                        return left or right
             else:  # Unary operation
                 return left
         else:

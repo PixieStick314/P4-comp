@@ -49,8 +49,7 @@ def test_if_stat():
     assert tree.getChild(2).getRuleIndex() == RogueLangParser.RULE_expr
     assert tree.getChild(3).getSymbol().type == RogueLangParser.CLOSED_PARENTH
     assert tree.getChild(4).getRuleIndex() == RogueLangParser.RULE_statBlock
-    assert tree.getChild(5).getSymbol().type == RogueLangParser.ELSE
-    assert tree.getChild(6).getRuleIndex() == RogueLangParser.RULE_statBlock
+    assert tree.getChild(5).getRuleIndex() == RogueLangParser.RULE_elseStat
 
 def test_for_loop():
     code = 'for i in x {print(i)}'
@@ -74,9 +73,8 @@ def test_while_loop():
     assert tree.getChild(1).getSymbol().type == RogueLangParser.OPEN_PARENTH
     assert tree.getChild(2).getRuleIndex() == RogueLangParser.RULE_expr
     assert tree.getChild(3).getSymbol().type == RogueLangParser.CLOSED_PARENTH
-    assert tree.getChild(4).getSymbol().type == RogueLangParser.OPEN_CURL
-    assert tree.getChild(5).getRuleIndex() == RogueLangParser.RULE_stat
-    assert tree.getChild(6).getSymbol().type == RogueLangParser.CLOSED_CURL
+    assert tree.getChild(4).getRuleIndex() == RogueLangParser.RULE_statBlock
+
 
 def test_function_decl():
     code = 'def printText(text) {print(text)}'

@@ -106,3 +106,37 @@ def test_lexer_whitespace():
     assert tokens[1].type == RogueLangLexer.NUMBER
     assert tokens[2].type == RogueLangLexer.NUMBER
     assert tokens[3].type == -1
+
+def test_lexer_nested_if_stat():
+    code = '''if(x == 5){
+    x = 4
+    if(x == 4){
+    x = 3
+    }
+    }
+    '''
+
+    tokens = get_tokens_from_string(code)
+
+    assert tokens[0].type == RogueLangLexer.IF
+    assert tokens[1].type == RogueLangLexer.OPEN_PARENTH
+    assert tokens[2].type == RogueLangLexer.ID
+    assert tokens[3].type == RogueLangLexer.EQ
+    assert tokens[4].type == RogueLangLexer.NUMBER
+    assert tokens[5].type == RogueLangLexer.CLOSED_PARENTH
+    assert tokens[6].type == RogueLangLexer.OPEN_CURL
+    assert tokens[7].type == RogueLangLexer.ID
+    assert tokens[8].type == RogueLangLexer.EQUAL_SIGN
+    assert tokens[9].type == RogueLangLexer.NUMBER
+    assert tokens[10].type == RogueLangLexer.IF
+    assert tokens[11].type == RogueLangLexer.OPEN_PARENTH
+    assert tokens[12].type == RogueLangLexer.ID
+    assert tokens[13].type == RogueLangLexer.EQ
+    assert tokens[14].type == RogueLangLexer.NUMBER
+    assert tokens[15].type == RogueLangLexer.CLOSED_PARENTH
+    assert tokens[16].type == RogueLangLexer.OPEN_CURL
+    assert tokens[17].type == RogueLangLexer.ID
+    assert tokens[18].type == RogueLangLexer.EQUAL_SIGN
+    assert tokens[19].type == RogueLangLexer.NUMBER
+    assert tokens[20].type == RogueLangLexer.CLOSED_CURL
+    assert tokens[21].type == RogueLangLexer.CLOSED_CURL
