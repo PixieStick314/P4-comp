@@ -1,6 +1,6 @@
 grammar RogueLang;
 
-prog:   object+ ;
+prog:   object (stat)* ;
 
 object: ID OPEN_CURL procedure (field | stat)* CLOSED_CURL;
 

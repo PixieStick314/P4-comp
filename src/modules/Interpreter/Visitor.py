@@ -13,10 +13,13 @@ class Visitor(RogueLangVisitor):
         self.environment = Environment(None)
 
     def visitProg(self, ctx:RogueLangParser.ProgContext):
-        self.visitChildren(ctx)
+        for stat in ctx.stat():
+            self.visit(stat)
+        return self.visit(ctx.object_())
 
     def visitObject(self, ctx:RogueLangParser.ObjectContext):
-        self.environment = Environment(None)
+        previous = self.environment
+        self.environment = Environment(previous)
         fields = []
         for field in ctx.field():
             fields += self.visit(field)
@@ -27,6 +30,8 @@ class Visitor(RogueLangVisitor):
         output = {}
         for field in fields:
             output[field] = self.environment.get(field)
+
+        self.environment = previous
         return json.dumps(output)
 
     def visitField(self, ctx:RogueLangParser.FieldContext):
