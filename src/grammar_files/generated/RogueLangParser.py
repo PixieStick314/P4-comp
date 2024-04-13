@@ -10,89 +10,88 @@ else:
 
 def serializedATN():
     return [
-        4,1,42,232,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,
+        4,1,42,231,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,
         6,2,7,7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,2,13,7,13,
         2,14,7,14,2,15,7,15,2,16,7,16,2,17,7,17,1,0,4,0,38,8,0,11,0,12,0,
         39,1,1,1,1,1,1,1,1,1,1,5,1,47,8,1,10,1,12,1,50,9,1,1,1,1,1,1,2,1,
-        2,1,2,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,3,3,67,8,3,1,4,1,4,
-        1,4,1,5,1,5,1,5,1,5,1,5,3,5,77,8,5,3,5,79,8,5,1,6,1,6,1,6,1,6,3,
-        6,85,8,6,1,6,1,6,1,6,1,7,1,7,1,7,1,7,1,7,1,8,1,8,1,8,1,8,1,8,1,8,
-        1,8,1,8,1,8,1,8,1,8,5,8,106,8,8,10,8,12,8,109,9,8,1,8,1,8,3,8,113,
-        8,8,1,9,1,9,5,9,117,8,9,10,9,12,9,120,9,9,1,9,1,9,1,10,1,10,1,10,
-        1,10,1,10,1,10,1,11,1,11,1,11,1,11,1,11,1,11,4,11,136,8,11,11,11,
-        12,11,137,1,11,1,11,1,12,1,12,1,12,3,12,145,8,12,1,12,1,12,1,13,
-        1,13,1,13,1,14,1,14,1,14,5,14,155,8,14,10,14,12,14,158,9,14,1,15,
-        1,15,1,16,1,16,1,16,5,16,165,8,16,10,16,12,16,168,9,16,1,17,1,17,
-        1,17,1,17,5,17,174,8,17,10,17,12,17,177,9,17,1,17,1,17,1,17,5,17,
-        182,8,17,10,17,12,17,185,9,17,1,17,1,17,1,17,5,17,190,8,17,10,17,
-        12,17,193,9,17,1,17,1,17,1,17,1,17,1,17,1,17,1,17,1,17,1,17,1,17,
-        1,17,1,17,1,17,1,17,1,17,1,17,1,17,1,17,3,17,213,8,17,1,17,1,17,
-        1,17,1,17,1,17,1,17,1,17,1,17,1,17,1,17,1,17,1,17,5,17,227,8,17,
-        10,17,12,17,230,9,17,1,17,0,1,34,18,0,2,4,6,8,10,12,14,16,18,20,
-        22,24,26,28,30,32,34,0,4,2,0,15,16,23,23,1,0,13,14,1,0,17,22,1,0,
-        24,25,253,0,37,1,0,0,0,2,41,1,0,0,0,4,53,1,0,0,0,6,66,1,0,0,0,8,
-        68,1,0,0,0,10,71,1,0,0,0,12,80,1,0,0,0,14,89,1,0,0,0,16,94,1,0,0,
-        0,18,114,1,0,0,0,20,123,1,0,0,0,22,129,1,0,0,0,24,141,1,0,0,0,26,
-        148,1,0,0,0,28,151,1,0,0,0,30,159,1,0,0,0,32,161,1,0,0,0,34,212,
-        1,0,0,0,36,38,3,2,1,0,37,36,1,0,0,0,38,39,1,0,0,0,39,37,1,0,0,0,
-        39,40,1,0,0,0,40,1,1,0,0,0,41,42,5,32,0,0,42,43,5,37,0,0,43,48,3,
-        4,2,0,44,47,3,8,4,0,45,47,3,6,3,0,46,44,1,0,0,0,46,45,1,0,0,0,47,
-        50,1,0,0,0,48,46,1,0,0,0,48,49,1,0,0,0,49,51,1,0,0,0,50,48,1,0,0,
-        0,51,52,5,38,0,0,52,3,1,0,0,0,53,54,5,12,0,0,54,55,3,18,9,0,55,5,
-        1,0,0,0,56,67,3,14,7,0,57,67,3,10,5,0,58,67,3,12,6,0,59,67,3,16,
-        8,0,60,67,3,20,10,0,61,67,3,22,11,0,62,67,3,24,12,0,63,67,3,18,9,
-        0,64,67,3,26,13,0,65,67,3,34,17,0,66,56,1,0,0,0,66,57,1,0,0,0,66,
-        58,1,0,0,0,66,59,1,0,0,0,66,60,1,0,0,0,66,61,1,0,0,0,66,62,1,0,0,
-        0,66,63,1,0,0,0,66,64,1,0,0,0,66,65,1,0,0,0,67,7,1,0,0,0,68,69,5,
-        1,0,0,69,70,3,10,5,0,70,9,1,0,0,0,71,78,5,32,0,0,72,76,5,41,0,0,
-        73,77,3,34,17,0,74,77,3,32,16,0,75,77,3,24,12,0,76,73,1,0,0,0,76,
-        74,1,0,0,0,76,75,1,0,0,0,77,79,1,0,0,0,78,72,1,0,0,0,78,79,1,0,0,
-        0,79,11,1,0,0,0,80,81,5,11,0,0,81,82,5,32,0,0,82,84,5,33,0,0,83,
-        85,3,28,14,0,84,83,1,0,0,0,84,85,1,0,0,0,85,86,1,0,0,0,86,87,5,34,
-        0,0,87,88,3,18,9,0,88,13,1,0,0,0,89,90,5,7,0,0,90,91,5,33,0,0,91,
-        92,3,34,17,0,92,93,5,34,0,0,93,15,1,0,0,0,94,95,5,3,0,0,95,96,5,
-        33,0,0,96,97,3,34,17,0,97,98,5,34,0,0,98,107,3,18,9,0,99,100,5,4,
-        0,0,100,101,5,33,0,0,101,102,3,34,17,0,102,103,5,34,0,0,103,104,
-        3,18,9,0,104,106,1,0,0,0,105,99,1,0,0,0,106,109,1,0,0,0,107,105,
-        1,0,0,0,107,108,1,0,0,0,108,112,1,0,0,0,109,107,1,0,0,0,110,111,
-        5,5,0,0,111,113,3,18,9,0,112,110,1,0,0,0,112,113,1,0,0,0,113,17,
-        1,0,0,0,114,118,5,37,0,0,115,117,3,6,3,0,116,115,1,0,0,0,117,120,
-        1,0,0,0,118,116,1,0,0,0,118,119,1,0,0,0,119,121,1,0,0,0,120,118,
-        1,0,0,0,121,122,5,38,0,0,122,19,1,0,0,0,123,124,5,8,0,0,124,125,
-        3,10,5,0,125,126,5,9,0,0,126,127,3,34,17,0,127,128,3,18,9,0,128,
-        21,1,0,0,0,129,130,5,10,0,0,130,131,5,33,0,0,131,132,3,34,17,0,132,
-        133,5,34,0,0,133,135,5,37,0,0,134,136,3,6,3,0,135,134,1,0,0,0,136,
-        137,1,0,0,0,137,135,1,0,0,0,137,138,1,0,0,0,138,139,1,0,0,0,139,
-        140,5,38,0,0,140,23,1,0,0,0,141,142,5,32,0,0,142,144,5,33,0,0,143,
-        145,3,32,16,0,144,143,1,0,0,0,144,145,1,0,0,0,145,146,1,0,0,0,146,
-        147,5,34,0,0,147,25,1,0,0,0,148,149,5,6,0,0,149,150,3,34,17,0,150,
-        27,1,0,0,0,151,156,3,30,15,0,152,153,5,39,0,0,153,155,3,30,15,0,
-        154,152,1,0,0,0,155,158,1,0,0,0,156,154,1,0,0,0,156,157,1,0,0,0,
-        157,29,1,0,0,0,158,156,1,0,0,0,159,160,5,32,0,0,160,31,1,0,0,0,161,
-        166,3,34,17,0,162,163,5,39,0,0,163,165,3,34,17,0,164,162,1,0,0,0,
-        165,168,1,0,0,0,166,164,1,0,0,0,166,167,1,0,0,0,167,33,1,0,0,0,168,
-        166,1,0,0,0,169,170,6,17,-1,0,170,213,3,24,12,0,171,175,5,35,0,0,
-        172,174,3,34,17,0,173,172,1,0,0,0,174,177,1,0,0,0,175,173,1,0,0,
-        0,175,176,1,0,0,0,176,178,1,0,0,0,177,175,1,0,0,0,178,213,5,36,0,
-        0,179,183,5,35,0,0,180,182,3,34,17,0,181,180,1,0,0,0,182,185,1,0,
-        0,0,183,181,1,0,0,0,183,184,1,0,0,0,184,186,1,0,0,0,185,183,1,0,
-        0,0,186,187,5,36,0,0,187,191,5,41,0,0,188,190,3,34,17,0,189,188,
-        1,0,0,0,190,193,1,0,0,0,191,189,1,0,0,0,191,192,1,0,0,0,192,213,
-        1,0,0,0,193,191,1,0,0,0,194,195,5,32,0,0,195,196,5,40,0,0,196,197,
-        5,2,0,0,197,198,5,33,0,0,198,199,3,34,17,0,199,200,5,34,0,0,200,
-        213,1,0,0,0,201,202,5,26,0,0,202,213,3,34,17,7,203,204,5,33,0,0,
-        204,205,3,34,17,0,205,206,5,34,0,0,206,213,1,0,0,0,207,213,5,32,
-        0,0,208,213,5,30,0,0,209,213,5,31,0,0,210,213,5,27,0,0,211,213,5,
-        28,0,0,212,169,1,0,0,0,212,171,1,0,0,0,212,179,1,0,0,0,212,194,1,
-        0,0,0,212,201,1,0,0,0,212,203,1,0,0,0,212,207,1,0,0,0,212,208,1,
-        0,0,0,212,209,1,0,0,0,212,210,1,0,0,0,212,211,1,0,0,0,213,228,1,
-        0,0,0,214,215,10,11,0,0,215,216,7,0,0,0,216,227,3,34,17,12,217,218,
-        10,10,0,0,218,219,7,1,0,0,219,227,3,34,17,11,220,221,10,9,0,0,221,
-        222,7,2,0,0,222,227,3,34,17,10,223,224,10,8,0,0,224,225,7,3,0,0,
-        225,227,3,34,17,9,226,214,1,0,0,0,226,217,1,0,0,0,226,220,1,0,0,
-        0,226,223,1,0,0,0,227,230,1,0,0,0,228,226,1,0,0,0,228,229,1,0,0,
-        0,229,35,1,0,0,0,230,228,1,0,0,0,20,39,46,48,66,76,78,84,107,112,
-        118,137,144,156,166,175,183,191,212,226,228
+        2,1,2,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,3,3,66,8,3,1,4,1,4,1,4,
+        1,5,1,5,1,5,1,5,1,5,3,5,76,8,5,3,5,78,8,5,1,6,1,6,1,6,1,6,3,6,84,
+        8,6,1,6,1,6,1,6,1,7,1,7,1,7,1,7,1,7,1,8,1,8,1,8,1,8,1,8,1,8,1,8,
+        1,8,1,8,1,8,1,8,5,8,105,8,8,10,8,12,8,108,9,8,1,8,1,8,3,8,112,8,
+        8,1,9,1,9,5,9,116,8,9,10,9,12,9,119,9,9,1,9,1,9,1,10,1,10,1,10,1,
+        10,1,10,1,10,1,11,1,11,1,11,1,11,1,11,1,11,4,11,135,8,11,11,11,12,
+        11,136,1,11,1,11,1,12,1,12,1,12,3,12,144,8,12,1,12,1,12,1,13,1,13,
+        1,13,1,14,1,14,1,14,5,14,154,8,14,10,14,12,14,157,9,14,1,15,1,15,
+        1,16,1,16,1,16,5,16,164,8,16,10,16,12,16,167,9,16,1,17,1,17,1,17,
+        1,17,5,17,173,8,17,10,17,12,17,176,9,17,1,17,1,17,1,17,5,17,181,
+        8,17,10,17,12,17,184,9,17,1,17,1,17,1,17,5,17,189,8,17,10,17,12,
+        17,192,9,17,1,17,1,17,1,17,1,17,1,17,1,17,1,17,1,17,1,17,1,17,1,
+        17,1,17,1,17,1,17,1,17,1,17,1,17,1,17,3,17,212,8,17,1,17,1,17,1,
+        17,1,17,1,17,1,17,1,17,1,17,1,17,1,17,1,17,1,17,5,17,226,8,17,10,
+        17,12,17,229,9,17,1,17,0,1,34,18,0,2,4,6,8,10,12,14,16,18,20,22,
+        24,26,28,30,32,34,0,4,2,0,15,16,23,23,1,0,13,14,1,0,17,22,1,0,24,
+        25,251,0,37,1,0,0,0,2,41,1,0,0,0,4,53,1,0,0,0,6,65,1,0,0,0,8,67,
+        1,0,0,0,10,70,1,0,0,0,12,79,1,0,0,0,14,88,1,0,0,0,16,93,1,0,0,0,
+        18,113,1,0,0,0,20,122,1,0,0,0,22,128,1,0,0,0,24,140,1,0,0,0,26,147,
+        1,0,0,0,28,150,1,0,0,0,30,158,1,0,0,0,32,160,1,0,0,0,34,211,1,0,
+        0,0,36,38,3,2,1,0,37,36,1,0,0,0,38,39,1,0,0,0,39,37,1,0,0,0,39,40,
+        1,0,0,0,40,1,1,0,0,0,41,42,5,32,0,0,42,43,5,37,0,0,43,48,3,4,2,0,
+        44,47,3,8,4,0,45,47,3,6,3,0,46,44,1,0,0,0,46,45,1,0,0,0,47,50,1,
+        0,0,0,48,46,1,0,0,0,48,49,1,0,0,0,49,51,1,0,0,0,50,48,1,0,0,0,51,
+        52,5,38,0,0,52,3,1,0,0,0,53,54,5,12,0,0,54,55,3,18,9,0,55,5,1,0,
+        0,0,56,66,3,14,7,0,57,66,3,10,5,0,58,66,3,12,6,0,59,66,3,16,8,0,
+        60,66,3,20,10,0,61,66,3,22,11,0,62,66,3,18,9,0,63,66,3,26,13,0,64,
+        66,3,34,17,0,65,56,1,0,0,0,65,57,1,0,0,0,65,58,1,0,0,0,65,59,1,0,
+        0,0,65,60,1,0,0,0,65,61,1,0,0,0,65,62,1,0,0,0,65,63,1,0,0,0,65,64,
+        1,0,0,0,66,7,1,0,0,0,67,68,5,1,0,0,68,69,3,10,5,0,69,9,1,0,0,0,70,
+        77,5,32,0,0,71,75,5,41,0,0,72,76,3,34,17,0,73,76,3,32,16,0,74,76,
+        3,24,12,0,75,72,1,0,0,0,75,73,1,0,0,0,75,74,1,0,0,0,76,78,1,0,0,
+        0,77,71,1,0,0,0,77,78,1,0,0,0,78,11,1,0,0,0,79,80,5,11,0,0,80,81,
+        5,32,0,0,81,83,5,33,0,0,82,84,3,28,14,0,83,82,1,0,0,0,83,84,1,0,
+        0,0,84,85,1,0,0,0,85,86,5,34,0,0,86,87,3,18,9,0,87,13,1,0,0,0,88,
+        89,5,7,0,0,89,90,5,33,0,0,90,91,3,34,17,0,91,92,5,34,0,0,92,15,1,
+        0,0,0,93,94,5,3,0,0,94,95,5,33,0,0,95,96,3,34,17,0,96,97,5,34,0,
+        0,97,106,3,18,9,0,98,99,5,4,0,0,99,100,5,33,0,0,100,101,3,34,17,
+        0,101,102,5,34,0,0,102,103,3,18,9,0,103,105,1,0,0,0,104,98,1,0,0,
+        0,105,108,1,0,0,0,106,104,1,0,0,0,106,107,1,0,0,0,107,111,1,0,0,
+        0,108,106,1,0,0,0,109,110,5,5,0,0,110,112,3,18,9,0,111,109,1,0,0,
+        0,111,112,1,0,0,0,112,17,1,0,0,0,113,117,5,37,0,0,114,116,3,6,3,
+        0,115,114,1,0,0,0,116,119,1,0,0,0,117,115,1,0,0,0,117,118,1,0,0,
+        0,118,120,1,0,0,0,119,117,1,0,0,0,120,121,5,38,0,0,121,19,1,0,0,
+        0,122,123,5,8,0,0,123,124,3,10,5,0,124,125,5,9,0,0,125,126,3,34,
+        17,0,126,127,3,18,9,0,127,21,1,0,0,0,128,129,5,10,0,0,129,130,5,
+        33,0,0,130,131,3,34,17,0,131,132,5,34,0,0,132,134,5,37,0,0,133,135,
+        3,6,3,0,134,133,1,0,0,0,135,136,1,0,0,0,136,134,1,0,0,0,136,137,
+        1,0,0,0,137,138,1,0,0,0,138,139,5,38,0,0,139,23,1,0,0,0,140,141,
+        5,32,0,0,141,143,5,33,0,0,142,144,3,32,16,0,143,142,1,0,0,0,143,
+        144,1,0,0,0,144,145,1,0,0,0,145,146,5,34,0,0,146,25,1,0,0,0,147,
+        148,5,6,0,0,148,149,3,34,17,0,149,27,1,0,0,0,150,155,3,30,15,0,151,
+        152,5,39,0,0,152,154,3,30,15,0,153,151,1,0,0,0,154,157,1,0,0,0,155,
+        153,1,0,0,0,155,156,1,0,0,0,156,29,1,0,0,0,157,155,1,0,0,0,158,159,
+        5,32,0,0,159,31,1,0,0,0,160,165,3,34,17,0,161,162,5,39,0,0,162,164,
+        3,34,17,0,163,161,1,0,0,0,164,167,1,0,0,0,165,163,1,0,0,0,165,166,
+        1,0,0,0,166,33,1,0,0,0,167,165,1,0,0,0,168,169,6,17,-1,0,169,212,
+        3,24,12,0,170,174,5,35,0,0,171,173,3,34,17,0,172,171,1,0,0,0,173,
+        176,1,0,0,0,174,172,1,0,0,0,174,175,1,0,0,0,175,177,1,0,0,0,176,
+        174,1,0,0,0,177,212,5,36,0,0,178,182,5,35,0,0,179,181,3,34,17,0,
+        180,179,1,0,0,0,181,184,1,0,0,0,182,180,1,0,0,0,182,183,1,0,0,0,
+        183,185,1,0,0,0,184,182,1,0,0,0,185,186,5,36,0,0,186,190,5,41,0,
+        0,187,189,3,34,17,0,188,187,1,0,0,0,189,192,1,0,0,0,190,188,1,0,
+        0,0,190,191,1,0,0,0,191,212,1,0,0,0,192,190,1,0,0,0,193,194,5,32,
+        0,0,194,195,5,40,0,0,195,196,5,2,0,0,196,197,5,33,0,0,197,198,3,
+        34,17,0,198,199,5,34,0,0,199,212,1,0,0,0,200,201,5,26,0,0,201,212,
+        3,34,17,7,202,203,5,33,0,0,203,204,3,34,17,0,204,205,5,34,0,0,205,
+        212,1,0,0,0,206,212,5,32,0,0,207,212,5,30,0,0,208,212,5,31,0,0,209,
+        212,5,27,0,0,210,212,5,28,0,0,211,168,1,0,0,0,211,170,1,0,0,0,211,
+        178,1,0,0,0,211,193,1,0,0,0,211,200,1,0,0,0,211,202,1,0,0,0,211,
+        206,1,0,0,0,211,207,1,0,0,0,211,208,1,0,0,0,211,209,1,0,0,0,211,
+        210,1,0,0,0,212,227,1,0,0,0,213,214,10,11,0,0,214,215,7,0,0,0,215,
+        226,3,34,17,12,216,217,10,10,0,0,217,218,7,1,0,0,218,226,3,34,17,
+        11,219,220,10,9,0,0,220,221,7,2,0,0,221,226,3,34,17,10,222,223,10,
+        8,0,0,223,224,7,3,0,0,224,226,3,34,17,9,225,213,1,0,0,0,225,216,
+        1,0,0,0,225,219,1,0,0,0,225,222,1,0,0,0,226,229,1,0,0,0,227,225,
+        1,0,0,0,227,228,1,0,0,0,228,35,1,0,0,0,229,227,1,0,0,0,20,39,46,
+        48,65,75,77,83,106,111,117,136,143,155,165,174,182,190,211,225,227
     ]
 
 class RogueLangParser ( Parser ):
@@ -421,10 +420,6 @@ class RogueLangParser ( Parser ):
             return self.getTypedRuleContext(RogueLangParser.WhileLoopContext,0)
 
 
-        def functionCall(self):
-            return self.getTypedRuleContext(RogueLangParser.FunctionCallContext,0)
-
-
         def statBlock(self):
             return self.getTypedRuleContext(RogueLangParser.StatBlockContext,0)
 
@@ -454,7 +449,7 @@ class RogueLangParser ( Parser ):
         localctx = RogueLangParser.StatContext(self, self._ctx, self.state)
         self.enterRule(localctx, 6, self.RULE_stat)
         try:
-            self.state = 66
+            self.state = 65
             self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,3,self._ctx)
             if la_ == 1:
@@ -496,24 +491,18 @@ class RogueLangParser ( Parser ):
             elif la_ == 7:
                 self.enterOuterAlt(localctx, 7)
                 self.state = 62
-                self.functionCall()
+                self.statBlock()
                 pass
 
             elif la_ == 8:
                 self.enterOuterAlt(localctx, 8)
                 self.state = 63
-                self.statBlock()
+                self.returnStat()
                 pass
 
             elif la_ == 9:
                 self.enterOuterAlt(localctx, 9)
                 self.state = 64
-                self.returnStat()
-                pass
-
-            elif la_ == 10:
-                self.enterOuterAlt(localctx, 10)
-                self.state = 65
                 self.expr(0)
                 pass
 
@@ -556,9 +545,9 @@ class RogueLangParser ( Parser ):
         self.enterRule(localctx, 8, self.RULE_field)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 68
+            self.state = 67
             self.match(RogueLangParser.T__0)
-            self.state = 69
+            self.state = 68
             self.varDecl()
         except RecognitionException as re:
             localctx.exception = re
@@ -613,29 +602,29 @@ class RogueLangParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 71
+            self.state = 70
             self.match(RogueLangParser.ID)
-            self.state = 78
+            self.state = 77
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==41:
-                self.state = 72
+                self.state = 71
                 self.match(RogueLangParser.EQUAL_SIGN)
-                self.state = 76
+                self.state = 75
                 self._errHandler.sync(self)
                 la_ = self._interp.adaptivePredict(self._input,4,self._ctx)
                 if la_ == 1:
-                    self.state = 73
+                    self.state = 72
                     self.expr(0)
                     pass
 
                 elif la_ == 2:
-                    self.state = 74
+                    self.state = 73
                     self.args()
                     pass
 
                 elif la_ == 3:
-                    self.state = 75
+                    self.state = 74
                     self.functionCall()
                     pass
 
@@ -697,23 +686,23 @@ class RogueLangParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 80
+            self.state = 79
             self.match(RogueLangParser.DEF)
-            self.state = 81
+            self.state = 80
             self.match(RogueLangParser.ID)
-            self.state = 82
+            self.state = 81
             self.match(RogueLangParser.OPEN_PARENTH)
-            self.state = 84
+            self.state = 83
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==32:
-                self.state = 83
+                self.state = 82
                 self.params()
 
 
-            self.state = 86
+            self.state = 85
             self.match(RogueLangParser.CLOSED_PARENTH)
-            self.state = 87
+            self.state = 86
             self.statBlock()
         except RecognitionException as re:
             localctx.exception = re
@@ -762,13 +751,13 @@ class RogueLangParser ( Parser ):
         self.enterRule(localctx, 14, self.RULE_printStat)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 89
+            self.state = 88
             self.match(RogueLangParser.PRINT)
-            self.state = 90
+            self.state = 89
             self.match(RogueLangParser.OPEN_PARENTH)
-            self.state = 91
+            self.state = 90
             self.expr(0)
-            self.state = 92
+            self.state = 91
             self.match(RogueLangParser.CLOSED_PARENTH)
         except RecognitionException as re:
             localctx.exception = re
@@ -843,41 +832,41 @@ class RogueLangParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 94
+            self.state = 93
             self.match(RogueLangParser.IF)
-            self.state = 95
+            self.state = 94
             self.match(RogueLangParser.OPEN_PARENTH)
-            self.state = 96
+            self.state = 95
             self.expr(0)
-            self.state = 97
+            self.state = 96
             self.match(RogueLangParser.CLOSED_PARENTH)
-            self.state = 98
+            self.state = 97
             self.statBlock()
-            self.state = 107
+            self.state = 106
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while _la==4:
-                self.state = 99
+                self.state = 98
                 self.match(RogueLangParser.ELIF)
-                self.state = 100
+                self.state = 99
                 self.match(RogueLangParser.OPEN_PARENTH)
-                self.state = 101
+                self.state = 100
                 self.expr(0)
-                self.state = 102
+                self.state = 101
                 self.match(RogueLangParser.CLOSED_PARENTH)
-                self.state = 103
+                self.state = 102
                 self.statBlock()
-                self.state = 109
+                self.state = 108
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
-            self.state = 112
+            self.state = 111
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==5:
-                self.state = 110
+                self.state = 109
                 self.match(RogueLangParser.ELSE)
-                self.state = 111
+                self.state = 110
                 self.statBlock()
 
 
@@ -929,19 +918,19 @@ class RogueLangParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 114
+            self.state = 113
             self.match(RogueLangParser.OPEN_CURL)
-            self.state = 118
+            self.state = 117
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while (((_la) & ~0x3f) == 0 and ((1 << _la) & 188374584776) != 0):
-                self.state = 115
+                self.state = 114
                 self.stat()
-                self.state = 120
+                self.state = 119
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
-            self.state = 121
+            self.state = 120
             self.match(RogueLangParser.CLOSED_CURL)
         except RecognitionException as re:
             localctx.exception = re
@@ -995,15 +984,15 @@ class RogueLangParser ( Parser ):
         self.enterRule(localctx, 20, self.RULE_forLoop)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 123
+            self.state = 122
             self.match(RogueLangParser.FOR)
-            self.state = 124
+            self.state = 123
             self.varDecl()
-            self.state = 125
+            self.state = 124
             self.match(RogueLangParser.IN)
-            self.state = 126
+            self.state = 125
             self.expr(0)
-            self.state = 127
+            self.state = 126
             self.statBlock()
         except RecognitionException as re:
             localctx.exception = re
@@ -1066,29 +1055,29 @@ class RogueLangParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 129
+            self.state = 128
             self.match(RogueLangParser.WHILE)
-            self.state = 130
+            self.state = 129
             self.match(RogueLangParser.OPEN_PARENTH)
-            self.state = 131
+            self.state = 130
             self.expr(0)
-            self.state = 132
+            self.state = 131
             self.match(RogueLangParser.CLOSED_PARENTH)
-            self.state = 133
+            self.state = 132
             self.match(RogueLangParser.OPEN_CURL)
-            self.state = 135 
+            self.state = 134 
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while True:
-                self.state = 134
+                self.state = 133
                 self.stat()
-                self.state = 137 
+                self.state = 136 
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if not ((((_la) & ~0x3f) == 0 and ((1 << _la) & 188374584776) != 0)):
                     break
 
-            self.state = 139
+            self.state = 138
             self.match(RogueLangParser.CLOSED_CURL)
         except RecognitionException as re:
             localctx.exception = re
@@ -1138,19 +1127,19 @@ class RogueLangParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 141
+            self.state = 140
             self.match(RogueLangParser.ID)
-            self.state = 142
+            self.state = 141
             self.match(RogueLangParser.OPEN_PARENTH)
-            self.state = 144
+            self.state = 143
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if (((_la) & ~0x3f) == 0 and ((1 << _la) & 50935627776) != 0):
-                self.state = 143
+                self.state = 142
                 self.args()
 
 
-            self.state = 146
+            self.state = 145
             self.match(RogueLangParser.CLOSED_PARENTH)
         except RecognitionException as re:
             localctx.exception = re
@@ -1193,9 +1182,9 @@ class RogueLangParser ( Parser ):
         self.enterRule(localctx, 26, self.RULE_returnStat)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 148
+            self.state = 147
             self.match(RogueLangParser.RETURN)
-            self.state = 149
+            self.state = 148
             self.expr(0)
         except RecognitionException as re:
             localctx.exception = re
@@ -1245,17 +1234,17 @@ class RogueLangParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 151
+            self.state = 150
             self.param()
-            self.state = 156
+            self.state = 155
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while _la==39:
-                self.state = 152
+                self.state = 151
                 self.match(RogueLangParser.COMMA)
-                self.state = 153
+                self.state = 152
                 self.param()
-                self.state = 158
+                self.state = 157
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
@@ -1296,7 +1285,7 @@ class RogueLangParser ( Parser ):
         self.enterRule(localctx, 30, self.RULE_param)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 159
+            self.state = 158
             self.match(RogueLangParser.ID)
         except RecognitionException as re:
             localctx.exception = re
@@ -1346,17 +1335,17 @@ class RogueLangParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 161
+            self.state = 160
             self.expr(0)
-            self.state = 166
+            self.state = 165
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while _la==39:
-                self.state = 162
+                self.state = 161
                 self.match(RogueLangParser.COMMA)
-                self.state = 163
+                self.state = 162
                 self.expr(0)
-                self.state = 168
+                self.state = 167
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
@@ -1484,120 +1473,120 @@ class RogueLangParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 212
+            self.state = 211
             self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,17,self._ctx)
             if la_ == 1:
-                self.state = 170
+                self.state = 169
                 self.functionCall()
                 pass
 
             elif la_ == 2:
-                self.state = 171
+                self.state = 170
                 self.match(RogueLangParser.OPEN_BRACK)
-                self.state = 175
+                self.state = 174
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while (((_la) & ~0x3f) == 0 and ((1 << _la) & 50935627776) != 0):
-                    self.state = 172
+                    self.state = 171
                     self.expr(0)
-                    self.state = 177
+                    self.state = 176
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
 
-                self.state = 178
+                self.state = 177
                 self.match(RogueLangParser.CLOSED_BRACK)
                 pass
 
             elif la_ == 3:
-                self.state = 179
+                self.state = 178
                 self.match(RogueLangParser.OPEN_BRACK)
-                self.state = 183
+                self.state = 182
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while (((_la) & ~0x3f) == 0 and ((1 << _la) & 50935627776) != 0):
-                    self.state = 180
+                    self.state = 179
                     self.expr(0)
-                    self.state = 185
+                    self.state = 184
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
 
-                self.state = 186
+                self.state = 185
                 self.match(RogueLangParser.CLOSED_BRACK)
-                self.state = 187
+                self.state = 186
                 self.match(RogueLangParser.EQUAL_SIGN)
-                self.state = 191
+                self.state = 190
                 self._errHandler.sync(self)
                 _alt = self._interp.adaptivePredict(self._input,16,self._ctx)
                 while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
                     if _alt==1:
-                        self.state = 188
+                        self.state = 187
                         self.expr(0) 
-                    self.state = 193
+                    self.state = 192
                     self._errHandler.sync(self)
                     _alt = self._interp.adaptivePredict(self._input,16,self._ctx)
 
                 pass
 
             elif la_ == 4:
-                self.state = 194
+                self.state = 193
                 self.match(RogueLangParser.ID)
-                self.state = 195
+                self.state = 194
                 self.match(RogueLangParser.DOT)
-                self.state = 196
+                self.state = 195
                 self.match(RogueLangParser.T__1)
-                self.state = 197
+                self.state = 196
                 self.match(RogueLangParser.OPEN_PARENTH)
-                self.state = 198
+                self.state = 197
                 self.expr(0)
-                self.state = 199
+                self.state = 198
                 self.match(RogueLangParser.CLOSED_PARENTH)
                 pass
 
             elif la_ == 5:
-                self.state = 201
+                self.state = 200
                 self.match(RogueLangParser.NOT)
-                self.state = 202
+                self.state = 201
                 self.expr(7)
                 pass
 
             elif la_ == 6:
-                self.state = 203
+                self.state = 202
                 self.match(RogueLangParser.OPEN_PARENTH)
-                self.state = 204
+                self.state = 203
                 self.expr(0)
-                self.state = 205
+                self.state = 204
                 self.match(RogueLangParser.CLOSED_PARENTH)
                 pass
 
             elif la_ == 7:
-                self.state = 207
+                self.state = 206
                 self.match(RogueLangParser.ID)
                 pass
 
             elif la_ == 8:
-                self.state = 208
+                self.state = 207
                 self.match(RogueLangParser.NUMBER)
                 pass
 
             elif la_ == 9:
-                self.state = 209
+                self.state = 208
                 self.match(RogueLangParser.STRING)
                 pass
 
             elif la_ == 10:
-                self.state = 210
+                self.state = 209
                 self.match(RogueLangParser.TRUE)
                 pass
 
             elif la_ == 11:
-                self.state = 211
+                self.state = 210
                 self.match(RogueLangParser.FALSE)
                 pass
 
 
             self._ctx.stop = self._input.LT(-1)
-            self.state = 228
+            self.state = 227
             self._errHandler.sync(self)
             _alt = self._interp.adaptivePredict(self._input,19,self._ctx)
             while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
@@ -1605,17 +1594,17 @@ class RogueLangParser ( Parser ):
                     if self._parseListeners is not None:
                         self.triggerExitRuleEvent()
                     _prevctx = localctx
-                    self.state = 226
+                    self.state = 225
                     self._errHandler.sync(self)
                     la_ = self._interp.adaptivePredict(self._input,18,self._ctx)
                     if la_ == 1:
                         localctx = RogueLangParser.ExprContext(self, _parentctx, _parentState)
                         self.pushNewRecursionContext(localctx, _startState, self.RULE_expr)
-                        self.state = 214
+                        self.state = 213
                         if not self.precpred(self._ctx, 11):
                             from antlr4.error.Errors import FailedPredicateException
                             raise FailedPredicateException(self, "self.precpred(self._ctx, 11)")
-                        self.state = 215
+                        self.state = 214
                         localctx.op = self._input.LT(1)
                         _la = self._input.LA(1)
                         if not((((_la) & ~0x3f) == 0 and ((1 << _la) & 8486912) != 0)):
@@ -1623,18 +1612,18 @@ class RogueLangParser ( Parser ):
                         else:
                             self._errHandler.reportMatch(self)
                             self.consume()
-                        self.state = 216
+                        self.state = 215
                         self.expr(12)
                         pass
 
                     elif la_ == 2:
                         localctx = RogueLangParser.ExprContext(self, _parentctx, _parentState)
                         self.pushNewRecursionContext(localctx, _startState, self.RULE_expr)
-                        self.state = 217
+                        self.state = 216
                         if not self.precpred(self._ctx, 10):
                             from antlr4.error.Errors import FailedPredicateException
                             raise FailedPredicateException(self, "self.precpred(self._ctx, 10)")
-                        self.state = 218
+                        self.state = 217
                         localctx.op = self._input.LT(1)
                         _la = self._input.LA(1)
                         if not(_la==13 or _la==14):
@@ -1642,18 +1631,18 @@ class RogueLangParser ( Parser ):
                         else:
                             self._errHandler.reportMatch(self)
                             self.consume()
-                        self.state = 219
+                        self.state = 218
                         self.expr(11)
                         pass
 
                     elif la_ == 3:
                         localctx = RogueLangParser.ExprContext(self, _parentctx, _parentState)
                         self.pushNewRecursionContext(localctx, _startState, self.RULE_expr)
-                        self.state = 220
+                        self.state = 219
                         if not self.precpred(self._ctx, 9):
                             from antlr4.error.Errors import FailedPredicateException
                             raise FailedPredicateException(self, "self.precpred(self._ctx, 9)")
-                        self.state = 221
+                        self.state = 220
                         localctx.op = self._input.LT(1)
                         _la = self._input.LA(1)
                         if not((((_la) & ~0x3f) == 0 and ((1 << _la) & 8257536) != 0)):
@@ -1661,18 +1650,18 @@ class RogueLangParser ( Parser ):
                         else:
                             self._errHandler.reportMatch(self)
                             self.consume()
-                        self.state = 222
+                        self.state = 221
                         self.expr(10)
                         pass
 
                     elif la_ == 4:
                         localctx = RogueLangParser.ExprContext(self, _parentctx, _parentState)
                         self.pushNewRecursionContext(localctx, _startState, self.RULE_expr)
-                        self.state = 223
+                        self.state = 222
                         if not self.precpred(self._ctx, 8):
                             from antlr4.error.Errors import FailedPredicateException
                             raise FailedPredicateException(self, "self.precpred(self._ctx, 8)")
-                        self.state = 224
+                        self.state = 223
                         localctx.op = self._input.LT(1)
                         _la = self._input.LA(1)
                         if not(_la==24 or _la==25):
@@ -1680,12 +1669,12 @@ class RogueLangParser ( Parser ):
                         else:
                             self._errHandler.reportMatch(self)
                             self.consume()
-                        self.state = 225
+                        self.state = 224
                         self.expr(9)
                         pass
 
              
-                self.state = 230
+                self.state = 229
                 self._errHandler.sync(self)
                 _alt = self._interp.adaptivePredict(self._input,19,self._ctx)
 

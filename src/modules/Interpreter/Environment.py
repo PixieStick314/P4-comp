@@ -18,6 +18,6 @@ class Environment:
         if name in self.values:
             return self.values[name]
         elif self.enclosing is not None:
-            self.enclosing.get(name)
+            return self.enclosing.get(name)
         else:
             raise Exception("Undefined variable: {}".format(name))

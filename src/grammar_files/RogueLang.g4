@@ -12,7 +12,6 @@ stat:   printStat
       | ifStat
       | forLoop
       | whileLoop
-      | functionCall
       | statBlock
       | returnStat
       | expr;

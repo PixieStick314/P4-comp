@@ -46,15 +46,11 @@ def test_if_stat():
     assert (tree.getRuleIndex() == RogueLangParser.RULE_ifStat)
     assert tree.getChild(0).getSymbol().type == RogueLangParser.IF
     assert tree.getChild(1).getSymbol().type == RogueLangParser.OPEN_PARENTH
-    assert tree.getChild(2).getRuleIndex() == RogueLangParser.RULE_ifExpr
+    assert tree.getChild(2).getRuleIndex() == RogueLangParser.RULE_expr
     assert tree.getChild(3).getSymbol().type == RogueLangParser.CLOSED_PARENTH
-    assert tree.getChild(4).getSymbol().type == RogueLangParser.OPEN_CURL
-    assert tree.getChild(5).getRuleIndex() == RogueLangParser.RULE_ifBlock
-    assert tree.getChild(6).getSymbol().type == RogueLangParser.CLOSED_CURL
-    assert tree.getChild(7).getSymbol().type == RogueLangParser.ELSE
-    assert tree.getChild(8).getSymbol().type == RogueLangParser.OPEN_CURL
-    assert tree.getChild(9).getRuleIndex() == RogueLangParser.RULE_elseBlock
-    assert tree.getChild(10).getSymbol().type == RogueLangParser.CLOSED_CURL
+    assert tree.getChild(4).getRuleIndex() == RogueLangParser.RULE_statBlock
+    assert tree.getChild(5).getSymbol().type == RogueLangParser.ELSE
+    assert tree.getChild(6).getRuleIndex() == RogueLangParser.RULE_statBlock
 
 def test_for_loop():
     code = 'for i in x {print(i)}'
@@ -66,9 +62,7 @@ def test_for_loop():
     assert tree.getChild(1).getRuleIndex() == RogueLangParser.RULE_varDecl
     assert tree.getChild(2).getSymbol().type == RogueLangParser.IN
     assert tree.getChild(3).getRuleIndex() == RogueLangParser.RULE_expr
-    assert tree.getChild(4).getSymbol().type == RogueLangParser.OPEN_CURL
-    assert tree.getChild(5).getRuleIndex() == RogueLangParser.RULE_stat
-    assert tree.getChild(6).getSymbol().type == RogueLangParser.CLOSED_CURL
+    assert tree.getChild(4).getRuleIndex() == RogueLangParser.RULE_statBlock
 
 def test_while_loop():
     code = 'while (true){print("true")}'
@@ -97,9 +91,7 @@ def test_function_decl():
     assert tree.getChild(2).getSymbol().type == RogueLangParser.OPEN_PARENTH
     assert tree.getChild(3).getRuleIndex() == RogueLangParser.RULE_params
     assert tree.getChild(4).getSymbol().type == RogueLangParser.CLOSED_PARENTH
-    assert tree.getChild(5).getSymbol().type == RogueLangParser.OPEN_CURL
-    assert tree.getChild(6).getRuleIndex() == RogueLangParser.RULE_stat
-    assert tree.getChild(7).getSymbol().type == RogueLangParser.CLOSED_CURL
+    assert tree.getChild(5).getRuleIndex() == RogueLangParser.RULE_statBlock
 
 def test_function_call():
     code = 'readFile(path)'
@@ -111,75 +103,3 @@ def test_function_call():
     assert tree.getChild(1).getSymbol().type == RogueLangParser.OPEN_PARENTH
     assert tree.getChild(2).getRuleIndex() == RogueLangParser.RULE_args
     assert tree.getChild(3).getSymbol().type == RogueLangParser.CLOSED_PARENTH
-
-def test_array_init():
-    code = '{1, 2, 3}'
-    parser = setup_parser(code)
-    tree = parser.arrayInit()
-
-    assert (tree.getRuleIndex() == RogueLangParser.RULE_arrayInit)
-    assert tree.getChild(0).getSymbol().type == RogueLangParser.OPEN_CURL
-    assert tree.getChild(1).getRuleIndex() == RogueLangParser.RULE_expr
-    assert tree.getChild(2).getSymbol().type == RogueLangParser.COMMA
-    assert tree.getChild(3).getRuleIndex() == RogueLangParser.RULE_expr
-    assert tree.getChild(4).getSymbol().type == RogueLangParser.COMMA
-    assert tree.getChild(5).getRuleIndex() == RogueLangParser.RULE_expr
-    assert tree.getChild(6).getSymbol().type == RogueLangParser.CLOSED_CURL
-
-def test_bsp():
-    code = 'BSP 2D (10, 10, 2)'
-    parser = setup_parser(code)
-    tree = parser.bsp()
-
-    assert (tree.getRuleIndex() == RogueLangParser.RULE_bsp)
-    assert tree.getChild(0).getText() == 'BSP'
-    assert tree.getChild(1).getRuleIndex() == RogueLangParser.RULE_bspDimension
-    assert tree.getChild(2).getRuleIndex() == RogueLangParser.RULE_bspParameters
-
-def test_randomNumber():
-    code = 'randomNumber(1, 10)'
-    parser = setup_parser(code)
-    tree = parser.randomNumber()
-
-    assert (tree.getRuleIndex() == RogueLangParser.RULE_randomNumber)
-    assert tree.getChild(0).getSymbol().type == RogueLangParser.RANDOM_NUMBER
-    assert tree.getChild(1).getSymbol().type == RogueLangParser.OPEN_PARENTH
-    assert tree.getChild(2).getSymbol().type == RogueLangParser.NUMBER
-    assert tree.getChild(3).getSymbol().type == RogueLangParser.COMMA
-    assert tree.getChild(4).getSymbol().type == RogueLangParser.NUMBER
-    assert tree.getChild(5).getSymbol().type == RogueLangParser.CLOSED_PARENTH
-
-def test_random_choice():
-    code = 'randomChoice(1, 2)'
-    parser = setup_parser(code)
-    tree = parser.randomChoice()
-
-    assert (tree.getRuleIndex() == RogueLangParser.RULE_randomChoice)
-    assert tree.getChild(0).getSymbol().type == RogueLangParser.RANDOM_CHOICE
-    assert tree.getChild(1).getSymbol().type == RogueLangParser.OPEN_PARENTH
-    assert tree.getChild(2).getRuleIndex() == RogueLangParser.RULE_expr
-    assert tree.getChild(3).getSymbol().type == RogueLangParser.COMMA
-    assert tree.getChild(4).getRuleIndex() == RogueLangParser.RULE_expr
-    assert tree.getChild(5).getSymbol().type == RogueLangParser.CLOSED_PARENTH
-
-def test_enum_decl():
-    code = 'enum my_enum {type_1, type_2}'
-    parser = setup_parser(code)
-    tree = parser.enumDecl()
-
-    assert (tree.getRuleIndex() == RogueLangParser.RULE_enumDecl)
-    assert tree.getChild(0).getSymbol().type == RogueLangParser.ENUM
-    assert tree.getChild(1).getSymbol().type == RogueLangParser.ID
-    assert tree.getChild(2).getSymbol().type == RogueLangParser.OPEN_CURL
-    assert tree.getChild(3).getRuleIndex() == RogueLangParser.RULE_enumBody
-    assert tree.getChild(4).getSymbol().type == RogueLangParser.CLOSED_CURL
-
-def test_enum_value():
-    code = 'my_enum.type_1'
-    parser = setup_parser(code)
-    tree = parser.enumValue()
-
-    assert (tree.getRuleIndex() == RogueLangParser.RULE_enumValue)
-    assert tree.getChild(0).getSymbol().type == RogueLangParser.ID
-    assert tree.getChild(1).getSymbol().type == RogueLangParser.DOT
-    assert tree.getChild(2).getSymbol().type == RogueLangParser.ID

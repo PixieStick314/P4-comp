@@ -1,3 +1,5 @@
+import json
+
 from ExecutorHelper import get_visitor
 from grammar_files.generated.RogueLangParser import RogueLangParser
 from grammar_files.generated.RogueLangLexer import RogueLangLexer
@@ -83,12 +85,50 @@ def test_array_init():
 def test_jsonify():
     code = '''Map {
     procedure {
+    x = 3
     }
     field x = 5
+    y = 3
     }
     '''
     parser = setup_parser(code)
     tree = parser.object_()
     visitor = Visitor()
     output = visitor.visit(tree)
-    print(output)
+
+    print(visitor.environment.values)
+
+    assert output == json.dumps({"x": 3.0})
+
+def test_json_function():
+    code = '''Map {
+    procedure {
+    x = setTo3()
+    }
+    field x = 5
+    def setTo3() {
+    return 3
+    }
+    }
+    '''
+    parser = setup_parser(code)
+    tree = parser.object_()
+    visitor = Visitor()
+    output = visitor.visit(tree)
+
+    print(visitor.environment.values)
+
+    assert output == json.dumps({"x": 3.0})
+
+def test_sanity():
+    x = 0
+
+    try:
+        test_exception()
+    except Exception as e:
+        x = e.args[0]
+
+    assert x == 3
+
+def test_exception():
+    raise Exception(3)
