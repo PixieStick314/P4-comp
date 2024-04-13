@@ -13,7 +13,9 @@ class Visitor(RogueLangVisitor):
         self.environment = Environment(None)
 
     def visitProg(self, ctx:RogueLangParser.ProgContext):
-        self.visitChildren(ctx)
+        for stat in ctx.stat():
+            self.visit(stat)
+        return self.visit(ctx.object_())
 
     def visitObject(self, ctx:RogueLangParser.ObjectContext):
         self.environment = Environment(None)

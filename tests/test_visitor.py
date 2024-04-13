@@ -24,7 +24,7 @@ def test_json_dumps():
     }
     '''
     parser = setup_parser(code)
-    tree = parser.object_()
+    tree = parser.prog()
     visitor = Visitor()
     output = visitor.visit(tree)
 
@@ -45,7 +45,7 @@ def test_function_decl_and_call():
     }
     '''
     parser = setup_parser(code)
-    tree = parser.object_()
+    tree = parser.prog()
     visitor = Visitor()
     output = visitor.visit(tree)
 
@@ -61,7 +61,7 @@ def test_arithmetic():
     }
     '''
     parser = setup_parser(code)
-    tree = parser.object_()
+    tree = parser.prog()
     visitor = Visitor()
     output = visitor.visit(tree)
 
@@ -84,7 +84,7 @@ def test_nested_if_stat():
     }
     '''
     parser = setup_parser(code)
-    tree = parser.object_()
+    tree = parser.prog()
     visitor = Visitor()
     output = visitor.visit(tree)
 
@@ -110,7 +110,7 @@ def test_elif_stat():
     }
     '''
     parser = setup_parser(code)
-    tree = parser.object_()
+    tree = parser.prog()
     visitor = Visitor()
     output = visitor.visit(tree)
 
@@ -133,7 +133,7 @@ def test_else_stat():
     }
     '''
     parser = setup_parser(code)
-    tree = parser.object_()
+    tree = parser.prog()
     visitor = Visitor()
     output = visitor.visit(tree)
 
@@ -153,7 +153,7 @@ def test_while_loop():
     }
     '''
     parser = setup_parser(code)
-    tree = parser.object_()
+    tree = parser.prog()
     visitor = Visitor()
     output = visitor.visit(tree)
 
