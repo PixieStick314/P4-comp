@@ -75,17 +75,7 @@ class Visitor(RogueLangVisitor):
         self.visit(ctx.statBlock())
 
     def visitForLoop(self, ctx):
-        name = ctx.varDecl().ID().getText()
-        array = self.visit(ctx.expr())
-        originalVal = self.environment.get(name)
-        for item in array:
-            self.environment.assign(name, item)
-            for stat in ctx.stat():
-                self.visit(stat)
-        if originalVal is not None:
-            self.variables[name] = originalVal
-        else:
-            del self.variables[name]
+        pass
 
     def visitWhileLoop(self, ctx):
         while self.visit(ctx.expr()):
