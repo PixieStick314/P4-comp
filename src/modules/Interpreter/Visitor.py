@@ -10,6 +10,7 @@ class Visitor(RogueLangVisitor):
     def __init__(self):
         super().__init__()
         self.environment = Environment(None)
+        self.functions = {}
 
     def visitProg(self, ctx:RogueLangParser.ProgContext):
         for stat in ctx.stat():
@@ -91,11 +92,15 @@ class Visitor(RogueLangVisitor):
         body = ctx.statBlock()
 
         function = Function(params, body)
-        self.environment.define(name, function)
+        self.functions[name] = function
 
     def visitParams(self, ctx:RogueLangParser):
         params = [self.visitChildren(ctx)]
         return params
+
+    def visitParam(self, ctx:RogueLangParser.ParamContext):
+        name = ctx.ID().getText()
+        return name
 
     def visitFunctionCall(self, ctx:RogueLangParser.FunctionCallContext):
         name = ctx.ID().getText()
@@ -105,10 +110,11 @@ class Visitor(RogueLangVisitor):
         self.environment = Environment(None)
         if args is not None:
             for i in range(len(args)):
-                self.environment.define(previous.get(name).params[i], args[i])
+                params = self.functions[name].params
+                self.environment.define(params[i], args[i])
 
         try:
-            self.visit(previous.get(name).body)
+            self.visit(self.functions[name].body)
         except Exception as e:
             return e.args[0]
         finally:

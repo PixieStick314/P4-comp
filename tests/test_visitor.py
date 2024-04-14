@@ -159,3 +159,27 @@ def test_while_loop():
     print(visitor.environment.values)
 
     assert output == json.dumps({"x": 0.0})
+
+
+def test_nested_function_call():
+    code = '''Map {
+    procedure {
+    x = setToX(setTo3())
+    }
+    field x = 5
+    def setToX(x){
+    return x
+    }
+    def setTo3() {
+    return 3
+    }
+    }
+    '''
+    parser = setup_parser(code)
+    tree = parser.prog()
+    visitor = Visitor()
+    output = visitor.visit(tree)
+
+    print(visitor.environment.values)
+
+    assert output == json.dumps({"x": 3.0})
