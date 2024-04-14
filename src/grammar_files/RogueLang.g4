@@ -17,7 +17,8 @@ stat:   printStat
       | expr;
 
 field             : 'field' varDecl;
-varDecl           : ID  (EQUAL_SIGN (expr | functionCall))?;
+array             : OPEN_BRACK (expr (COMMA expr)*)? CLOSED_BRACK;
+varDecl           : ID  (EQUAL_SIGN (expr | functionCall | array))?;
 functionDecl      : DEF ID OPEN_PARENTH params? CLOSED_PARENTH statBlock;
 printStat         : PRINT OPEN_PARENTH expr CLOSED_PARENTH;
 ifStat            : IF OPEN_PARENTH expr CLOSED_PARENTH statBlock elifStat? elseStat?;
