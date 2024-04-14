@@ -19,9 +19,10 @@ def executor(file_path):
 
     visitor = Visitor()
     output = visitor.visit(tree)
-    print(output)
+    return output
 
 
 if __name__ == '__main__':
     input_file = input('Enter the input file path: ')
-    executor(input_file)
+    result = executor(input_file)
+    print(result)

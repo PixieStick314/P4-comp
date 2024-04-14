@@ -6,7 +6,6 @@ from modules.Interpreter.Environment import Environment
 from modules.Interpreter.Function import Function
 
 
-
 class Visitor(RogueLangVisitor):
     def __init__(self):
         super().__init__()
