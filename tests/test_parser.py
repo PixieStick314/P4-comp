@@ -10,6 +10,71 @@ def setup_parser(str):
     parser = RogueLangParser(stream)
     return parser
 
+
+def test_ambiguity_print_stat():
+    test = 'print ("Hello World!")'
+    parser = setup_parser(test)
+    tree = parser.stat()
+
+    assert tree.getChild(0).getRuleIndex() == RogueLangParser.RULE_printStat
+
+def test_ambiguity_var_decl():
+    test = 'var = 5'
+    parser = setup_parser(test)
+    tree = parser.stat()
+
+    assert tree.getChild(0).getRuleIndex() == RogueLangParser.RULE_varDecl
+
+def test_ambiguity_function_decl():
+    test = 'def function(){print("Hello World!")}'
+    parser = setup_parser(test)
+    tree = parser.stat()
+
+    assert tree.getChild(0).getRuleIndex() == RogueLangParser.RULE_functionDecl
+
+def test_ambiguity_if_stat():
+    test = 'if(True) {print("Hello World!")}'
+    parser = setup_parser(test)
+    tree = parser.stat()
+
+    assert tree.getChild(0).getRuleIndex() == RogueLangParser.RULE_ifStat
+
+def test_ambiguity_for_loop():
+    test = 'for i in x {print(i)}'
+    parser = setup_parser(test)
+    tree = parser.stat()
+
+    assert tree.getChild(0).getRuleIndex() == RogueLangParser.RULE_forLoop
+
+def test_ambiguity_while_loop():
+    test = 'while (x) {print(x)}'
+    parser = setup_parser(test)
+    tree = parser.stat()
+
+    assert tree.getChild(0).getRuleIndex() == RogueLangParser.RULE_whileLoop
+
+def test_ambiguity_stat_block():
+    test = '{print("Hello World!")}'
+    parser = setup_parser(test)
+    tree = parser.stat()
+
+    assert tree.getChild(0).getRuleIndex() == RogueLangParser.RULE_statBlock
+
+def test_ambiguity_return_stat():
+    test = 'return x'
+    parser = setup_parser(test)
+    tree = parser.stat()
+
+    assert tree.getChild(0).getRuleIndex() == RogueLangParser.RULE_returnStat
+
+def test_ambiguity_expr():
+    test = 'function()'
+    parser = setup_parser(test)
+    tree = parser.stat()
+
+    assert tree.getChild(0).getRuleIndex() == RogueLangParser.RULE_expr
+
+
 def test_print_stat():
     # string we want to test
     test = 'print ("Hello World!")'

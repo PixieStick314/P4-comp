@@ -27,8 +27,6 @@ def test_json_dumps():
     visitor = Visitor()
     output = visitor.visit(tree)
 
-    print(visitor.environment.values)
-
     assert output == json.dumps({"x": 3.0})
 
 
@@ -48,8 +46,6 @@ def test_function_decl_and_call():
     visitor = Visitor()
     output = visitor.visit(tree)
 
-    print(visitor.environment.values)
-
     assert output == json.dumps({"x": 3.0})
 
 
@@ -63,8 +59,6 @@ def test_arithmetic():
     tree = parser.prog()
     visitor = Visitor()
     output = visitor.visit(tree)
-
-    print(visitor.environment.values)
 
     assert output == json.dumps({"x": 4.0})
 
@@ -86,8 +80,6 @@ def test_nested_if_stat():
     tree = parser.prog()
     visitor = Visitor()
     output = visitor.visit(tree)
-
-    print(visitor.environment.values)
 
     assert output == json.dumps({"x": 3.0})
 
@@ -113,8 +105,6 @@ def test_elif_stat():
     visitor = Visitor()
     output = visitor.visit(tree)
 
-    print(visitor.environment.values)
-
     assert output == json.dumps({"x": 2.0})
 
 
@@ -136,8 +126,6 @@ def test_else_stat():
     visitor = Visitor()
     output = visitor.visit(tree)
 
-    print(visitor.environment.values)
-
     assert output == json.dumps({"x": 3.0})
 
 
@@ -155,8 +143,6 @@ def test_while_loop():
     tree = parser.prog()
     visitor = Visitor()
     output = visitor.visit(tree)
-
-    print(visitor.environment.values)
 
     assert output == json.dumps({"x": 0.0})
 
@@ -179,7 +165,5 @@ def test_nested_function_call():
     tree = parser.prog()
     visitor = Visitor()
     output = visitor.visit(tree)
-
-    print(visitor.environment.values)
 
     assert output == json.dumps({"x": 3.0})
