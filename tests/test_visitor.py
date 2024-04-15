@@ -167,3 +167,67 @@ def test_nested_function_call():
     output = visitor.visit(tree)
 
     assert output == json.dumps({"x": 3.0})
+
+
+def test_list():
+    code = '''Map {
+    procedure {
+    y = 5
+    }
+    field x = [3, 2, 1]
+    }
+    '''
+    parser = setup_parser(code)
+    tree = parser.prog()
+    visitor = Visitor()
+    output = visitor.visit(tree)
+
+    assert output == json.dumps({"x": [3.0, 2.0, 1.0]})
+
+def test_list_add():
+    code = '''Map {
+    procedure {
+    x += 4
+    }
+    field x = [1, 2, 3]
+    }
+    '''
+    parser = setup_parser(code)
+    tree = parser.prog()
+    visitor = Visitor()
+    output = visitor.visit(tree)
+
+    assert output == json.dumps({"x": [1.0, 2.0, 3.0, 4.0]})
+
+def test_list_element():
+    code = '''Map {
+    procedure {
+    y = [3, 3]
+    x = y[0]
+    }
+    field x = 1
+    }
+    '''
+    parser = setup_parser(code)
+    tree = parser.prog()
+    visitor = Visitor()
+    output = visitor.visit(tree)
+
+    assert output == json.dumps({"x": 3.0})
+
+def test_list_element_variable_index():
+    code = '''Map {
+    procedure {
+    y = [3, 3]
+    n = 0
+    x = y[n]
+    }
+    field x = 1
+    }
+    '''
+    parser = setup_parser(code)
+    tree = parser.prog()
+    visitor = Visitor()
+    output = visitor.visit(tree)
+
+    assert output == json.dumps({"x": 3.0})

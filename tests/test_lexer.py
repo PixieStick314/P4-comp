@@ -140,3 +140,9 @@ def test_lexer_nested_if_stat():
     assert tokens[19].type == RogueLangLexer.NUMBER
     assert tokens[20].type == RogueLangLexer.CLOSED_CURL
     assert tokens[21].type == RogueLangLexer.CLOSED_CURL
+
+def test_lexer_plus_equals():
+    code = '+='
+    tokens = get_tokens_from_string(code)
+
+    assert tokens[0].type == RogueLangLexer.PEQ

@@ -1,4 +1,4 @@
-# Generated from /home/ronaldj/code/P4-comp/src/grammar_files/RogueLang.g4 by ANTLR 4.13.1
+# Generated from C:/Users/Loke/PycharmProjects/P4-comp/src/grammar_files/RogueLang.g4 by ANTLR 4.13.1
 from antlr4 import *
 if "." in __name__:
     from .RogueLangParser import RogueLangParser
@@ -24,18 +24,13 @@ class RogueLangVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by RogueLangParser#stat.
-    def visitStat(self, ctx:RogueLangParser.StatContext):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by RogueLangParser#field.
     def visitField(self, ctx:RogueLangParser.FieldContext):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by RogueLangParser#list.
-    def visitList(self, ctx:RogueLangParser.ListContext):
+    # Visit a parse tree produced by RogueLangParser#stat.
+    def visitStat(self, ctx:RogueLangParser.StatContext):
         return self.visitChildren(ctx)
 
 
@@ -46,6 +41,21 @@ class RogueLangVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by RogueLangParser#functionDecl.
     def visitFunctionDecl(self, ctx:RogueLangParser.FunctionDeclContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by RogueLangParser#list.
+    def visitList(self, ctx:RogueLangParser.ListContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by RogueLangParser#listElement.
+    def visitListElement(self, ctx:RogueLangParser.ListElementContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by RogueLangParser#plusEquals.
+    def visitPlusEquals(self, ctx:RogueLangParser.PlusEqualsContext):
         return self.visitChildren(ctx)
 
 

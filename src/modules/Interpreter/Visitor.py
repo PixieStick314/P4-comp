@@ -48,10 +48,10 @@ class Visitor(RogueLangVisitor):
     def visitVarDecl(self, ctx:RogueLangParser.VarDeclContext):
         name = ctx.ID().getText()
 
-        if ctx.expr():
+        if ctx.list_():
+            value = self.visit(ctx.list_())
+        elif ctx.expr():
             value = self.visit(ctx.expr())
-        elif ctx.list():
-            value = self.visit(ctx.list())
 
         try:
             self.environment.assign(name, value)
@@ -59,6 +59,19 @@ class Visitor(RogueLangVisitor):
             self.environment.define(name, value)
 
         return name
+
+    def visitList(self, ctx:RogueLangParser.ListContext):
+        value = []
+
+        for expr in ctx.expr():
+            value.append(self.visit(expr))
+
+        return value
+
+    def visitPlusEquals(self, ctx:RogueLangParser.PlusEqualsContext):
+        name = ctx.ID().getText()
+        value = self.visit(ctx.expr())
+        self.environment.plus_equals(name, value)
 
     def visitStatBlock(self, ctx):
         previous = self.environment
@@ -134,7 +147,17 @@ class Visitor(RogueLangVisitor):
 
     def defaultResult(self):
         # Returns a placeholder for unhandled cases
-        return "''"
+        return "ERROR"
+
+    def visitListElement(self, ctx:RogueLangParser.ListElementContext):
+        if ctx.NUMBER():
+            name = ctx.ID(0).getText()
+            index = int(ctx.NUMBER().getText())
+            return self.environment.get_list_element(name, index)
+        else:
+            name = ctx.ID(0).getText()
+            index = int(self.environment.get(ctx.ID(1).getText()))
+            return self.environment.get_list_element(name, index)
 
     def visitExpr(self, ctx):
         if ctx.ID():
@@ -149,6 +172,8 @@ class Visitor(RogueLangVisitor):
             return float(ctx.NUMBER().getText())
         elif ctx.functionCall():
             return self.visit(ctx.functionCall())
+        elif ctx.listElement():
+            return self.visit(ctx.listElement())
 
         elif ctx.getChildCount() == 3:
             left = self.visit(ctx.expr(0))

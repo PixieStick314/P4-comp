@@ -4,7 +4,8 @@ prog:   object (stat)* ;
 
 object: ID OPEN_CURL procedure (field | stat)* CLOSED_CURL;
 
-procedure: PROCEDURE statBlock;
+procedure         : PROCEDURE statBlock;
+field             : 'field' varDecl;
 
 stat:   printStat
       | varDecl
@@ -14,12 +15,15 @@ stat:   printStat
       | whileLoop
       | statBlock
       | returnStat
+      | plusEquals
       | expr;
 
-field             : 'field' varDecl;
-list             : OPEN_BRACK (expr (COMMA expr)*)? CLOSED_BRACK;
-varDecl           : ID  (EQUAL_SIGN (expr | functionCall | list))?;
+varDecl           : ID (EQUAL_SIGN (expr | functionCall | list))?;
 functionDecl      : DEF ID OPEN_PARENTH params? CLOSED_PARENTH statBlock;
+list              : OPEN_BRACK (expr (COMMA expr)*)? CLOSED_BRACK;
+listElement       : ID OPEN_BRACK NUMBER CLOSED_BRACK
+                  | ID OPEN_BRACK ID CLOSED_BRACK;
+plusEquals        : ID PEQ expr;
 printStat         : PRINT OPEN_PARENTH expr CLOSED_PARENTH;
 ifStat            : IF OPEN_PARENTH expr CLOSED_PARENTH statBlock elifStat? elseStat?;
 elifStat          : ELIF OPEN_PARENTH expr CLOSED_PARENTH statBlock elifStat?;
@@ -33,6 +37,7 @@ params            : param (COMMA param)* ;
 param             : ID ;
 args              : expr (COMMA expr)* ;
 expr              : functionCall
+                  | listElement
                   | expr op=(MULT | DIV | MOD) expr
                   | expr op=(PLUS| MINUS) expr
                   | expr op=(GT | GTE | LT | LTE | EQ | NEQ) expr
@@ -71,6 +76,7 @@ LT                : '<' ;
 LTE               : '<=';
 EQ                : '==';
 NEQ               : '!=';
+PEQ               : '+=';
 MOD               : '%' ;
 AND               : 'and';
 OR                : 'or';
