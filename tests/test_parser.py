@@ -123,9 +123,9 @@ def test_for_loop():
 
     assert (tree.getRuleIndex() == RogueLangParser.RULE_forLoop)
     assert tree.getChild(0).getSymbol().type == RogueLangParser.FOR
-    assert tree.getChild(1).getRuleIndex() == RogueLangParser.RULE_varDecl
+    assert tree.getChild(1).getSymbol().type == RogueLangParser.ID
     assert tree.getChild(2).getSymbol().type == RogueLangParser.IN
-    assert tree.getChild(3).getRuleIndex() == RogueLangParser.RULE_expr
+    assert tree.getChild(3).getSymbol().type == RogueLangParser.ID
     assert tree.getChild(4).getRuleIndex() == RogueLangParser.RULE_statBlock
 
 def test_while_loop():
@@ -142,7 +142,7 @@ def test_while_loop():
 
 
 def test_function_decl():
-    code = 'def printText(text) {print(text)}'
+    code = 'def add(x, y) {return x + y}'
     parser = setup_parser(code)
     tree = parser.functionDecl()
 
