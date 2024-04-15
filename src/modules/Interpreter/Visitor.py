@@ -47,7 +47,11 @@ class Visitor(RogueLangVisitor):
 
     def visitVarDecl(self, ctx:RogueLangParser.VarDeclContext):
         name = ctx.ID().getText()
-        value = self.visit(ctx.expr())
+
+        if ctx.expr():
+            value = self.visit(ctx.expr())
+        elif ctx.list():
+            value = self.visit(ctx.list())
 
         try:
             self.environment.assign(name, value)
