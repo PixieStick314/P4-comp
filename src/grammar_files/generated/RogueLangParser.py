@@ -69,8 +69,8 @@ def serializedATN():
         0,0,0,152,153,5,4,0,0,153,154,3,28,14,0,154,27,1,0,0,0,155,159,5,
         37,0,0,156,158,3,8,4,0,157,156,1,0,0,0,158,161,1,0,0,0,159,157,1,
         0,0,0,159,160,1,0,0,0,160,162,1,0,0,0,161,159,1,0,0,0,162,163,5,
-        38,0,0,163,29,1,0,0,0,164,165,5,7,0,0,165,166,3,10,5,0,166,167,5,
-        8,0,0,167,168,3,44,22,0,168,169,3,28,14,0,169,31,1,0,0,0,170,171,
+        38,0,0,163,29,1,0,0,0,164,165,5,7,0,0,165,166,5,32,0,0,166,167,5,
+        8,0,0,167,168,5,32,0,0,168,169,3,28,14,0,169,31,1,0,0,0,170,171,
         5,9,0,0,171,172,5,33,0,0,172,173,3,44,22,0,173,174,5,34,0,0,174,
         175,3,28,14,0,175,33,1,0,0,0,176,177,5,32,0,0,177,179,5,33,0,0,178,
         180,3,42,21,0,179,178,1,0,0,0,179,180,1,0,0,0,180,181,1,0,0,0,181,
@@ -1271,16 +1271,14 @@ class RogueLangParser ( Parser ):
         def FOR(self):
             return self.getToken(RogueLangParser.FOR, 0)
 
-        def varDecl(self):
-            return self.getTypedRuleContext(RogueLangParser.VarDeclContext,0)
-
+        def ID(self, i:int=None):
+            if i is None:
+                return self.getTokens(RogueLangParser.ID)
+            else:
+                return self.getToken(RogueLangParser.ID, i)
 
         def IN(self):
             return self.getToken(RogueLangParser.IN, 0)
-
-        def expr(self):
-            return self.getTypedRuleContext(RogueLangParser.ExprContext,0)
-
 
         def statBlock(self):
             return self.getTypedRuleContext(RogueLangParser.StatBlockContext,0)
@@ -1307,11 +1305,11 @@ class RogueLangParser ( Parser ):
             self.state = 164
             self.match(RogueLangParser.FOR)
             self.state = 165
-            self.varDecl()
+            self.match(RogueLangParser.ID)
             self.state = 166
             self.match(RogueLangParser.IN)
             self.state = 167
-            self.expr(0)
+            self.match(RogueLangParser.ID)
             self.state = 168
             self.statBlock()
         except RecognitionException as re:

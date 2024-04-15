@@ -97,7 +97,22 @@ class Visitor(RogueLangVisitor):
         self.visit(ctx.statBlock())
 
     def visitForLoop(self, ctx):
-        pass
+        previous = self.environment
+        self.environment = Environment(previous)
+
+        iterator = ctx.ID(0).getText()
+        iterable = self.environment.get(ctx.ID(1).getText())
+        self.environment.define(iterator, iterable[0])
+        i = 0
+
+        try:
+            while i < len(iterable):
+                self.environment.values[iterator] = iterable[i]
+                self.visit(ctx.statBlock())
+                i = i+1
+        finally:
+            self.environment = previous
+
 
     def visitWhileLoop(self, ctx):
         while self.visit(ctx.expr()):

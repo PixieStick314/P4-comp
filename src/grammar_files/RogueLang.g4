@@ -29,7 +29,7 @@ ifStat            : IF OPEN_PARENTH expr CLOSED_PARENTH statBlock elifStat? else
 elifStat          : ELIF OPEN_PARENTH expr CLOSED_PARENTH statBlock elifStat?;
 elseStat          : ELSE statBlock;
 statBlock         : OPEN_CURL stat* CLOSED_CURL;
-forLoop           : FOR varDecl IN expr statBlock;
+forLoop           : FOR ID IN ID statBlock;
 whileLoop         : WHILE OPEN_PARENTH expr CLOSED_PARENTH statBlock;
 functionCall      : ID OPEN_PARENTH args? CLOSED_PARENTH;
 returnStat        : RETURN expr;
