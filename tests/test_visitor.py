@@ -184,6 +184,7 @@ def test_list():
 
     assert output == json.dumps({"x": [3.0, 2.0, 1.0]})
 
+
 def test_list_add():
     code = '''Map {
     procedure {
@@ -198,6 +199,7 @@ def test_list_add():
     output = visitor.visit(tree)
 
     assert output == json.dumps({"x": [1.0, 2.0, 3.0, 4.0]})
+
 
 def test_list_element():
     code = '''Map {
@@ -214,6 +216,7 @@ def test_list_element():
     output = visitor.visit(tree)
 
     assert output == json.dumps({"x": 3.0})
+
 
 def test_list_element_variable_index():
     code = '''Map {
@@ -232,6 +235,7 @@ def test_list_element_variable_index():
 
     assert output == json.dumps({"x": 3.0})
 
+
 def test_for_loop():
     code = '''Map {
     procedure {
@@ -249,3 +253,21 @@ def test_for_loop():
     output = visitor.visit(tree)
 
     assert output == json.dumps({"x": 7.0})
+
+
+def test_comparisons():
+    code = '''Map {
+    procedure {
+    x = 1
+    y = 1
+    x = (x > 7) or (y > 8)
+    }
+    field x = True
+    }
+    '''
+    parser = setup_parser(code)
+    tree = parser.prog()
+    visitor = Visitor()
+    output = visitor.visit(tree)
+
+    assert output == json.dumps({"x": False})
