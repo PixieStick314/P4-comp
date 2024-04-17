@@ -166,3 +166,21 @@ def test_function_call():
     assert tree.getChild(1).getSymbol().type == RogueLangParser.OPEN_PARENTH
     assert tree.getChild(2).getRuleIndex() == RogueLangParser.RULE_args
     assert tree.getChild(3).getSymbol().type == RogueLangParser.CLOSED_PARENTH
+
+
+def test_nested_if_stat():
+    test = '''
+    if (19 == 21) {
+        if (19 == 21) {
+            print("u stupid")
+            }
+        }'''
+    parser = setup_parser(test)
+    tree = parser.ifStat()
+
+    assert tree.getRuleIndex() == RogueLangParser.RULE_ifStat
+    assert tree.getChild(0).getSymbol().type == RogueLangParser.IF
+    assert tree.getChild(1).getSymbol().type == RogueLangParser.OPEN_PARENTH
+    assert tree.getChild(2).getRuleIndex() == RogueLangParser.RULE_expr
+    assert tree.getChild(3).getSymbol().type == RogueLangParser.CLOSED_PARENTH
+    assert tree.getChild(4).stat()[0].ifStat() is not None
