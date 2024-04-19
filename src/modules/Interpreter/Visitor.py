@@ -22,7 +22,7 @@ class Visitor(RogueLangVisitor):
         self.environment = Environment(previous)
         fields = []
         for field in ctx.field():
-            fields += self.visit(field)
+            fields.append(self.visit(field))
         for stat in ctx.stat():
             self.visit(stat)
         self.visit(ctx.procedure())

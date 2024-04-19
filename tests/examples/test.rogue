@@ -1,6 +1,6 @@
 Map {
     procedure {
-        x = 3
+        layer = 3
     }
-    field x = 5
+    field layer = 5
     }
