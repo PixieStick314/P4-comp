@@ -8,7 +8,8 @@ procedure         : PROCEDURE statBlock;
 field             : 'field' varDecl;
 
 stat:   printStat
-      | varDecl
+      | varDeclStat
+      | assignStat
       | functionDecl
       | ifStat
       | forLoop
@@ -18,7 +19,11 @@ stat:   printStat
       | plusEquals
       | expr;
 
-varDecl           : ID (EQUAL_SIGN (expr | functionCall | list))?;
+varDeclStat       : 'let' varDecl;
+varDecl           : ID assignment?;
+assignStat        : ID assignment;
+assignment        : EQUAL_SIGN expr
+                  | EQUAL_SIGN list;
 functionDecl      : DEF ID OPEN_PARENTH params? CLOSED_PARENTH statBlock;
 list              : OPEN_BRACK (expr (COMMA expr)*)? CLOSED_BRACK;
 listElement       : ID OPEN_BRACK NUMBER CLOSED_BRACK

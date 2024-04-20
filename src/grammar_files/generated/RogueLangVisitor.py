@@ -34,8 +34,23 @@ class RogueLangVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by RogueLangParser#varDeclStat.
+    def visitVarDeclStat(self, ctx:RogueLangParser.VarDeclStatContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by RogueLangParser#varDecl.
     def visitVarDecl(self, ctx:RogueLangParser.VarDeclContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by RogueLangParser#assignStat.
+    def visitAssignStat(self, ctx:RogueLangParser.AssignStatContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by RogueLangParser#assignment.
+    def visitAssignment(self, ctx:RogueLangParser.AssignmentContext):
         return self.visitChildren(ctx)
 
 

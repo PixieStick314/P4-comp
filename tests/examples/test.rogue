@@ -2,5 +2,5 @@ Map {
     procedure {
         layer = 3
     }
-    field layer = 5
+    field layer = []
     }

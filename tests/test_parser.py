@@ -19,11 +19,11 @@ def test_ambiguity_print_stat():
     assert tree.getChild(0).getRuleIndex() == RogueLangParser.RULE_printStat
 
 def test_ambiguity_var_decl():
-    test = 'var = 5'
+    test = 'let var = 5'
     parser = setup_parser(test)
     tree = parser.stat()
 
-    assert tree.getChild(0).getRuleIndex() == RogueLangParser.RULE_varDecl
+    assert tree.getChild(0).getRuleIndex() == RogueLangParser.RULE_varDeclStat
 
 def test_ambiguity_function_decl():
     test = 'def function(){print("Hello World!")}'
@@ -92,16 +92,16 @@ def test_print_stat():
     assert tree.getChild(3).getSymbol().type == RogueLangParser.CLOSED_PARENTH
 
 def test_var_decl():
-    test = 'variable = 3'
+    test = 'let variable = 3'
     parser = setup_parser(test)
     tree = parser.varDecl()
 
     print(tree.toStringTree(tree, RogueLangParser))
 
     assert (tree.getRuleIndex() == RogueLangParser.RULE_varDecl)
-    assert tree.getChild(0).getSymbol().type == RogueLangParser.ID
-    assert tree.getChild(1).getSymbol().type == RogueLangParser.EQUAL_SIGN
-    assert tree.getChild(2).getRuleIndex() == RogueLangParser.RULE_expr
+    assert tree.getChild(0).getText() == 'let'
+    assert tree.getChild(1).getSymbol().type == RogueLangParser.ID
+    assert tree.getChild(2).getRuleIndex() == RogueLangParser.RULE_assignment
 
 def test_if_stat():
     test = 'if (19 == 21){print("u stupid")} else{print("no im not")}'
@@ -184,3 +184,11 @@ def test_nested_if_stat():
     assert tree.getChild(2).getRuleIndex() == RogueLangParser.RULE_expr
     assert tree.getChild(3).getSymbol().type == RogueLangParser.CLOSED_PARENTH
     assert tree.getChild(4).stat()[0].ifStat() is not None
+
+def test_string():
+    code = 'let cat = "meow"'
+    parser = setup_parser(code)
+    tree = parser.varDeclStat()
+
+    assert tree.getChild(0).getText() == 'let'
+    assert tree.getChild(1).assignment().expr().getText() == '"meow"'

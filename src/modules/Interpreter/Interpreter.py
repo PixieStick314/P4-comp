@@ -6,11 +6,10 @@ from modules.Interpreter.Environment import Environment
 from modules.Interpreter.Function import Function
 
 
-class Visitor(RogueLangVisitor):
+class Interpreter(RogueLangVisitor):
     def __init__(self):
         super().__init__()
         self.environment = Environment(None)
-        self.functions = {}
 
     def visitProg(self, ctx:RogueLangParser.ProgContext):
         for stat in ctx.stat():
@@ -45,20 +44,28 @@ class Visitor(RogueLangVisitor):
         text = self.visit(ctx.expr())
         print(text)
 
+    def visitVarDeclStat(self, ctx):
+        self.visit(ctx.varDecl())
+
     def visitVarDecl(self, ctx:RogueLangParser.VarDeclContext):
         name = ctx.ID().getText()
 
-        if ctx.list_():
-            value = self.visit(ctx.list_())
-        elif ctx.expr():
-            value = self.visit(ctx.expr())
+        if ctx.assignment():
+            value = self.visit(ctx.assignment())
+        else:
+            value = None
 
-        try:
-            self.environment.assign(name, value)
-        except:
-            self.environment.define(name, value)
+        self.environment.define(name, value)
 
         return name
+
+    def visitAssignStat(self, ctx:RogueLangParser.AssignStatContext):
+        name = ctx.ID().getText()
+        value = self.visitAssignment(ctx.assignment())
+        self.environment.assign(name, value)
+
+    def visitAssignment(self, ctx:RogueLangParser.AssignmentContext):
+        return self.visitChildren(ctx)
 
     def visitList(self, ctx:RogueLangParser.ListContext):
         value = []
@@ -124,7 +131,7 @@ class Visitor(RogueLangVisitor):
         body = ctx.statBlock()
 
         function = Function(params, body)
-        self.functions[name] = function
+        self.environment.define(name, function)
 
     def visitParams(self, ctx:RogueLangParser):
         params = [self.visitChildren(ctx)]
@@ -139,14 +146,14 @@ class Visitor(RogueLangVisitor):
         args = self.visit(ctx.args()) if ctx.args() is not None else None
 
         previous = self.environment
-        self.environment = Environment(None)
+        self.environment = Environment(previous)
         if args is not None:
             for i in range(len(args)):
-                params = self.functions[name].params
+                params = self.environment.get(name).params
                 self.environment.define(params[i], args[i])
 
         try:
-            self.visit(self.functions[name].body)
+            self.visit(self.environment.get(name).body)
         except Exception as e:
             return e.args[0]
         finally:
@@ -178,7 +185,7 @@ class Visitor(RogueLangVisitor):
         if ctx.ID():
             return self.environment.get(ctx.ID().getText())
         elif ctx.STRING():
-            return ctx.STRING().getText()
+            return ctx.STRING().getText().replace('"', '')
         elif ctx.TRUE() or ctx.getText().lower() == 'true':
             return True
         elif ctx.FALSE() or ctx.getText().lower() == 'false':

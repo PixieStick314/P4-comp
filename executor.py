@@ -4,7 +4,7 @@ import os
 from antlr4 import *
 from grammar_files.generated.RogueLangLexer import RogueLangLexer
 from grammar_files.generated.RogueLangParser import RogueLangParser
-from modules.Interpreter.Visitor import Visitor
+from modules.Interpreter.Interpreter import Interpreter
 
 # Add the path to the generated files so they can be imported
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'grammar_files', 'generated'))
@@ -17,7 +17,7 @@ def executor(file_path):
     parser = RogueLangParser(stream)
     tree = parser.prog()
 
-    visitor = Visitor()
+    visitor = Interpreter()
     output = visitor.visit(tree)
     return output
 
