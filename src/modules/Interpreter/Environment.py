@@ -38,3 +38,11 @@ class Environment:
             self.enclosing.plus_equals(name, value)
         else:
             raise Exception("Undefined variable: {}".format(name))
+
+    def minus_equals(self, name, value):
+        if name in self.values:
+            self.values[name].remove(value)
+        elif self.enclosing is not None:
+            self.enclosing.minus_equals(name, value)
+        else:
+            raise Exception("Undefined variable: {}".format(name))

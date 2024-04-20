@@ -17,6 +17,8 @@ stat:   printStat
       | statBlock
       | returnStat
       | plusEquals
+      | minusEquals
+      | listPop
       | expr;
 
 varDeclStat       : 'let' varDecl;
@@ -28,7 +30,10 @@ functionDecl      : DEF ID OPEN_PARENTH params? CLOSED_PARENTH statBlock;
 list              : OPEN_BRACK (expr (COMMA expr)*)? CLOSED_BRACK;
 listElement       : ID OPEN_BRACK NUMBER CLOSED_BRACK
                   | ID OPEN_BRACK ID CLOSED_BRACK;
+listLength        : 'len' OPEN_PARENTH ID CLOSED_PARENTH;
+listPop           : ID DOT 'pop' OPEN_PARENTH CLOSED_PARENTH;
 plusEquals        : ID PEQ expr;
+minusEquals       : ID MEQ expr;
 printStat         : PRINT OPEN_PARENTH expr CLOSED_PARENTH;
 ifStat            : IF OPEN_PARENTH expr CLOSED_PARENTH statBlock elifStat? elseStat?;
 elifStat          : ELIF OPEN_PARENTH expr CLOSED_PARENTH statBlock elifStat?;
@@ -37,12 +42,16 @@ statBlock         : OPEN_CURL stat* CLOSED_CURL;
 forLoop           : FOR ID IN ID statBlock;
 whileLoop         : WHILE OPEN_PARENTH expr CLOSED_PARENTH statBlock;
 functionCall      : ID OPEN_PARENTH args? CLOSED_PARENTH;
-returnStat        : RETURN expr;
-params            : param (COMMA param)* ;
-param             : ID ;
+params            : ID (COMMA ID)* ;
 args              : expr (COMMA expr)* ;
+returnStat        : RETURN expr;
+random            : 'random' IN range
+                  | 'random' IN ID;
+range             : expr DOT DOT expr;
 expr              : functionCall
                   | listElement
+                  | listLength
+                  | random
                   | expr op=(MULT | DIV | MOD) expr
                   | expr op=(PLUS| MINUS) expr
                   | expr op=(GT | GTE | LT | LTE | EQ | NEQ) expr
@@ -82,6 +91,7 @@ LTE               : '<=';
 EQ                : '==';
 NEQ               : '!=';
 PEQ               : '+=';
+MEQ               : '-=';
 MOD               : '%' ;
 AND               : 'and';
 OR                : 'or';

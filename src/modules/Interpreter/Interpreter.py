@@ -1,4 +1,5 @@
 import json
+import random
 
 from grammar_files.generated.RogueLangParser import RogueLangParser
 from grammar_files.generated.RogueLangVisitor import RogueLangVisitor
@@ -80,6 +81,14 @@ class Interpreter(RogueLangVisitor):
         value = self.visit(ctx.expr())
         self.environment.plus_equals(name, value)
 
+    def visitMinusEquals(self, ctx:RogueLangParser.MinusEqualsContext):
+        name = ctx.ID().getText()
+        value = self.visit(ctx.expr())
+        self.environment.minus_equals(name, value)
+
+    def visitListPop(self, ctx:RogueLangParser.ListPopContext):
+        self.environment.get(ctx.ID().getText()).pop()
+
     def visitStatBlock(self, ctx):
         previous = self.environment
         self.environment = Environment(self.environment)
@@ -134,12 +143,10 @@ class Interpreter(RogueLangVisitor):
         self.environment.define(name, function)
 
     def visitParams(self, ctx:RogueLangParser):
-        params = [self.visitChildren(ctx)]
+        params = []
+        for id in ctx.ID():
+            params.append(id.getText())
         return params
-
-    def visitParam(self, ctx:RogueLangParser.ParamContext):
-        name = ctx.ID().getText()
-        return name
 
     def visitFunctionCall(self, ctx:RogueLangParser.FunctionCallContext):
         name = ctx.ID().getText()
@@ -181,6 +188,24 @@ class Interpreter(RogueLangVisitor):
             index = int(self.environment.get(ctx.ID(1).getText()))
             return self.environment.get_list_element(name, index)
 
+    def visitListLength(self, ctx:RogueLangParser.ListLengthContext):
+        list = self.environment.get(ctx.ID().getText())
+        return len(list)
+
+    def visitRandom(self, ctx:RogueLangParser.RandomContext):
+        if ctx.range_():
+            bounds = self.visit(ctx.range_())
+            return random.randrange(bounds[0], bounds[1])
+        elif ctx.ID():
+            list = self.environment.get(ctx.ID().getText())
+            return random.choice(list)
+
+    def visitRange(self, ctx:RogueLangParser.RangeContext):
+        bounds = []
+        for i in ctx.expr():
+            bounds.append(self.visit(i))
+        return bounds
+
     def visitExpr(self, ctx):
         if ctx.ID():
             return self.environment.get(ctx.ID().getText())
@@ -196,6 +221,10 @@ class Interpreter(RogueLangVisitor):
             return self.visit(ctx.functionCall())
         elif ctx.listElement():
             return self.visit(ctx.listElement())
+        elif ctx.listLength():
+            return self.visit(ctx.listLength())
+        elif ctx.random():
+            return self.visit(ctx.random())
 
         elif ctx.getChildCount() == 3:
             left = self.visit(ctx.expr(0))

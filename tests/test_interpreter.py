@@ -292,3 +292,83 @@ def test_function_as_parameter():
     output = visitor.visit(tree)
 
     assert output == json.dumps({"x": "meow"})
+
+def test_list_length():
+    code = '''Map {
+    procedure {
+    x = len(x)
+    }
+    field x = [1, 2, 3]
+    }
+    '''
+    parser = setup_parser(code)
+    tree = parser.prog()
+    visitor = Interpreter()
+    output = visitor.visit(tree)
+
+    assert output == json.dumps({"x": 3})
+
+def test_minus_equals():
+    code = '''Map {
+    procedure {
+    x -= 3
+    }
+    field x = [1, 2, 3]
+    }
+    '''
+    parser = setup_parser(code)
+    tree = parser.prog()
+    visitor = Interpreter()
+    output = visitor.visit(tree)
+
+    assert output == json.dumps({"x": [1.0, 2.0]})
+
+def test_list_pop():
+    code = '''Map {
+    procedure {
+    x.pop()
+    }
+    field x = [1, 2, 3]
+    }
+    '''
+    parser = setup_parser(code)
+    tree = parser.prog()
+    visitor = Interpreter()
+    output = visitor.visit(tree)
+
+    assert output == json.dumps({"x": [1.0, 2.0]})
+
+def test_random_range():
+    code = '''Map {
+    procedure {
+    x = random in 2..4
+    }
+    field x = 1
+    }
+    '''
+    parser = setup_parser(code)
+    tree = parser.prog()
+    visitor = Interpreter()
+    output = visitor.visit(tree)
+
+    print(output)
+
+    assert json.loads(output) == {'x': 2.0} or {'x': 3.0} or {'x': 4.0}
+
+def test_random_choice():
+    code = '''Map {
+    procedure {
+    let y = [2, 3, 4]
+    x = random in y
+    }
+    field x = 1
+    }
+    '''
+    parser = setup_parser(code)
+    tree = parser.prog()
+    visitor = Interpreter()
+    output = visitor.visit(tree)
+
+    print(output)
+
+    assert json.loads(output) == {'x': 2.0} or {'x': 3.0} or {'x': 4.0}

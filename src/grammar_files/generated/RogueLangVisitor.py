@@ -69,8 +69,23 @@ class RogueLangVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by RogueLangParser#listLength.
+    def visitListLength(self, ctx:RogueLangParser.ListLengthContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by RogueLangParser#listPop.
+    def visitListPop(self, ctx:RogueLangParser.ListPopContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by RogueLangParser#plusEquals.
     def visitPlusEquals(self, ctx:RogueLangParser.PlusEqualsContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by RogueLangParser#minusEquals.
+    def visitMinusEquals(self, ctx:RogueLangParser.MinusEqualsContext):
         return self.visitChildren(ctx)
 
 
@@ -114,23 +129,28 @@ class RogueLangVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by RogueLangParser#returnStat.
-    def visitReturnStat(self, ctx:RogueLangParser.ReturnStatContext):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by RogueLangParser#params.
     def visitParams(self, ctx:RogueLangParser.ParamsContext):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by RogueLangParser#param.
-    def visitParam(self, ctx:RogueLangParser.ParamContext):
+    # Visit a parse tree produced by RogueLangParser#args.
+    def visitArgs(self, ctx:RogueLangParser.ArgsContext):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by RogueLangParser#args.
-    def visitArgs(self, ctx:RogueLangParser.ArgsContext):
+    # Visit a parse tree produced by RogueLangParser#returnStat.
+    def visitReturnStat(self, ctx:RogueLangParser.ReturnStatContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by RogueLangParser#random.
+    def visitRandom(self, ctx:RogueLangParser.RandomContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by RogueLangParser#range.
+    def visitRange(self, ctx:RogueLangParser.RangeContext):
         return self.visitChildren(ctx)
 
 
