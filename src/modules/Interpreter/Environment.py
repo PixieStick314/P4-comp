@@ -38,3 +38,11 @@ class Environment:
             self.enclosing.plus_equals(name, value)
         else:
             raise Exception("Undefined variable: {}".format(name))
+
+    def list_pop(self, name, index):
+        if name in self.values:
+            self.values[name].pop(index)
+        elif self.enclosing is not None:
+            self.enclosing.list_pop(name, index)
+        else:
+            raise Exception("Undefined list: {}".format(name))

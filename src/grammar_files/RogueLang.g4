@@ -16,6 +16,7 @@ stat:   printStat
       | statBlock
       | returnStat
       | plusEquals
+      | listPop
       | expr;
 
 varDecl           : ID (EQUAL_SIGN (expr | functionCall | list))?;
@@ -23,6 +24,8 @@ functionDecl      : DEF ID OPEN_PARENTH params? CLOSED_PARENTH statBlock;
 list              : OPEN_BRACK (expr (COMMA expr)*)? CLOSED_BRACK;
 listElement       : ID OPEN_BRACK NUMBER CLOSED_BRACK
                   | ID OPEN_BRACK ID CLOSED_BRACK;
+listPop           : ID DOT POP OPEN_PARENTH NUMBER CLOSED_PARENTH
+                  | ID DOT POP OPEN_PARENTH ID CLOSED_PARENTH;
 plusEquals        : ID PEQ expr;
 printStat         : PRINT OPEN_PARENTH expr CLOSED_PARENTH;
 ifStat            : IF OPEN_PARENTH expr CLOSED_PARENTH statBlock elifStat? elseStat?;
@@ -83,6 +86,7 @@ OR                : 'or';
 NOT               : 'not';
 TRUE              : 'True' ;
 FALSE             : 'False' ;
+POP               : 'pop';
 COMMENT_SINGLELINE: '//' ~[\r\n]* -> skip ;
 NUMBER            : '-'? NUMB + | '-'? NUMB+ '.' NUMB+ ;
 STRING            : '"' (ESC | ~["\\])* '"' ; // Use fragment for escaped characters

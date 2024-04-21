@@ -236,6 +236,23 @@ def test_list_element_variable_index():
     assert output == json.dumps({"x": 3.0})
 
 
+def test_list_pop():
+    code = '''Map {
+    procedure {
+    x.pop(0)
+    }
+    field x = [1, 2, 3, 4]
+    }
+    '''
+
+    parser = setup_parser(code)
+    tree = parser.prog()
+    visitor = Visitor()
+    output = visitor.visit(tree)
+
+    assert output == json.dumps({"x": [2.0, 3.0, 4.0]})
+
+
 def test_for_loop():
     code = '''Map {
     procedure {

@@ -12,12 +12,12 @@ class Visitor(RogueLangVisitor):
         self.environment = Environment(None)
         self.functions = {}
 
-    def visitProg(self, ctx:RogueLangParser.ProgContext):
+    def visitProg(self, ctx: RogueLangParser.ProgContext):
         for stat in ctx.stat():
             self.visit(stat)
         return self.visit(ctx.object_())
 
-    def visitObject(self, ctx:RogueLangParser.ObjectContext):
+    def visitObject(self, ctx: RogueLangParser.ObjectContext):
         previous = self.environment
         self.environment = Environment(previous)
         fields = []
@@ -34,18 +34,18 @@ class Visitor(RogueLangVisitor):
         self.environment = previous
         return json.dumps(output)
 
-    def visitField(self, ctx:RogueLangParser.FieldContext):
+    def visitField(self, ctx: RogueLangParser.FieldContext):
         field = self.visit(ctx.varDecl())
         return field
 
-    def visitProcedure(self, ctx:RogueLangParser.ProcedureContext):
+    def visitProcedure(self, ctx: RogueLangParser.ProcedureContext):
         self.visit(ctx.statBlock())
 
-    def visitPrintStat(self, ctx:RogueLangParser.PrintStatContext):
+    def visitPrintStat(self, ctx: RogueLangParser.PrintStatContext):
         text = self.visit(ctx.expr())
         print(text)
 
-    def visitVarDecl(self, ctx:RogueLangParser.VarDeclContext):
+    def visitVarDecl(self, ctx: RogueLangParser.VarDeclContext):
         name = ctx.ID().getText()
 
         if ctx.list_():
@@ -60,7 +60,7 @@ class Visitor(RogueLangVisitor):
 
         return name
 
-    def visitList(self, ctx:RogueLangParser.ListContext):
+    def visitList(self, ctx: RogueLangParser.ListContext):
         value = []
 
         for expr in ctx.expr():
@@ -68,7 +68,17 @@ class Visitor(RogueLangVisitor):
 
         return value
 
-    def visitPlusEquals(self, ctx:RogueLangParser.PlusEqualsContext):
+    def visitListPop(self, ctx: RogueLangParser.ListPopContext):
+        if ctx.NUMBER():
+            name = ctx.ID(0).getText()
+            index = int(ctx.NUMBER().getText())
+            self.environment.list_pop(name, index)
+        else:
+            name = ctx.ID(0).getText()
+            index = int(self.environment.get(ctx.ID(1).getText()))
+            self.environment.list_pop(name, index)
+
+    def visitPlusEquals(self, ctx: RogueLangParser.PlusEqualsContext):
         name = ctx.ID().getText()
         value = self.visit(ctx.expr())
         self.environment.plus_equals(name, value)
@@ -79,7 +89,7 @@ class Visitor(RogueLangVisitor):
         self.visitChildren(ctx)
         self.environment = previous
 
-    def visitIfStat(self, ctx:RogueLangParser.IfStatContext):
+    def visitIfStat(self, ctx: RogueLangParser.IfStatContext):
         if self.visit(ctx.expr()) is True:
             self.visit(ctx.statBlock())
         elif ctx.elifStat():
@@ -87,13 +97,13 @@ class Visitor(RogueLangVisitor):
         elif ctx.elseStat():
             self.visit(ctx.elseStat())
 
-    def visitElifStat(self, ctx:RogueLangParser.ElifStatContext):
+    def visitElifStat(self, ctx: RogueLangParser.ElifStatContext):
         if self.visit(ctx.expr()) is True:
             self.visit(ctx.statBlock())
         elif self.visit(ctx.elifStat()):
             self.visit(ctx.elifStat())
 
-    def visitElseStat(self, ctx:RogueLangParser.ElseStatContext):
+    def visitElseStat(self, ctx: RogueLangParser.ElseStatContext):
         self.visit(ctx.statBlock())
 
     def visitForLoop(self, ctx):
@@ -113,12 +123,11 @@ class Visitor(RogueLangVisitor):
         finally:
             self.environment = previous
 
-
     def visitWhileLoop(self, ctx):
         while self.visit(ctx.expr()):
             self.visit(ctx.statBlock())
 
-    def visitFunctionDecl(self, ctx:RogueLangParser.FunctionDeclContext):
+    def visitFunctionDecl(self, ctx: RogueLangParser.FunctionDeclContext):
         name = ctx.ID().getText()
         params = self.visit(ctx.params()) if ctx.params() is not None else None
         body = ctx.statBlock()
@@ -126,15 +135,15 @@ class Visitor(RogueLangVisitor):
         function = Function(params, body)
         self.functions[name] = function
 
-    def visitParams(self, ctx:RogueLangParser):
+    def visitParams(self, ctx: RogueLangParser):
         params = [self.visitChildren(ctx)]
         return params
 
-    def visitParam(self, ctx:RogueLangParser.ParamContext):
+    def visitParam(self, ctx: RogueLangParser.ParamContext):
         name = ctx.ID().getText()
         return name
 
-    def visitFunctionCall(self, ctx:RogueLangParser.FunctionCallContext):
+    def visitFunctionCall(self, ctx: RogueLangParser.FunctionCallContext):
         name = ctx.ID().getText()
         args = self.visit(ctx.args()) if ctx.args() is not None else None
 
@@ -152,7 +161,7 @@ class Visitor(RogueLangVisitor):
         finally:
             self.environment = previous
 
-    def visitArgs(self, ctx:RogueLangParser.ArgsContext):
+    def visitArgs(self, ctx: RogueLangParser.ArgsContext):
         args = [self.visitChildren(ctx)]
         return args
 
@@ -164,7 +173,7 @@ class Visitor(RogueLangVisitor):
         # Returns a placeholder for unhandled cases
         return "ERROR"
 
-    def visitListElement(self, ctx:RogueLangParser.ListElementContext):
+    def visitListElement(self, ctx: RogueLangParser.ListElementContext):
         if ctx.NUMBER():
             name = ctx.ID(0).getText()
             index = int(ctx.NUMBER().getText())

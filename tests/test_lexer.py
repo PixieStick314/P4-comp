@@ -98,6 +98,13 @@ def test_lexer_FALSE():
     assert tokens[0].type == RogueLangLexer.FALSE
     assert tokens[1].type == -1
 
+def test_lexer_dot():
+    code = '.'
+    tokens = get_tokens_from_string(code)
+
+    assert tokens[0].type == RogueLangLexer.DOT
+    assert tokens[1].type == -1
+
 def test_lexer_whitespace():
     code = '  1  1  \n  1'
     tokens = get_tokens_from_string(code)
