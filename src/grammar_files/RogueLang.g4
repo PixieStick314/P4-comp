@@ -99,9 +99,9 @@ NOT               : 'not';
 TRUE              : 'True' ;
 FALSE             : 'False' ;
 COMMENT_SINGLELINE: '//' ~[\r\n]* -> skip ;
-NUMBER            : '-'? NUMB + | '-'? NUMB+ '.' NUMB+ ;
+NUMBER            : '-'? DIGIT + | '-'? DIGIT+ '.' DIGIT+ ;
 STRING            : '"' (ESC | ~["\\])* '"' ; // Use fragment for escaped characters
-ID                : LETTER (LETTER | NUMB)* ;
+ID                : LETTER (LETTER | DIGIT)* ;
 
 OPEN_PARENTH     : '(' ;
 CLOSED_PARENTH   : ')' ;
@@ -115,6 +115,6 @@ EQUAL_SIGN       : '=' ;
 
 fragment LETTER           : [a-zA-Z_];
 fragment ESC              : '\\' (['"\\tn]); // Define ESC for escape sequences in strings, doesn't work
-fragment NUMB             : [0-9_];
+fragment DIGIT             : [0-9_];
 
 WS       : [ \t\r\n]+ -> skip ; // skip spaces, tabs, newlines

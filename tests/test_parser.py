@@ -154,17 +154,16 @@ def test_while_loop():
 
 
 def test_list_pop():
-    code = 'x.pop(0)'
+    code = 'x.pop()'
     parser = setup_parser(code)
     tree = parser.listPop()
 
     assert (tree.getRuleIndex() == RogueLangParser.RULE_listPop)
     assert tree.getChild(0).getSymbol().type == RogueLangParser.ID
     assert tree.getChild(1).getSymbol().type == RogueLangParser.DOT
-    assert tree.getChild(2).getSymbol().type == RogueLangParser.POP
+    assert tree.getChild(2).getText() == 'pop'
     assert tree.getChild(3).getSymbol().type == RogueLangParser.OPEN_PARENTH
-    assert tree.getChild(4).getSymbol().type == RogueLangParser.NUMBER
-    assert tree.getChild(5).getSymbol().type == RogueLangParser.CLOSED_PARENTH
+    assert tree.getChild(4).getSymbol().type == RogueLangParser.CLOSED_PARENTH
 
 
 def test_function_decl():
