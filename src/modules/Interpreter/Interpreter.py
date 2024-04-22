@@ -179,9 +179,9 @@ class Interpreter(RogueLangVisitor):
         return "ERROR"
 
     def visitListElement(self, ctx:RogueLangParser.ListElementContext):
-        if ctx.NUMBER():
+        if ctx.INT():
             name = ctx.ID(0).getText()
-            index = int(ctx.NUMBER().getText())
+            index = int(ctx.INT().getText())
             return self.environment.get_list_element(name, index)
         else:
             name = ctx.ID(0).getText()
@@ -215,8 +215,10 @@ class Interpreter(RogueLangVisitor):
             return True
         elif ctx.FALSE() or ctx.getText().lower() == 'false':
             return False
-        elif ctx.NUMBER():
-            return float(ctx.NUMBER().getText())
+        elif ctx.INT():
+            return int(ctx.INT().getText())
+        elif ctx.FLOAT():
+            return float(ctx.FLOAT().getText())
         elif ctx.functionCall():
             return self.visit(ctx.functionCall())
         elif ctx.listElement():

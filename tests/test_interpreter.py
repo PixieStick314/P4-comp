@@ -27,7 +27,7 @@ def test_json_dumps():
     visitor = Interpreter()
     output = visitor.visit(tree)
 
-    assert output == json.dumps({"x": 3.0})
+    assert output == json.dumps({"x": 3})
 
 
 def test_function_decl_and_call():
@@ -46,7 +46,7 @@ def test_function_decl_and_call():
     visitor = Interpreter()
     output = visitor.visit(tree)
 
-    assert output == json.dumps({"x": 3.0})
+    assert output == json.dumps({"x": 3})
 
 
 def test_arithmetic():
@@ -60,7 +60,7 @@ def test_arithmetic():
     visitor = Interpreter()
     output = visitor.visit(tree)
 
-    assert output == json.dumps({"x": 4.0})
+    assert output == json.dumps({"x": 4})
 
 
 def test_nested_if_stat():
@@ -81,7 +81,7 @@ def test_nested_if_stat():
     visitor = Interpreter()
     output = visitor.visit(tree)
 
-    assert output == json.dumps({"x": 3.0})
+    assert output == json.dumps({"x": 3})
 
 
 def test_elif_stat():
@@ -105,7 +105,7 @@ def test_elif_stat():
     visitor = Interpreter()
     output = visitor.visit(tree)
 
-    assert output == json.dumps({"x": 2.0})
+    assert output == json.dumps({"x": 2})
 
 
 def test_else_stat():
@@ -126,7 +126,7 @@ def test_else_stat():
     visitor = Interpreter()
     output = visitor.visit(tree)
 
-    assert output == json.dumps({"x": 3.0})
+    assert output == json.dumps({"x": 3})
 
 
 def test_while_loop():
@@ -144,7 +144,7 @@ def test_while_loop():
     visitor = Interpreter()
     output = visitor.visit(tree)
 
-    assert output == json.dumps({"x": 0.0})
+    assert output == json.dumps({"x": 0})
 
 
 def test_nested_function_call():
@@ -166,7 +166,7 @@ def test_nested_function_call():
     visitor = Interpreter()
     output = visitor.visit(tree)
 
-    assert output == json.dumps({"x": 3.0})
+    assert output == json.dumps({"x": 3})
 
 
 def test_list():
@@ -182,7 +182,7 @@ def test_list():
     visitor = Interpreter()
     output = visitor.visit(tree)
 
-    assert output == json.dumps({"x": [3.0, 2.0, 1.0]})
+    assert output == json.dumps({"x": [3, 2, 1]})
 
 
 def test_list_add():
@@ -198,7 +198,7 @@ def test_list_add():
     visitor = Interpreter()
     output = visitor.visit(tree)
 
-    assert output == json.dumps({"x": [1.0, 2.0, 3.0, 4.0]})
+    assert output == json.dumps({"x": [1, 2, 3, 4]})
 
 
 def test_list_element():
@@ -215,7 +215,7 @@ def test_list_element():
     visitor = Interpreter()
     output = visitor.visit(tree)
 
-    assert output == json.dumps({"x": 3.0})
+    assert output == json.dumps({"x": 3})
 
 
 def test_list_element_variable_index():
@@ -233,13 +233,13 @@ def test_list_element_variable_index():
     visitor = Interpreter()
     output = visitor.visit(tree)
 
-    assert output == json.dumps({"x": 3.0})
+    assert output == json.dumps({"x": 3})
 
 
 def test_list_pop():
     code = '''Map {
     procedure {
-    x.pop(0)
+    x.pop()
     }
     field x = [1, 2, 3, 4]
     }
@@ -247,10 +247,10 @@ def test_list_pop():
 
     parser = setup_parser(code)
     tree = parser.prog()
-    visitor = Visitor()
+    visitor = Interpreter()
     output = visitor.visit(tree)
 
-    assert output == json.dumps({"x": [2.0, 3.0, 4.0]})
+    assert output == json.dumps({"x": [1, 2, 3]})
 
 
 def test_for_loop():
@@ -269,7 +269,7 @@ def test_for_loop():
     visitor = Interpreter()
     output = visitor.visit(tree)
 
-    assert output == json.dumps({"x": 7.0})
+    assert output == json.dumps({"x": 7})
 
 
 def test_comparisons():
@@ -338,7 +338,7 @@ def test_minus_equals():
     visitor = Interpreter()
     output = visitor.visit(tree)
 
-    assert output == json.dumps({"x": [1.0, 2.0]})
+    assert output == json.dumps({"x": [1, 2]})
 
 def test_list_pop():
     code = '''Map {
@@ -353,7 +353,7 @@ def test_list_pop():
     visitor = Interpreter()
     output = visitor.visit(tree)
 
-    assert output == json.dumps({"x": [1.0, 2.0]})
+    assert output == json.dumps({"x": [1, 2]})
 
 def test_random_range():
     code = '''Map {
@@ -370,7 +370,7 @@ def test_random_range():
 
     print(output)
 
-    assert json.loads(output) == {'x': 2.0} or {'x': 3.0} or {'x': 4.0}
+    assert json.loads(output) == {'x': 2} or {'x': 3} or {'x': 4}
 
 def test_random_choice():
     code = '''Map {
@@ -388,4 +388,4 @@ def test_random_choice():
 
     print(output)
 
-    assert json.loads(output) == {'x': 2.0} or {'x': 3.0} or {'x': 4.0}
+    assert json.loads(output) == {'x': 2} or {'x': 3} or {'x': 4}

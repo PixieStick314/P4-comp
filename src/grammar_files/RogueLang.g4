@@ -28,7 +28,7 @@ assignment        : EQUAL_SIGN expr
                   | EQUAL_SIGN list;
 functionDecl      : DEF ID OPEN_PARENTH params? CLOSED_PARENTH statBlock;
 list              : OPEN_BRACK (expr (COMMA expr)*)? CLOSED_BRACK;
-listElement       : ID OPEN_BRACK NUMBER CLOSED_BRACK
+listElement       : ID OPEN_BRACK INT CLOSED_BRACK
                   | ID OPEN_BRACK ID CLOSED_BRACK;
 listLength        : 'len' OPEN_PARENTH ID CLOSED_PARENTH;
 listPop           : ID DOT 'pop' OPEN_PARENTH CLOSED_PARENTH;
@@ -59,7 +59,8 @@ expr              : functionCall
                   | NOT expr
                   | OPEN_PARENTH expr CLOSED_PARENTH
                   | ID
-                  | NUMBER
+                  | INT
+                  | FLOAT
                   | STRING
                   | TRUE
                   | FALSE
@@ -99,7 +100,8 @@ NOT               : 'not';
 TRUE              : 'True' ;
 FALSE             : 'False' ;
 COMMENT_SINGLELINE: '//' ~[\r\n]* -> skip ;
-NUMBER            : '-'? DIGIT + | '-'? DIGIT+ '.' DIGIT+ ;
+INT               : '-'? DIGIT+;
+FLOAT             : '-'? DIGIT+ '.' DIGIT+;
 STRING            : '"' (ESC | ~["\\])* '"' ; // Use fragment for escaped characters
 ID                : LETTER (LETTER | DIGIT)* ;
 
