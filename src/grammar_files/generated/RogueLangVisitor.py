@@ -1,4 +1,4 @@
-# Generated from C:/Users/Loke/PycharmProjects/P4-comp/src/grammar_files/RogueLang.g4 by ANTLR 4.13.1
+# Generated from C://Users//Muffin//Documents//GitHub//P4-comp//src//grammar_files//RogueLang.g4 by ANTLR 4.13.1
 from antlr4 import *
 if "." in __name__:
     from .RogueLangParser import RogueLangParser
@@ -56,6 +56,11 @@ class RogueLangVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by RogueLangParser#functionDecl.
     def visitFunctionDecl(self, ctx:RogueLangParser.FunctionDeclContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by RogueLangParser#functionCall.
+    def visitFunctionCall(self, ctx:RogueLangParser.FunctionCallContext):
         return self.visitChildren(ctx)
 
 
@@ -124,23 +129,13 @@ class RogueLangVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by RogueLangParser#functionCall.
-    def visitFunctionCall(self, ctx:RogueLangParser.FunctionCallContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by RogueLangParser#params.
-    def visitParams(self, ctx:RogueLangParser.ParamsContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by RogueLangParser#args.
-    def visitArgs(self, ctx:RogueLangParser.ArgsContext):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by RogueLangParser#returnStat.
     def visitReturnStat(self, ctx:RogueLangParser.ReturnStatContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by RogueLangParser#whiteNoiseStat.
+    def visitWhiteNoiseStat(self, ctx:RogueLangParser.WhiteNoiseStatContext):
         return self.visitChildren(ctx)
 
 
@@ -151,6 +146,16 @@ class RogueLangVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by RogueLangParser#range.
     def visitRange(self, ctx:RogueLangParser.RangeContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by RogueLangParser#params.
+    def visitParams(self, ctx:RogueLangParser.ParamsContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by RogueLangParser#args.
+    def visitArgs(self, ctx:RogueLangParser.ArgsContext):
         return self.visitChildren(ctx)
 
 

@@ -1,6 +1,6 @@
+# Interpreter.py
 import json
 import random
-
 from grammar_files.generated.RogueLangParser import RogueLangParser
 from grammar_files.generated.RogueLangVisitor import RogueLangVisitor
 from modules.Interpreter.Environment import Environment
@@ -10,19 +10,32 @@ from modules.Interpreter.Function import Function
 class Interpreter(RogueLangVisitor):
     def __init__(self):
         super().__init__()
+        self.verbose = False
         self.environment = Environment(None)
 
+    def set_verbose(self, verbose):
+        self.verbose = verbose
+
     def visitProg(self, ctx:RogueLangParser.ProgContext):
+        if self.verbose:
+            print("Starting to visit program...")
         for stat in ctx.stat():
             self.visit(stat)
+        if self.verbose:
+            print("Finished visiting program.")
         return self.visit(ctx.object_())
 
     def visitObject(self, ctx:RogueLangParser.ObjectContext):
         previous = self.environment
         self.environment = Environment(previous)
         fields = []
+        if self.verbose:
+            print("Visiting object...")
         for field in ctx.field():
-            fields.append(self.visit(field))
+            field_name = self.visit(field)
+            fields.append(field_name)
+            if self.verbose:
+                print(f"Visited field: {field_name}")
         for stat in ctx.stat():
             self.visit(stat)
         self.visit(ctx.procedure())
@@ -32,10 +45,14 @@ class Interpreter(RogueLangVisitor):
             output[field] = self.environment.get(field)
 
         self.environment = previous
+        if self.verbose:
+            print("Object visitation completed.")
         return json.dumps(output)
 
     def visitField(self, ctx:RogueLangParser.FieldContext):
         field = self.visit(ctx.varDecl())
+        if self.verbose:
+            print(f"Visiting field: {field}")
         return field
 
     def visitProcedure(self, ctx:RogueLangParser.ProcedureContext):
@@ -58,14 +75,21 @@ class Interpreter(RogueLangVisitor):
 
         self.environment.define(name, value)
 
+        if self.verbose:
+            print(f"Declared variable '{name}' with value '{value}'")
+
         return name
 
     def visitAssignStat(self, ctx:RogueLangParser.AssignStatContext):
         name = ctx.ID().getText()
         value = self.visitAssignment(ctx.assignment())
         self.environment.assign(name, value)
+        if self.verbose:
+            print(f"Assigned variable '{name}' with value '{value}'")
 
     def visitAssignment(self, ctx:RogueLangParser.AssignmentContext):
+        if self.verbose:
+            print(f"Performing assignment for context: {ctx}")
         return self.visitChildren(ctx)
 
     def visitList(self, ctx:RogueLangParser.ListContext):
@@ -91,9 +115,15 @@ class Interpreter(RogueLangVisitor):
 
     def visitStatBlock(self, ctx):
         previous = self.environment
-        self.environment = Environment(self.environment)
+        self.environment = Environment(previous)
+
+        if self.verbose:
+            print("Visiting statement block...")
+
         self.visitChildren(ctx)
         self.environment = previous
+        if self.verbose:
+            print("Completed statement block visitation.")
 
     def visitIfStat(self, ctx:RogueLangParser.IfStatContext):
         if self.visit(ctx.expr()) is True:
@@ -141,6 +171,8 @@ class Interpreter(RogueLangVisitor):
 
         function = Function(params, body)
         self.environment.define(name, function)
+        if self.verbose:
+            print(f"Defined function '{name}' with params '{params}'")
 
     def visitParams(self, ctx:RogueLangParser):
         params = []
@@ -191,6 +223,23 @@ class Interpreter(RogueLangVisitor):
     def visitListLength(self, ctx:RogueLangParser.ListLengthContext):
         list = self.environment.get(ctx.ID().getText())
         return len(list)
+
+    # Visitor method to handle WhiteNoise
+    def visitWhiteNoiseStat(self, ctx):
+        # Get the 2D array variable name
+        array_param = ctx.arrayParam.text
+        array = self.environment.getVariable(array_param)
+
+        # Get the range and parse it
+        range_param = ctx.rangeParam.text
+        start, end = [int(x) for x in range_param.split('..')]
+
+        # Randomize elements within the given range
+        for row in array:
+            for i in range(len(row)):
+                row[i] = random.randint(start, end)
+
+        return array
 
     def visitRandom(self, ctx:RogueLangParser.RandomContext):
         if ctx.range_():

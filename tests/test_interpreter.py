@@ -1,3 +1,4 @@
+# test_interpreter.py
 import json
 
 from grammar_files.generated.RogueLangParser import RogueLangParser
@@ -6,13 +7,18 @@ from antlr4 import *
 
 from modules.Interpreter.Interpreter import Interpreter
 
-
 def setup_parser(str):
     lexer = RogueLangLexer(InputStream(str))
     stream = CommonTokenStream(lexer)
     parser = RogueLangParser(stream)
     return parser
 
+def run_test_prog(code, expected_output):
+    parser = setup_parser(code)
+    tree = parser.prog()
+    visitor = Interpreter()
+    output = visitor.visit(tree)
+    assert output == json.dumps(expected_output)
 
 def test_json_dumps():
     code = '''Map {
@@ -22,13 +28,7 @@ def test_json_dumps():
     field x = 5
     }
     '''
-    parser = setup_parser(code)
-    tree = parser.prog()
-    visitor = Interpreter()
-    output = visitor.visit(tree)
-
-    assert output == json.dumps({"x": 3})
-
+    run_test_prog(code, {"x": 3})
 
 def test_function_decl_and_call():
     code = '''Map {
@@ -41,13 +41,7 @@ def test_function_decl_and_call():
     }
     }
     '''
-    parser = setup_parser(code)
-    tree = parser.prog()
-    visitor = Interpreter()
-    output = visitor.visit(tree)
-
-    assert output == json.dumps({"x": 3})
-
+    run_test_prog(code, {"x": 3})
 
 def test_arithmetic():
     code = '''Map {
@@ -55,13 +49,7 @@ def test_arithmetic():
     field x = 5
     }
     '''
-    parser = setup_parser(code)
-    tree = parser.prog()
-    visitor = Interpreter()
-    output = visitor.visit(tree)
-
-    assert output == json.dumps({"x": 4})
-
+    run_test_prog(code, {"x": 4})
 
 def test_nested_if_stat():
     code = '''Map {
@@ -76,12 +64,7 @@ def test_nested_if_stat():
     field x = 5
     }
     '''
-    parser = setup_parser(code)
-    tree = parser.prog()
-    visitor = Interpreter()
-    output = visitor.visit(tree)
-
-    assert output == json.dumps({"x": 3})
+    run_test_prog(code, {"x": 3})
 
 
 def test_elif_stat():
@@ -100,12 +83,7 @@ def test_elif_stat():
     field x = 4
     }
     '''
-    parser = setup_parser(code)
-    tree = parser.prog()
-    visitor = Interpreter()
-    output = visitor.visit(tree)
-
-    assert output == json.dumps({"x": 2})
+    run_test_prog(code, {"x": 2})
 
 
 def test_else_stat():
@@ -121,12 +99,7 @@ def test_else_stat():
     field x = 4
     }
     '''
-    parser = setup_parser(code)
-    tree = parser.prog()
-    visitor = Interpreter()
-    output = visitor.visit(tree)
-
-    assert output == json.dumps({"x": 3})
+    run_test_prog(code, {"x": 3})
 
 
 def test_while_loop():
@@ -139,12 +112,7 @@ def test_while_loop():
     field x = 5
     }
     '''
-    parser = setup_parser(code)
-    tree = parser.prog()
-    visitor = Interpreter()
-    output = visitor.visit(tree)
-
-    assert output == json.dumps({"x": 0})
+    run_test_prog(code, {"x": 0})
 
 
 def test_nested_function_call():
@@ -161,12 +129,7 @@ def test_nested_function_call():
     }
     }
     '''
-    parser = setup_parser(code)
-    tree = parser.prog()
-    visitor = Interpreter()
-    output = visitor.visit(tree)
-
-    assert output == json.dumps({"x": 3})
+    run_test_prog(code, {"x": 3})
 
 
 def test_list():
@@ -177,12 +140,7 @@ def test_list():
     field x = [3, 2, 1]
     }
     '''
-    parser = setup_parser(code)
-    tree = parser.prog()
-    visitor = Interpreter()
-    output = visitor.visit(tree)
-
-    assert output == json.dumps({"x": [3, 2, 1]})
+    run_test_prog(code, {"x": [3, 2, 1]})
 
 
 def test_list_add():
@@ -193,12 +151,7 @@ def test_list_add():
     field x = [1, 2, 3]
     }
     '''
-    parser = setup_parser(code)
-    tree = parser.prog()
-    visitor = Interpreter()
-    output = visitor.visit(tree)
-
-    assert output == json.dumps({"x": [1, 2, 3, 4]})
+    run_test_prog(code, {"x": [1, 2, 3, 4]})
 
 
 def test_list_element():
@@ -210,12 +163,7 @@ def test_list_element():
     field x = 1
     }
     '''
-    parser = setup_parser(code)
-    tree = parser.prog()
-    visitor = Interpreter()
-    output = visitor.visit(tree)
-
-    assert output == json.dumps({"x": 3})
+    run_test_prog(code, {"x": 3})
 
 
 def test_list_element_variable_index():
@@ -228,12 +176,7 @@ def test_list_element_variable_index():
     field x = 1
     }
     '''
-    parser = setup_parser(code)
-    tree = parser.prog()
-    visitor = Interpreter()
-    output = visitor.visit(tree)
-
-    assert output == json.dumps({"x": 3})
+    run_test_prog(code, {"x": 3})
 
 
 def test_list_pop():
@@ -244,13 +187,7 @@ def test_list_pop():
     field x = [1, 2, 3, 4]
     }
     '''
-
-    parser = setup_parser(code)
-    tree = parser.prog()
-    visitor = Interpreter()
-    output = visitor.visit(tree)
-
-    assert output == json.dumps({"x": [1, 2, 3]})
+    run_test_prog(code, {"x": [1, 2, 3]})
 
 
 def test_for_loop():
@@ -264,12 +201,7 @@ def test_for_loop():
     field x = 1
     }
     '''
-    parser = setup_parser(code)
-    tree = parser.prog()
-    visitor = Interpreter()
-    output = visitor.visit(tree)
-
-    assert output == json.dumps({"x": 7})
+    run_test_prog(code, {"x": 7})
 
 
 def test_comparisons():
@@ -282,12 +214,7 @@ def test_comparisons():
     field x = True
     }
     '''
-    parser = setup_parser(code)
-    tree = parser.prog()
-    visitor = Interpreter()
-    output = visitor.visit(tree)
-
-    assert output == json.dumps({"x": False})
+    run_test_prog(code, {"x": False})
 
 def test_function_as_parameter():
     code = '''Map {
@@ -303,12 +230,7 @@ def test_function_as_parameter():
     return "meow"
     }
     '''
-    parser = setup_parser(code)
-    tree = parser.prog()
-    visitor = Interpreter()
-    output = visitor.visit(tree)
-
-    assert output == json.dumps({"x": "meow"})
+    run_test_prog(code, {"x": "meow"})
 
 def test_list_length():
     code = '''Map {
@@ -318,12 +240,7 @@ def test_list_length():
     field x = [1, 2, 3]
     }
     '''
-    parser = setup_parser(code)
-    tree = parser.prog()
-    visitor = Interpreter()
-    output = visitor.visit(tree)
-
-    assert output == json.dumps({"x": 3})
+    run_test_prog(code, {"x": 3})
 
 def test_minus_equals():
     code = '''Map {
@@ -333,12 +250,7 @@ def test_minus_equals():
     field x = [1, 2, 3]
     }
     '''
-    parser = setup_parser(code)
-    tree = parser.prog()
-    visitor = Interpreter()
-    output = visitor.visit(tree)
-
-    assert output == json.dumps({"x": [1, 2]})
+    run_test_prog(code, {"x": [1, 2]})
 
 def test_list_pop():
     code = '''Map {
@@ -348,13 +260,54 @@ def test_list_pop():
     field x = [1, 2, 3]
     }
     '''
-    parser = setup_parser(code)
-    tree = parser.prog()
-    visitor = Interpreter()
-    output = visitor.visit(tree)
+    run_test_prog(code, {"x": [1, 2]})
 
-    assert output == json.dumps({"x": [1, 2]})
+''' def test_basic_2d_array():
+    code = 
+    Map {
+        procedure {
+            let myArray = [
+                [1, 2, 3],
+                [4, 5, 6],
+                [7, 8, 9]
+            ]
+        }
+        field 
+    }
+    
+    expected_output = {
+        "myArray": [
+            [1, 2, 3],
+            [4, 5, 6],
+            [7, 8, 9]
+        ]
+    }
+    run_test_prog(code, expected_output)
 
+def test_nested_arrays():
+    code = 
+    Map {
+        procedure {
+            let nestedArray = [
+                [[1, 2], [3, 4]],
+                [[5, 6], [7, 8]]
+            ];
+
+            nestedArray[0][0][1] = 10
+            nestedArray[1][1][0] += 2
+        }
+    }
+    
+    expected_output = {
+        "nestedArray": [
+            [[1, 10], [3, 4]],
+            [[5, 6], [9, 8]]
+        ]
+    }
+    run_test_prog(code, expected_output)
+
+# TODO: def test_white_noise():, Can't as of now because there is no seed input.
+'''
 def test_random_range():
     code = '''Map {
     procedure {
