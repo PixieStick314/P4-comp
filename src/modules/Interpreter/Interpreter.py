@@ -248,17 +248,19 @@ class Interpreter(RogueLangVisitor):
         list = self.environment.get(ctx.ID().getText())
         return len(list)
 
-    # Visitor method to handle WhiteNoise
-    def visitWhiteNoiseStat(self, ctx):
-        # Get the 2D array variable name
-        array_param = ctx.arrayParam.text
-        array = self.environment.getVariable(array_param)
+    def visitWhiteNoiseStat(self, ctx:RogueLangParser.WhiteNoiseStatContext):
+        array_param = ctx.ID().getText()
+        array = self.environment.get(array_param)
 
-        # Get the range and parse it
-        range_param = ctx.rangeParam.text
-        start, end = [int(x) for x in range_param.split('..')]
+        if array is None:
+            raise ValueError(f"Array with ID {array_param} not found in environment.") 
+        if ctx.range_():
+            range_expr = ctx.range_()
+            start = int(range_expr.expr(0).getText())
+            end = int(range_expr.expr(1).getText())
+        else:
+            start, end = 0, 1
 
-        # Randomize elements within the given range
         for row in array:
             for i in range(len(row)):
                 row[i] = random.randint(start, end)

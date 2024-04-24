@@ -262,19 +262,19 @@ def test_list_pop():
     '''
     run_test_prog(code, {"x": [1, 2]})
 
-''' def test_basic_2d_array():
-    code = 
+def test_basic_2d_array():
+    code = '''
     Map {
         procedure {
-            let myArray = [
-                [1, 2, 3],
-                [4, 5, 6],
+            myArray = [
+                [1, 2, 3], 
+                [4, 5, 6], 
                 [7, 8, 9]
             ]
         }
-        field 
+        field myArray
     }
-    
+    '''
     expected_output = {
         "myArray": [
             [1, 2, 3],
@@ -284,30 +284,8 @@ def test_list_pop():
     }
     run_test_prog(code, expected_output)
 
-def test_nested_arrays():
-    code = 
-    Map {
-        procedure {
-            let nestedArray = [
-                [[1, 2], [3, 4]],
-                [[5, 6], [7, 8]]
-            ];
-
-            nestedArray[0][0][1] = 10
-            nestedArray[1][1][0] += 2
-        }
-    }
-    
-    expected_output = {
-        "nestedArray": [
-            [[1, 10], [3, 4]],
-            [[5, 6], [9, 8]]
-        ]
-    }
-    run_test_prog(code, expected_output)
-
 # TODO: def test_white_noise():, Can't as of now because there is no seed input.
-'''
+
 def test_random_range():
     code = '''Map {
     procedure {
@@ -351,14 +329,7 @@ def test_nested_list():
     field x
     }
     '''
-    parser = setup_parser(code)
-    tree = parser.prog()
-    visitor = Interpreter()
-    output = visitor.visit(tree)
-
-    print(output)
-
-    assert json.loads(output) == {'x': [[1, 2], [3, 4]]}
+    run_test_prog(code, {'x': [[1, 2], [3, 4]]})
 
 def test_nested_list_access():
     code = '''Map {
@@ -369,14 +340,7 @@ def test_nested_list_access():
     field x
     }
     '''
-    parser = setup_parser(code)
-    tree = parser.prog()
-    visitor = Interpreter()
-    output = visitor.visit(tree)
-
-    print(output)
-
-    assert json.loads(output) == {'x': 4}
+    run_test_prog(code, {'x': 4})
 
 def test_nested_list_assign():
     code = '''Map {
@@ -387,11 +351,40 @@ def test_nested_list_assign():
     field x
     }
     '''
+    run_test_prog(code, {'x': [[1, 2], [3, 1]]})
+
+def test_whiteNoise():
+    code = '''
+    Map {
+        procedure {
+            myArray = [
+                [1, 2, 3], 
+                [4, 5, 6], 
+                [7, 8, 9]
+            ]
+            WhiteNoise(myArray, 0..1)
+        }
+        field myArray
+    }
+    '''
     parser = setup_parser(code)
     tree = parser.prog()
     visitor = Interpreter()
     output = visitor.visit(tree)
 
-    print(output)
+    try:
+        deserialized_output = json.loads(output)
+    except json.JSONDecodeError:
+        raise ValueError("Output could not be deserialized from JSON")
 
-    assert json.loads(output) == {'x': [[1, 2], [3, 1]]}
+    assert "myArray" in deserialized_output, "Expected 'myArray' in the output"
+    
+    myArray = deserialized_output["myArray"]
+
+    assert isinstance(myArray, list), "Expected 'myArray' to be a list"
+    
+    for row in myArray:
+        assert isinstance(row, list), "Each row should be a list"
+        
+        for value in row:
+            assert value in (0, 1), f"Value {value} is not 0 or 1"
