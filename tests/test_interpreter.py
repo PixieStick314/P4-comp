@@ -377,3 +377,21 @@ def test_nested_list_access():
     print(output)
 
     assert json.loads(output) == {'x': 4}
+
+def test_nested_list_assign():
+    code = '''Map {
+    procedure {
+    x = [[1, 2] , [3, 4]]
+    x[1][1] = 1
+    }
+    field x
+    }
+    '''
+    parser = setup_parser(code)
+    tree = parser.prog()
+    visitor = Interpreter()
+    output = visitor.visit(tree)
+
+    print(output)
+
+    assert json.loads(output) == {'x': [[1, 2], [3, 1]]}

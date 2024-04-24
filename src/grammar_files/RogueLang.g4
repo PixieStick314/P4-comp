@@ -30,7 +30,7 @@ stat:   printStat
 varDeclStat       : 'let' varDecl;
 varDecl           : ID assignment?;
 
-assignStat        : ID assignment;
+assignStat        : ID listAccess* assignment;
 assignment        : EQUAL_SIGN expr
                   | EQUAL_SIGN list;
 

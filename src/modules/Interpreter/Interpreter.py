@@ -83,9 +83,26 @@ class Interpreter(RogueLangVisitor):
     def visitAssignStat(self, ctx:RogueLangParser.AssignStatContext):
         name = ctx.ID().getText()
         value = self.visitAssignment(ctx.assignment())
+
+        if ctx.listAccess():
+            index = []
+            for i in ctx.listAccess():
+                index.append(self.visit(i))
+            variable = self.environment.get(name)
+            value = self.list_assign(variable, index, value)
         self.environment.assign(name, value)
         if self.verbose:
             print(f"Assigned variable '{name}' with value '{value}'")
+
+    def list_assign(self, variable, index, value):
+        if len(index) > 1:
+            i = index.pop(0)
+            sublist = variable[i]
+            variable[i] = self.list_assign(sublist, index, value)
+            return variable
+        else:
+            variable[index[0]] = value
+            return variable
 
     def visitAssignment(self, ctx:RogueLangParser.AssignmentContext):
         if self.verbose:
@@ -106,12 +123,20 @@ class Interpreter(RogueLangVisitor):
     def visitPlusEquals(self, ctx:RogueLangParser.PlusEqualsContext):
         name = ctx.ID().getText()
         value = self.visit(ctx.expr())
-        self.environment.plus_equals(name, value)
+        variable = self.environment.get(name)
+        if isinstance(variable, list):
+            self.environment.plus_equals(name, value)
+        elif isinstance(variable, int):
+            self.environment.assign(name, (variable + value))
 
     def visitMinusEquals(self, ctx:RogueLangParser.MinusEqualsContext):
         name = ctx.ID().getText()
         value = self.visit(ctx.expr())
-        self.environment.minus_equals(name, value)
+        variable = self.environment.get(name)
+        if isinstance(variable, list):
+            self.environment.minus_equals(name, value)
+        elif isinstance(variable, int):
+            self.environment.assign(name, (variable - value))
 
     def visitListPop(self, ctx:RogueLangParser.ListPopContext):
         self.environment.get(ctx.ID().getText()).pop()
