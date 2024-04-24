@@ -39,9 +39,10 @@ functionDecl      : DEF ID OPEN_PARENTH params? CLOSED_PARENTH statBlock;
 functionCall      : ID OPEN_PARENTH args? CLOSED_PARENTH;
 
 // Array and list structures
-list              : OPEN_BRACK (expr (COMMA expr)*)? CLOSED_BRACK;
-listElement       : ID OPEN_BRACK INT CLOSED_BRACK
-                  | ID OPEN_BRACK ID CLOSED_BRACK;
+list              : OPEN_BRACK (listElement (COMMA listElement)*)? CLOSED_BRACK;
+listElement       : expr | list;
+listAccess        : OPEN_BRACK INT CLOSED_BRACK
+                  | OPEN_BRACK ID CLOSED_BRACK;
 listLength        : 'len' OPEN_PARENTH ID CLOSED_PARENTH;
 listPop           : ID DOT 'pop' OPEN_PARENTH CLOSED_PARENTH;
 
@@ -70,7 +71,7 @@ args              : expr (COMMA expr)* ;
 
 // Expression structures
 expr              : functionCall
-                  | listElement
+                  | ID listAccess+
                   | listLength
                   | random
                   | expr op=(MULT | DIV | MOD) expr

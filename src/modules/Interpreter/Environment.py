@@ -24,8 +24,14 @@ class Environment:
 
     def get_list_element(self, name, index):
         if name in self.values:
-            list_values = self.values[name]
-            return list_values[index]
+            if len(index) == 1:
+                value = self.values[name]
+                return value[index[0]]
+            else:
+                value = self.values[name]
+                for i in index:
+                    value = value[i]
+                return value
         elif self.enclosing is not None:
             return self.enclosing.get_list_element(name, index)
         else:
