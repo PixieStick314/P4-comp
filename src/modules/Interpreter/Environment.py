@@ -37,6 +37,16 @@ class Environment:
         else:
             raise Exception("Undefined list: {}".format(name))
 
+    def assign_to_list_element(self, variable, index, value):
+        if len(index) > 1:
+            i = index.pop(0)
+            sublist = variable[i]
+            variable[i] = self.assign_to_list_element(sublist, index, value)
+            return variable
+        else:
+            variable[index[0]] = value
+            return variable
+
     def plus_equals(self, name, value):
         if name in self.values:
             self.values[name].append(value)
