@@ -329,7 +329,9 @@ def test_nested_list():
     field x
     }
     '''
+
     run_test_prog(code, {'x': [[1, 2], [3, 4]]})
+
 
 def test_nested_list_access():
     code = '''Map {
@@ -340,7 +342,10 @@ def test_nested_list_access():
     field x
     }
     '''
+
     run_test_prog(code, {'x': 4})
+
+
 
 def test_nested_list_assign():
     code = '''Map {
@@ -351,6 +356,7 @@ def test_nested_list_assign():
     field x
     }
     '''
+
     run_test_prog(code, {'x': [[1, 2], [3, 1]]})
 
 def test_whiteNoise():
@@ -367,10 +373,6 @@ def test_whiteNoise():
         field myArray
     }
     '''
-    parser = setup_parser(code)
-    tree = parser.prog()
-    visitor = Interpreter()
-    output = visitor.visit(tree)
 
     try:
         deserialized_output = json.loads(output)

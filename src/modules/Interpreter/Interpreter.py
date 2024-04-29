@@ -89,7 +89,9 @@ class Interpreter(RogueLangVisitor):
             for i in ctx.listAccess():
                 index.append(self.visit(i))
             variable = self.environment.get(name)
-            value = self.list_assign(variable, index, value)
+
+            value = self.environment.assign_to_list_element(variable, index, value)
+
         self.environment.assign(name, value)
         if self.verbose:
             print(f"Assigned variable '{name}' with value '{value}'")
