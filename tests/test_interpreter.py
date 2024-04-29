@@ -342,3 +342,56 @@ def test_random_choice():
     print(output)
 
     assert json.loads(output) == {'x': 2} or {'x': 3} or {'x': 4}
+
+def test_nested_list():
+    code = '''Map {
+    procedure {
+    x = [[1, 2] , [3, 4]]
+    }
+    field x
+    }
+    '''
+    parser = setup_parser(code)
+    tree = parser.prog()
+    visitor = Interpreter()
+    output = visitor.visit(tree)
+
+    print(output)
+
+    assert json.loads(output) == {'x': [[1, 2], [3, 4]]}
+
+def test_nested_list_access():
+    code = '''Map {
+    procedure {
+    let y = [[1, 2] , [3, 4]]
+    x = y[1][1]
+    }
+    field x
+    }
+    '''
+    parser = setup_parser(code)
+    tree = parser.prog()
+    visitor = Interpreter()
+    output = visitor.visit(tree)
+
+    print(output)
+
+    assert json.loads(output) == {'x': 4}
+
+def test_nested_list_assign():
+    code = '''Map {
+    procedure {
+    x = [[1, 2] , [3, 4]]
+    x[1][1] = 1
+    }
+    field x
+    }
+    '''
+    parser = setup_parser(code)
+    tree = parser.prog()
+    visitor = Interpreter()
+    output = visitor.visit(tree)
+
+    print(output)
+
+    assert json.loads(output) == {'x': [[1, 2], [3, 1]]}
