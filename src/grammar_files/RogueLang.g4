@@ -30,9 +30,10 @@ stat:   printStat
 varDeclStat       : 'let' varDecl;
 varDecl           : ID assignment?;
 
-assignStat        : ID listAccess* assignment;
+assignStat        : ID structFieldAccess* listAccess* assignment;
 assignment        : EQUAL_SIGN expr
-                  | EQUAL_SIGN list;
+                  | EQUAL_SIGN list
+                  | EQUAL_SIGN struct;
 
 // Function declaration and calls
 functionDecl      : DEF ID OPEN_PARENTH params? CLOSED_PARENTH statBlock;
@@ -45,6 +46,12 @@ listAccess        : OPEN_BRACK INT CLOSED_BRACK
                   | OPEN_BRACK ID CLOSED_BRACK;
 listLength        : 'len' OPEN_PARENTH ID CLOSED_PARENTH;
 listPop           : ID DOT 'pop' OPEN_PARENTH CLOSED_PARENTH;
+
+// Structs
+struct            : ID OPEN_CURL (structField assignment)+ CLOSED_CURL;
+structDef         : 'struct' ID OPEN_CURL structField+ CLOSED_CURL;
+structField       : ID;
+structFieldAccess : DOT ID;
 
 // Basic operations and control flow
 plusEquals        : ID PEQ expr;
@@ -71,6 +78,7 @@ args              : expr (COMMA expr)* ;
 
 // Expression structures
 expr              : functionCall
+                  | ID structFieldAccess+
                   | ID listAccess+
                   | listLength
                   | random

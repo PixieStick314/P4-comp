@@ -47,6 +47,30 @@ class Environment:
             variable[index[0]] = value
             return variable
 
+    def get_struct_field(self, name, fields):
+        if name in self.values:
+            struct = self.values[name]
+            if len(fields) == 1:
+                return struct.get_field(fields[0])
+            else:
+                for field in fields:
+                    struct = struct.get_field(field)
+                    return struct
+        elif self.enclosing is not None:
+            return self.enclosing.get_struct_field(name, fields)
+        else:
+            raise Exception("Undefined field: {}".format(name))
+
+    def assign_to_struct_field(self, struct, fields, value):
+        if len(fields) > 1:
+            field = fields.pop(0)
+            nested_struct = struct[field]
+            struct[field] = self.assign_to_struct_field(nested_struct, fields, value)
+            return struct
+        else:
+            struct[fields[0]] = value
+            return struct
+
     def plus_equals(self, name, value):
         if name in self.values:
             self.values[name].append(value)

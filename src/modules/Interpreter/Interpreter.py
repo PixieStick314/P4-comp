@@ -5,6 +5,8 @@ from grammar_files.generated.RogueLangParser import RogueLangParser
 from grammar_files.generated.RogueLangVisitor import RogueLangVisitor
 from modules.Interpreter.Environment import Environment
 from modules.Interpreter.Function import Function
+from modules.Interpreter.Struct import Struct
+from modules.Interpreter.StructInstance import StructInstance
 
 
 class Interpreter(RogueLangVisitor):
@@ -84,6 +86,14 @@ class Interpreter(RogueLangVisitor):
         name = ctx.ID().getText()
         value = self.visitAssignment(ctx.assignment())
 
+        if ctx.structFieldAccess():
+            fields = []
+            for field in ctx.structFieldAccess():
+                fields.append(self.visit(field))
+            struct = self.environment.get(name)
+
+            value = self.environment.assign_to_struct_field(struct, fields, value)
+
         if ctx.listAccess():
             index = []
             for i in ctx.listAccess():
@@ -96,17 +106,11 @@ class Interpreter(RogueLangVisitor):
         if self.verbose:
             print(f"Assigned variable '{name}' with value '{value}'")
 
-    def list_assign(self, variable, index, value):
-        if len(index) > 1:
-            i = index.pop(0)
-            sublist = variable[i]
-            variable[i] = self.list_assign(sublist, index, value)
-            return variable
-        else:
-            variable[index[0]] = value
-            return variable
-
     def visitAssignment(self, ctx:RogueLangParser.AssignmentContext):
+        if ctx.struct():
+            parent = self.visit(ctx.struct())
+            instance = StructInstance(parent)
+            return instance
         if self.verbose:
             print(f"Performing assignment for context: {ctx}")
         return self.visitChildren(ctx)
@@ -142,6 +146,31 @@ class Interpreter(RogueLangVisitor):
 
     def visitListPop(self, ctx:RogueLangParser.ListPopContext):
         self.environment.get(ctx.ID().getText()).pop()
+
+    def visitStruct(self, ctx:RogueLangParser.StructContext):
+        parent = self.environment.get(ctx.ID().getText())
+        fields = {}
+
+        for i in range(len(ctx.structField())):
+            field_name = self.visit(ctx.structField(i))
+            if field_name not in parent.fields:
+                raise Exception("Struct {} has no field named {}".format(parent.name, field_name))
+            value = self.visit(ctx.assignment(i))
+            fields[field_name] = value
+        instance = StructInstance(parent, fields)
+        return instance
+
+    def visitStructDef(self, ctx:RogueLangParser.StructDefContext):
+        name = ctx.ID().getText()
+        fields = []
+
+        for field in ctx.structField():
+            fields.append(self.visit(field))
+        struct = Struct(name, fields)
+        self.environment.define(struct.name, struct)
+
+    def visitStructField(self, ctx:RogueLangParser.StructFieldContext):
+        return ctx.ID().getText()
 
     def visitStatBlock(self, ctx):
         previous = self.environment
@@ -283,13 +312,22 @@ class Interpreter(RogueLangVisitor):
             bounds.append(self.visit(i))
         return bounds
 
+    def visitStructFieldAccess(self, ctx:RogueLangParser.StructFieldAccessContext):
+        return ctx.ID().getText()
+
     def visitExpr(self, ctx):
         if ctx.listAccess():
             name = ctx.ID().getText()
-            index = []
-            for i in ctx.listAccess():
-                index.append(self.visit(i))
-            return self.environment.get_list_element(name, index)
+            indices = []
+            for index in ctx.listAccess():
+                indices.append(self.visit(index))
+            return self.environment.get_list_element(name, indices)
+        if ctx.structFieldAccess():
+            name = ctx.ID().getText()
+            field_names = []
+            for field_name in ctx.structFieldAccess():
+                field_names.append(self.visit(field_name))
+            return self.environment.get_struct_field(name, field_names)
         elif ctx.ID():
             return self.environment.get(ctx.ID().getText())
         elif ctx.STRING():
