@@ -59,7 +59,7 @@ whileLoop         : WHILE OPEN_PARENTH expr CLOSED_PARENTH statBlock;
 returnStat        : RETURN expr;
 
 // Algorithm implementations and random
-whiteNoiseStat    : 'WhiteNoise' '(' arrayParam=ID ',' rangeParam=range ')' LAYER?;
+whiteNoiseStat    : 'WhiteNoise' '(' ID (',' range)? ')' LAYER?;
 random            : 'random' IN range
                   | 'random' IN ID;
 
