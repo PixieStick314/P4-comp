@@ -374,6 +374,11 @@ def test_whiteNoise():
     }
     '''
 
+    parser = setup_parser(code)
+    tree = parser.prog()
+    visitor = Interpreter()
+    output = visitor.visit(tree)
+
     try:
         deserialized_output = json.loads(output)
     except json.JSONDecodeError:
