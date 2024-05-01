@@ -19,201 +19,312 @@ class Interpreter(RogueLangVisitor):
     def visitProg(self, ctx:RogueLangParser.ProgContext):
         if self.verbose:
             print("Starting to visit program...")
-        for stat in ctx.stat():
-            self.visit(stat)
-        if self.verbose:
-            print("Finished visiting program.")
-        return self.visit(ctx.object_())
+        try:
+            for stat in ctx.stat():
+                self.visit(stat)
+            result = self.visit(ctx.object_())
+            if self.verbose:
+                print("Finished visiting program.")
+            return result
+        except Exception as e:
+            print(f"Error visiting program: {str(e)}")
+            raise RuntimeError(f"Failed during program execution: {str(e)}")
 
     def visitObject(self, ctx:RogueLangParser.ObjectContext):
+        if self.verbose:
+            print("Visiting object...")
         previous = self.environment
         self.environment = Environment(previous)
         fields = []
-        if self.verbose:
-            print("Visiting object...")
-        for field in ctx.field():
-            field_name = self.visit(field)
-            fields.append(field_name)
+        try:
+            for field in ctx.field():
+                field_name = self.visit(field)
+                fields.append(field_name)
+                if self.verbose:
+                    print(f"Visited field: {field_name}")
+            for stat in ctx.stat():
+                self.visit(stat)
+            self.visit(ctx.procedure())
+        except Exception as e:
+            print(f"Error during object construction: {str(e)}")
+            raise RuntimeError(f"Object creation failed due to: {str(e)}")
+        finally:
+            output = {field: self.environment.get(field) for field in fields}
+            self.environment = previous
             if self.verbose:
-                print(f"Visited field: {field_name}")
-        for stat in ctx.stat():
-            self.visit(stat)
-        self.visit(ctx.procedure())
-
-        output = {}
-        for field in fields:
-            output[field] = self.environment.get(field)
-
-        self.environment = previous
-        if self.verbose:
-            print("Object visitation completed.")
-        return json.dumps(output)
+                print("Object visitation completed.")
+            return json.dumps(output)
 
     def visitField(self, ctx:RogueLangParser.FieldContext):
-        field = self.visit(ctx.varDecl())
-        if self.verbose:
-            print(f"Visiting field: {field}")
-        return field
+        try:
+            field = self.visit(ctx.varDecl())
+            if self.verbose:
+                print(f"Visiting field: {field}")
+            return field
+        except Exception as e:
+            print(f"Error in field visitation: {str(e)}")
+            raise RuntimeError(f"Failed to process field '{field}': {str(e)}")
 
     def visitProcedure(self, ctx:RogueLangParser.ProcedureContext):
-        self.visit(ctx.statBlock())
+        try:
+            if self.verbose:
+                print("Visiting procedure block...")
+            self.visit(ctx.statBlock())
+            if self.verbose:
+                print("Completed procedure visitation.")
+        except Exception as e:
+            print(f"Error during procedure execution: {str(e)}")
+            raise RuntimeError(f"Procedure execution failed: {str(e)}")
 
     def visitPrintStat(self, ctx:RogueLangParser.PrintStatContext):
-        text = self.visit(ctx.expr())
-        print(text)
+        try:
+            text = self.visit(ctx.expr())
+            print(text)
+            if self.verbose:
+                print(f"Printed: {text}")
+        except Exception as e:
+            print(f"Error printing text: {str(e)}")
+            raise RuntimeError(f"Print statement failed due to: {str(e)}")
 
     def visitVarDeclStat(self, ctx):
-        self.visit(ctx.varDecl())
+        try:
+            self.visit(ctx.varDecl())
+            if self.verbose:
+                print("Visited variable declaration statement.")
+        except Exception as e:
+            print(f"Error declaring variable in visitVarDeclStat: {str(e)}")
+            raise RuntimeError(f"Variable declaration failed in statement: {str(e)}")
 
     def visitVarDecl(self, ctx:RogueLangParser.VarDeclContext):
-        name = ctx.ID().getText()
-
-        if ctx.assignment():
-            value = self.visit(ctx.assignment())
-        else:
-            value = None
-
-        self.environment.define(name, value)
-
-        if self.verbose:
-            print(f"Declared variable '{name}' with value '{value}'")
-
-        return name
+        try:
+            name = ctx.ID().getText()
+            value = self.visit(ctx.assignment()) if ctx.assignment() else None
+            self.environment.define(name, value)
+            if self.verbose:
+                print(f"Declared variable '{name}' with value '{value}'")
+            return name
+        except Exception as e:
+            print(f"Error in visitVarDecl for variable '{name}': {str(e)}")
+            raise ValueError(f"Inappropriate value for variable '{name}': {str(e)}")
 
     def visitAssignStat(self, ctx:RogueLangParser.AssignStatContext):
-        name = ctx.ID().getText()
-        value = self.visitAssignment(ctx.assignment())
-
-        if ctx.listAccess():
-            index = []
-            for i in ctx.listAccess():
-                index.append(self.visit(i))
-            variable = self.environment.get(name)
-
-            value = self.environment.assign_to_list_element(variable, index, value)
-
-        self.environment.assign(name, value)
-        if self.verbose:
-            print(f"Assigned variable '{name}' with value '{value}'")
+        try:
+            name = ctx.ID().getText()
+            value = self.visitAssignment(ctx.assignment())
+            if ctx.listAccess():
+                index = [self.visit(i) for i in ctx.listAccess()]
+                variable = self.environment.get(name)
+                value = self.list_assign(variable, index, value)
+            self.environment.assign(name, value)
+            if self.verbose:
+                print(f"Assigned variable '{name}' with value '{value}'")
+        except Exception as e:
+            print(f"Error assigning to variable '{name}': {str(e)}")
+            raise RuntimeError(f"Assignment failed for variable '{name}': {str(e)}")
 
     def list_assign(self, variable, index, value):
-        if len(index) > 1:
-            i = index.pop(0)
-            sublist = variable[i]
-            variable[i] = self.list_assign(sublist, index, value)
-            return variable
-        else:
-            variable[index[0]] = value
-            return variable
+        try:
+            if self.verbose:
+                print(f"Starting list assignment with variable: {variable}, index: {index}, value: {value}")
+            if len(index) > 1:
+                i = index.pop(0)
+                sublist = variable[i]
+                variable[i] = self.list_assign(sublist, index, value)
+                return variable
+            else:
+                variable[index[0]] = value
+                return variable
+        except Exception as e:
+            print(f"Error in list assignment: {str(e)}")
+            raise RuntimeError(f"Failed to assign to list: {str(e)}")
 
     def visitAssignment(self, ctx:RogueLangParser.AssignmentContext):
         if self.verbose:
             print(f"Performing assignment for context: {ctx}")
-        return self.visitChildren(ctx)
+        try:
+            return self.visitChildren(ctx)
+        except Exception as e:
+            print(f"Error during assignment: {str(e)}")
+            raise RuntimeError(f"Assignment processing failed: {str(e)}")
 
     def visitList(self, ctx:RogueLangParser.ListContext):
-        value = []
-
-        for element in ctx.listElement():
-            value.append(self.visit(element))
-
-        return value
+        try:
+            value = [self.visit(element) for element in ctx.listElement()]
+            if self.verbose:
+                print(f"Created list with values: {value}")
+            return value
+        except Exception as e:
+            print(f"Error creating list in visitList: {str(e)}")
+            raise RuntimeError(f"List creation failed: {str(e)}")
 
     def visitListElement(self, ctx:RogueLangParser.ListElementContext):
-        return self.visitChildren(ctx)
+        try:
+            element_value = self.visitChildren(ctx)
+            if self.verbose:
+                print(f"Visited list element with result: {element_value}")
+            return element_value
+        except Exception as e:
+            print(f"Error processing list element in visitListElement: {str(e)}")
+            raise RuntimeError(f"List element processing failed: {str(e)}")
 
     def visitPlusEquals(self, ctx:RogueLangParser.PlusEqualsContext):
-        name = ctx.ID().getText()
-        value = self.visit(ctx.expr())
-        variable = self.environment.get(name)
-        if isinstance(variable, list):
-            self.environment.plus_equals(name, value)
-        elif isinstance(variable, int):
-            self.environment.assign(name, (variable + value))
+        try:
+            name = ctx.ID().getText()
+            value = self.visit(ctx.expr())
+            variable = self.environment.get(name)
+            if isinstance(variable, list):
+                self.environment.plus_equals(name, value)
+            elif isinstance(variable, int):
+                self.environment.assign(name, variable + value)
+            if self.verbose:
+                print(f"Performed += on variable '{name}' with increment: {value}")
+        except Exception as e:
+            print(f"Error in visitPlusEquals for '{name}': {str(e)}")
+            raise ValueError(f"Invalid operation on variable '{name}': {str(e)}")
 
     def visitMinusEquals(self, ctx:RogueLangParser.MinusEqualsContext):
-        name = ctx.ID().getText()
-        value = self.visit(ctx.expr())
-        variable = self.environment.get(name)
-        if isinstance(variable, list):
-            self.environment.minus_equals(name, value)
-        elif isinstance(variable, int):
-            self.environment.assign(name, (variable - value))
+        try:
+            name = ctx.ID().getText()
+            value = self.visit(ctx.expr())
+            variable = self.environment.get(name)
+            if isinstance(variable, list):
+                self.environment.minus_equals(name, value)
+            elif isinstance(variable, int):
+                self.environment.assign(name, variable - value)
+            if self.verbose:
+                print(f"Performed -= on variable '{name}' with decrement: {value}")
+        except Exception as e:
+            print(f"Error in visitMinusEquals for '{name}': {str(e)}")
+            raise ValueError(f"Invalid operation on variable '{name}': {str(e)}")
 
     def visitListPop(self, ctx:RogueLangParser.ListPopContext):
-        self.environment.get(ctx.ID().getText()).pop()
+        try:
+            list_var = self.environment.get(ctx.ID().getText())
+            list_var.pop()
+            if self.verbose:
+                print(f"Popped from list variable '{ctx.ID().getText()}'.")
+        except IndexError:
+            print(f"Error: Attempted to pop from an empty list in visitListPop")
+            raise ValueError("Cannot pop from an empty list")
+        except Exception as e:
+            print(f"Error in visitListPop: {str(e)}")
+            raise RuntimeError(f"List pop operation failed: {str(e)}")
 
     def visitStatBlock(self, ctx):
         previous = self.environment
         self.environment = Environment(previous)
-
         if self.verbose:
             print("Visiting statement block...")
-
-        self.visitChildren(ctx)
-        self.environment = previous
-        if self.verbose:
-            print("Completed statement block visitation.")
+        try:
+            self.visitChildren(ctx)
+        except Exception as e:
+            if self.verbose:
+                print(f"Error in statement block in visitStatBlock: {str(e)}")
+            raise  # Re-raise the original exception without modification (It WILL fail if RuntimeError is used)
+        finally:
+            self.environment = previous
+            if self.verbose:
+                print("Completed statement block visitation.")
 
     def visitIfStat(self, ctx:RogueLangParser.IfStatContext):
-        if self.visit(ctx.expr()) is True:
-            self.visit(ctx.statBlock())
-        elif ctx.elifStat():
-            self.visit(ctx.elifStat())
-        elif ctx.elseStat():
-            self.visit(ctx.elseStat())
+        try:
+            if self.verbose:
+                print("Evaluating If statement condition...")
+            if self.visit(ctx.expr()) is True:
+                self.visit(ctx.statBlock())
+            elif ctx.elifStat():
+                self.visit(ctx.elifStat())
+            elif ctx.elseStat():
+                self.visit(ctx.elseStat())
+        except Exception as e:
+            print(f"Error in If statement: {str(e)}")
+            raise RuntimeError(f"If statement execution failed: {str(e)}")
 
     def visitElifStat(self, ctx:RogueLangParser.ElifStatContext):
-        if self.visit(ctx.expr()) is True:
-            self.visit(ctx.statBlock())
-        elif self.visit(ctx.elifStat()):
-            self.visit(ctx.elifStat())
+        try:
+            if self.verbose:
+                print("Evaluating Elif statement condition...")
+            if self.visit(ctx.expr()) is True:
+                self.visit(ctx.statBlock())
+            elif self.visit(ctx.elifStat()):
+                self.visit(ctx.elifStat())
+        except Exception as e:
+            print(f"Error in Elif statement: {str(e)}")
+            raise RuntimeError(f"Elif statement execution failed: {str(e)}")
 
     def visitElseStat(self, ctx:RogueLangParser.ElseStatContext):
-        self.visit(ctx.statBlock())
+        try:
+            if self.verbose:
+                print("Executing Else block...")
+            self.visit(ctx.statBlock())
+        except Exception as e:
+            print(f"Error in Else statement: {str(e)}")
+            raise RuntimeError(f"Else statement execution failed: {str(e)}")
 
     def visitForLoop(self, ctx):
+        if self.verbose:
+            print("Starting For loop...")
         previous = self.environment
         self.environment = Environment(previous)
-
         iterator = ctx.ID(0).getText()
         iterable = self.environment.get(ctx.ID(1).getText())
         self.environment.define(iterator, iterable[0])
         i = 0
-
         try:
             while i < len(iterable):
                 self.environment.values[iterator] = iterable[i]
                 self.visit(ctx.statBlock())
-                i = i+1
+                i += 1
+        except Exception as e:
+            print(f"Error in For loop: {str(e)}")
+            raise RuntimeError(f"For loop execution failed: {str(e)}")
         finally:
             self.environment = previous
-
+            if self.verbose:
+                print("Completed For loop.")
 
     def visitWhileLoop(self, ctx):
-        while self.visit(ctx.expr()):
-            self.visit(ctx.statBlock())
+        if self.verbose:
+            print("Starting While loop...")
+        try:
+            while self.visit(ctx.expr()):
+                self.visit(ctx.statBlock())
+        except Exception as e:
+            print(f"Error in While loop: {str(e)}")
+            raise RuntimeError(f"While loop execution failed: {str(e)}")
+        if self.verbose:
+            print("Completed While loop.")
 
     def visitFunctionDecl(self, ctx:RogueLangParser.FunctionDeclContext):
-        name = ctx.ID().getText()
-        params = self.visit(ctx.params()) if ctx.params() is not None else None
-        body = ctx.statBlock()
+        try:
+            name = ctx.ID().getText()
+            params = self.visit(ctx.params()) if ctx.params() is not None else None
+            body = ctx.statBlock()
 
-        function = Function(params, body)
-        self.environment.define(name, function)
-        if self.verbose:
-            print(f"Defined function '{name}' with params '{params}'")
+            function = Function(params, body)
+            self.environment.define(name, function)
+            if self.verbose:
+                print(f"Defined function '{name}' with params '{params}'")
+        except Exception as e:
+            error_message = f"Function declaration failed for '{name}': {str(e)}"
+            print(error_message)
+            raise RuntimeError(error_message) from e
 
     def visitParams(self, ctx:RogueLangParser):
-        params = []
-        for id in ctx.ID():
-            params.append(id.getText())
-        return params
+        try:
+            params = [id.getText() for id in ctx.ID()]
+            if self.verbose:
+                print("Visited parameters:", params)
+            return params
+        except Exception as e:
+            print("Error visiting parameters:", str(e))
+            raise
 
     def visitFunctionCall(self, ctx:RogueLangParser.FunctionCallContext):
         name = ctx.ID().getText()
         args = self.visit(ctx.args()) if ctx.args() is not None else None
-
+        if self.verbose:
+            print(f"Calling function '{name}' with arguments {args}")
         previous = self.environment
         self.environment = Environment(previous)
         if args is not None:
@@ -224,126 +335,160 @@ class Interpreter(RogueLangVisitor):
         try:
             self.visit(self.environment.get(name).body)
         except Exception as e:
+            if self.verbose:
+                print(f"Error during function call '{name}': {str(e)}")
             return e.args[0]
         finally:
             self.environment = previous
 
     def visitArgs(self, ctx:RogueLangParser.ArgsContext):
-        args = [self.visitChildren(ctx)]
-        return args
+        try:
+            args = [self.visitChildren(ctx)]
+            if self.verbose:
+                print("Visited arguments:", args)
+            return args
+        except Exception as e:
+            print("Error visiting arguments:", str(e))
+            raise
 
     def visitReturnStat(self, ctx):
-        value = self.visit(ctx.expr())
-        raise Exception(value)
+        try:
+            value = self.visit(ctx.expr())
+            if self.verbose:
+                print(f"Returning value {value}")
+            raise Exception(value)
+        except Exception as e:
+            print("Error during return statement evaluation:", str(e))
+            raise
 
     def defaultResult(self):
         # Returns a placeholder for unhandled cases
-        return "ERROR"
+        return "ERROR: Unhandled Case"
 
     def visitListAccess(self, ctx:RogueLangParser.ListAccessContext):
-        if ctx.INT():
-            return int(ctx.INT().getText())
-        else:
-            return self.environment.get(ctx.ID().getText())
+        if self.verbose:
+            print("Accessing list element...")
+        try:
+            if ctx.INT():
+                return int(ctx.INT().getText())
+            else:
+                return self.environment.get(ctx.ID().getText())
+        except Exception as e:
+            print(f"Error accessing list: {str(e)}")
+            raise RuntimeError(f"List access failed: {str(e)}")
 
     def visitListLength(self, ctx:RogueLangParser.ListLengthContext):
-        list = self.environment.get(ctx.ID().getText())
-        return len(list)
+        try:
+            list = self.environment.get(ctx.ID().getText())
+            length = len(list)
+            if self.verbose:
+                print(f"Length of list '{ctx.ID().getText()}': {length}")
+            return length
+        except Exception as e:
+            print(f"Error getting length of list '{ctx.ID().getText()}':", str(e))
+            raise
 
     def visitWhiteNoiseStat(self, ctx:RogueLangParser.WhiteNoiseStatContext):
-        array_param = ctx.ID().getText()
-        array = self.environment.get(array_param)
-
-        if array is None:
-            raise ValueError(f"Array with ID {array_param} not found in environment.") 
-        if ctx.range_():
-            range_expr = ctx.range_()
-            start = int(range_expr.expr(0).getText())
-            end = int(range_expr.expr(1).getText())
-        else:
-            start, end = 0, 1
-
-        for row in array:
-            for i in range(len(row)):
-                row[i] = random.randint(start, end)
-
-        return array
+        try:
+            array_param = ctx.ID().getText()
+            array = self.environment.get(array_param)
+            if array is None:
+                raise ValueError(f"Array with ID {array_param} not found in environment.") 
+            if ctx.range_():
+                range_expr = ctx.range_()
+                start = int(range_expr.expr(0).getText())
+                end = int(range_expr.expr(1).getText())
+            else:
+                start, end = 0, 1
+            for row in array:
+                for i in range(len(row)):
+                    row[i] = random.randint(start, end)
+            if self.verbose:
+                print(f"Applied white noise to array {array_param} with range ({start}, {end})")
+            return array
+        except Exception as e:
+            print(f"Error in visitWhiteNoiseStat: {str(e)}")
+            raise RuntimeError(f"White noise application failed: {str(e)}")
 
     def visitRandom(self, ctx:RogueLangParser.RandomContext):
-        if ctx.range_():
-            bounds = self.visit(ctx.range_())
-            return random.randrange(bounds[0], bounds[1])
-        elif ctx.ID():
-            list = self.environment.get(ctx.ID().getText())
-            return random.choice(list)
+        try:
+            if ctx.range_():
+                bounds = self.visit(ctx.range_())
+                result = random.randrange(bounds[0], bounds[1])
+            elif ctx.ID():
+                list = self.environment.get(ctx.ID().getText())
+                result = random.choice(list)
+            if self.verbose:
+                print(f"Generated random value: {result}")
+            return result
+        except Exception as e:
+            print(f"Error in visitRandom: {str(e)}")
+            raise RuntimeError(f"Random value generation failed: {str(e)}")
 
     def visitRange(self, ctx:RogueLangParser.RangeContext):
-        bounds = []
-        for i in ctx.expr():
-            bounds.append(self.visit(i))
-        return bounds
+        try:
+            bounds = [self.visit(i) for i in ctx.expr()]
+            if self.verbose:
+                print(f"Evaluated range bounds: {bounds}")
+            return bounds
+        except Exception as e:
+            print(f"Error in visitRange: {str(e)}")
+            raise RuntimeError(f"Range evaluation failed: {str(e)}")
 
     def visitExpr(self, ctx):
-        if ctx.listAccess():
-            name = ctx.ID().getText()
-            index = []
-            for i in ctx.listAccess():
-                index.append(self.visit(i))
-            return self.environment.get_list_element(name, index)
-        elif ctx.ID():
-            return self.environment.get(ctx.ID().getText())
-        elif ctx.STRING():
-            return ctx.STRING().getText().replace('"', '')
-        elif ctx.TRUE() or ctx.getText().lower() == 'true':
-            return True
-        elif ctx.FALSE() or ctx.getText().lower() == 'false':
-            return False
-        elif ctx.INT():
-            return int(ctx.INT().getText())
-        elif ctx.FLOAT():
-            return float(ctx.FLOAT().getText())
-        elif ctx.functionCall():
-            return self.visit(ctx.functionCall())
-        elif ctx.listLength():
-            return self.visit(ctx.listLength())
-        elif ctx.random():
-            return self.visit(ctx.random())
+        try:
+            if ctx.listAccess():
+                name = ctx.ID().getText()
+                index = [self.visit(i) for i in ctx.listAccess()]
+                result = self.environment.get_list_element(name, index)
+            elif ctx.ID():
+                result = self.environment.get(ctx.ID().getText())
+            elif ctx.STRING():
+                result = ctx.STRING().getText().replace('"', '')
+            elif ctx.TRUE() or ctx.getText().lower() == 'true':
+                result = True
+            elif ctx.FALSE() or ctx.getText().lower() == 'false':
+                result = False
+            elif ctx.INT():
+                result = int(ctx.INT().getText())
+            elif ctx.FLOAT():
+                result = float(ctx.FLOAT().getText())
+            elif ctx.functionCall():
+                result = self.visit(ctx.functionCall())
+            elif ctx.listLength():
+                result = self.visit(ctx.listLength())
+            elif ctx.random():
+                result = self.visit(ctx.random())
 
-        elif ctx.getChildCount() == 3:
-            left = self.visit(ctx.expr(0))
-            right = self.visit(ctx.expr(1)) if ctx.expr(1) else None
-            operator = ctx.getChild(1).getText()
-            if ctx.NOT():
-                return not left
-            elif right:  # Binary operation
-                match operator:
-                    case '+':
-                        return left + right
-                    case '-':
-                        return left - right
-                    case '*':
-                        return left * right
-                    case '/':
-                        return left / right
-                    case '>':
-                        return left > right
-                    case '<':
-                        return left < right
-                    case '>=':
-                        return left >= right
-                    case '<=':
-                        return left <= right
-                    case '==':
-                        return left == right
-                    case '!=':
-                        return left != right
-                    case '%':
-                        return left % right
-                    case 'and':
-                        return left and right
-                    case 'or':
-                        return left or right
-            else:  # Unary operation
-                return left
-        else:
-            return self.defaultResult()
+            elif ctx.getChildCount() == 3:
+                left = self.visit(ctx.expr(0))
+                right = self.visit(ctx.expr(1)) if ctx.expr(1) else None
+                operator = ctx.getChild(1).getText()
+                if ctx.NOT():
+                    result = not left
+                elif right:  # Binary operation
+                    result = {
+                        '+': left + right,
+                        '-': left - right,
+                        '*': left * right,
+                        '/': left / right,
+                        '>': left > right,
+                        '<': left < right,
+                        '>=': left >= right,
+                        '<=': left <= right,
+                        '==': left == right,
+                        '!=': left != right,
+                        '%': left % right,
+                        'and': left and right,
+                        'or': left or right
+                    }.get(operator, left) # default to left if operator does not match
+                else:  # Unary operation
+                    result = left
+            else:
+                result = self.defaultResult()
+            if self.verbose:
+                print(f"Evaluated expression result: {result}")
+            return result
+        except Exception as e:
+            print(f"Error in visitExpr: {str(e)}")
+            raise RuntimeError(f"Expression evaluation failed: {str(e)}")
