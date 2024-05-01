@@ -153,3 +153,28 @@ def test_lexer_plus_equals():
     tokens = get_tokens_from_string(code)
 
     assert tokens[0].type == RogueLangLexer.PEQ
+
+def test_sqrt_op():
+    code = 'sqrt(9)'
+
+    tokens = get_tokens_from_string(code)
+
+    assert tokens[0].type == RogueLangLexer.SQRT
+    assert tokens[1].type == RogueLangLexer.OPEN_PARENTH
+    assert tokens[2].type == RogueLangLexer.INT
+    assert tokens[3].type == RogueLangLexer.CLOSED_PARENTH
+
+def test_pow():
+    code = 'pow(1,2)'
+
+    tokens = get_tokens_from_string(code)
+
+    assert tokens[0].type == RogueLangLexer.POW
+    assert tokens[1].type == RogueLangLexer.OPEN_PARENTH
+    assert tokens[2].type == RogueLangLexer.INT
+    assert tokens[3].type == RogueLangLexer.COMMA
+    assert tokens[4].type == RogueLangLexer.INT
+    assert tokens[5].type == RogueLangLexer.CLOSED_PARENTH
+
+
+

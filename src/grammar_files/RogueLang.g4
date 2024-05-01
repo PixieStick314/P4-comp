@@ -78,6 +78,8 @@ expr              : functionCall
                   | expr op=(GT | GTE | LT | LTE | EQ | NEQ) expr
                   | expr op=(AND | OR) expr
                   | NOT expr
+                  | SQRT OPEN_PARENTH expr CLOSED_PARENTH
+                  | POW OPEN_PARENTH expr COMMA expr CLOSED_PARENTH
                   | OPEN_PARENTH expr CLOSED_PARENTH
                   | ID
                   | INT
@@ -120,6 +122,8 @@ OR                : 'or';
 NOT               : 'not';
 TRUE              : 'True' ;
 FALSE             : 'False' ;
+SQRT              : 'sqrt' ;
+POW               : 'pow' ;
 
 // Single line comments
 COMMENT_SINGLELINE: '//' ~[\r\n]* -> skip ;

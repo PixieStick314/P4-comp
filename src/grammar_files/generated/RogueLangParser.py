@@ -1,4 +1,4 @@
-# Generated from C://Users//Muffin//Documents//GitHub//P4-comp//src//grammar_files//RogueLang.g4 by ANTLR 4.13.1
+# Generated from C:/Users/nedim/Documents/GitHub/P4-comp/src/grammar_files/RogueLang.g4 by ANTLR 4.13.1
 # encoding: utf-8
 from antlr4 import *
 from io import StringIO
@@ -10,7 +10,7 @@ else:
 
 def serializedATN():
     return [
-        4,1,50,303,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,
+        4,1,52,315,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,
         6,2,7,7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,2,13,7,13,
         2,14,7,14,2,15,7,15,2,16,7,16,2,17,7,17,2,18,7,18,2,19,7,19,2,20,
         7,20,2,21,7,21,2,22,7,22,2,23,7,23,2,24,7,24,2,25,7,25,2,26,7,26,
@@ -32,91 +32,96 @@ def serializedATN():
         26,1,27,1,27,1,27,1,27,1,27,1,28,1,28,1,28,5,28,254,8,28,10,28,12,
         28,257,9,28,1,29,1,29,1,29,5,29,262,8,29,10,29,12,29,265,9,29,1,
         30,1,30,1,30,1,30,1,30,1,30,1,30,1,30,1,30,1,30,1,30,1,30,1,30,1,
-        30,1,30,1,30,1,30,3,30,284,8,30,1,30,1,30,1,30,1,30,1,30,1,30,1,
-        30,1,30,1,30,1,30,1,30,1,30,5,30,298,8,30,10,30,12,30,301,9,30,1,
-        30,0,1,60,31,0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,
-        38,40,42,44,46,48,50,52,54,56,58,60,0,4,2,0,20,21,30,30,1,0,18,19,
-        1,0,22,27,1,0,31,32,317,0,62,1,0,0,0,2,69,1,0,0,0,4,81,1,0,0,0,6,
-        84,1,0,0,0,8,101,1,0,0,0,10,103,1,0,0,0,12,106,1,0,0,0,14,110,1,
-        0,0,0,16,117,1,0,0,0,18,119,1,0,0,0,20,128,1,0,0,0,22,135,1,0,0,
-        0,24,156,1,0,0,0,26,158,1,0,0,0,28,163,1,0,0,0,30,169,1,0,0,0,32,
-        173,1,0,0,0,34,177,1,0,0,0,36,182,1,0,0,0,38,193,1,0,0,0,40,201,
-        1,0,0,0,42,204,1,0,0,0,44,213,1,0,0,0,46,219,1,0,0,0,48,225,1,0,
-        0,0,50,228,1,0,0,0,52,243,1,0,0,0,54,245,1,0,0,0,56,250,1,0,0,0,
-        58,258,1,0,0,0,60,283,1,0,0,0,62,66,3,2,1,0,63,65,3,8,4,0,64,63,
-        1,0,0,0,65,68,1,0,0,0,66,64,1,0,0,0,66,67,1,0,0,0,67,1,1,0,0,0,68,
-        66,1,0,0,0,69,70,5,40,0,0,70,71,5,45,0,0,71,76,3,4,2,0,72,75,3,6,
-        3,0,73,75,3,8,4,0,74,72,1,0,0,0,74,73,1,0,0,0,75,78,1,0,0,0,76,74,
-        1,0,0,0,76,77,1,0,0,0,77,79,1,0,0,0,78,76,1,0,0,0,79,80,5,46,0,0,
-        80,3,1,0,0,0,81,82,5,17,0,0,82,83,3,42,21,0,83,5,1,0,0,0,84,85,5,
-        1,0,0,85,86,3,12,6,0,86,7,1,0,0,0,87,102,3,34,17,0,88,102,3,10,5,
-        0,89,102,3,14,7,0,90,102,3,18,9,0,91,102,3,36,18,0,92,102,3,44,22,
-        0,93,102,3,46,23,0,94,102,3,42,21,0,95,102,3,48,24,0,96,102,3,30,
-        15,0,97,102,3,32,16,0,98,102,3,28,14,0,99,102,3,50,25,0,100,102,
-        3,60,30,0,101,87,1,0,0,0,101,88,1,0,0,0,101,89,1,0,0,0,101,90,1,
-        0,0,0,101,91,1,0,0,0,101,92,1,0,0,0,101,93,1,0,0,0,101,94,1,0,0,
-        0,101,95,1,0,0,0,101,96,1,0,0,0,101,97,1,0,0,0,101,98,1,0,0,0,101,
-        99,1,0,0,0,101,100,1,0,0,0,102,9,1,0,0,0,103,104,5,2,0,0,104,105,
-        3,12,6,0,105,11,1,0,0,0,106,108,5,40,0,0,107,109,3,16,8,0,108,107,
-        1,0,0,0,108,109,1,0,0,0,109,13,1,0,0,0,110,111,5,40,0,0,111,112,
-        3,16,8,0,112,15,1,0,0,0,113,114,5,49,0,0,114,118,3,60,30,0,115,116,
-        5,49,0,0,116,118,3,22,11,0,117,113,1,0,0,0,117,115,1,0,0,0,118,17,
-        1,0,0,0,119,120,5,15,0,0,120,121,5,40,0,0,121,123,5,41,0,0,122,124,
+        30,1,30,1,30,1,30,1,30,1,30,1,30,1,30,1,30,1,30,1,30,1,30,1,30,1,
+        30,1,30,1,30,3,30,296,8,30,1,30,1,30,1,30,1,30,1,30,1,30,1,30,1,
+        30,1,30,1,30,1,30,1,30,5,30,310,8,30,10,30,12,30,313,9,30,1,30,0,
+        1,60,31,0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,
+        42,44,46,48,50,52,54,56,58,60,0,4,2,0,20,21,30,30,1,0,18,19,1,0,
+        22,27,1,0,31,32,331,0,62,1,0,0,0,2,69,1,0,0,0,4,81,1,0,0,0,6,84,
+        1,0,0,0,8,101,1,0,0,0,10,103,1,0,0,0,12,106,1,0,0,0,14,110,1,0,0,
+        0,16,117,1,0,0,0,18,119,1,0,0,0,20,128,1,0,0,0,22,135,1,0,0,0,24,
+        156,1,0,0,0,26,158,1,0,0,0,28,163,1,0,0,0,30,169,1,0,0,0,32,173,
+        1,0,0,0,34,177,1,0,0,0,36,182,1,0,0,0,38,193,1,0,0,0,40,201,1,0,
+        0,0,42,204,1,0,0,0,44,213,1,0,0,0,46,219,1,0,0,0,48,225,1,0,0,0,
+        50,228,1,0,0,0,52,243,1,0,0,0,54,245,1,0,0,0,56,250,1,0,0,0,58,258,
+        1,0,0,0,60,295,1,0,0,0,62,66,3,2,1,0,63,65,3,8,4,0,64,63,1,0,0,0,
+        65,68,1,0,0,0,66,64,1,0,0,0,66,67,1,0,0,0,67,1,1,0,0,0,68,66,1,0,
+        0,0,69,70,5,42,0,0,70,71,5,47,0,0,71,76,3,4,2,0,72,75,3,6,3,0,73,
+        75,3,8,4,0,74,72,1,0,0,0,74,73,1,0,0,0,75,78,1,0,0,0,76,74,1,0,0,
+        0,76,77,1,0,0,0,77,79,1,0,0,0,78,76,1,0,0,0,79,80,5,48,0,0,80,3,
+        1,0,0,0,81,82,5,17,0,0,82,83,3,42,21,0,83,5,1,0,0,0,84,85,5,1,0,
+        0,85,86,3,12,6,0,86,7,1,0,0,0,87,102,3,34,17,0,88,102,3,10,5,0,89,
+        102,3,14,7,0,90,102,3,18,9,0,91,102,3,36,18,0,92,102,3,44,22,0,93,
+        102,3,46,23,0,94,102,3,42,21,0,95,102,3,48,24,0,96,102,3,30,15,0,
+        97,102,3,32,16,0,98,102,3,28,14,0,99,102,3,50,25,0,100,102,3,60,
+        30,0,101,87,1,0,0,0,101,88,1,0,0,0,101,89,1,0,0,0,101,90,1,0,0,0,
+        101,91,1,0,0,0,101,92,1,0,0,0,101,93,1,0,0,0,101,94,1,0,0,0,101,
+        95,1,0,0,0,101,96,1,0,0,0,101,97,1,0,0,0,101,98,1,0,0,0,101,99,1,
+        0,0,0,101,100,1,0,0,0,102,9,1,0,0,0,103,104,5,2,0,0,104,105,3,12,
+        6,0,105,11,1,0,0,0,106,108,5,42,0,0,107,109,3,16,8,0,108,107,1,0,
+        0,0,108,109,1,0,0,0,109,13,1,0,0,0,110,111,5,42,0,0,111,112,3,16,
+        8,0,112,15,1,0,0,0,113,114,5,51,0,0,114,118,3,60,30,0,115,116,5,
+        51,0,0,116,118,3,22,11,0,117,113,1,0,0,0,117,115,1,0,0,0,118,17,
+        1,0,0,0,119,120,5,15,0,0,120,121,5,42,0,0,121,123,5,43,0,0,122,124,
         3,56,28,0,123,122,1,0,0,0,123,124,1,0,0,0,124,125,1,0,0,0,125,126,
-        5,42,0,0,126,127,3,42,21,0,127,19,1,0,0,0,128,129,5,40,0,0,129,131,
-        5,41,0,0,130,132,3,58,29,0,131,130,1,0,0,0,131,132,1,0,0,0,132,133,
-        1,0,0,0,133,134,5,42,0,0,134,21,1,0,0,0,135,144,5,43,0,0,136,141,
-        3,60,30,0,137,138,5,47,0,0,138,140,3,60,30,0,139,137,1,0,0,0,140,
+        5,44,0,0,126,127,3,42,21,0,127,19,1,0,0,0,128,129,5,42,0,0,129,131,
+        5,43,0,0,130,132,3,58,29,0,131,130,1,0,0,0,131,132,1,0,0,0,132,133,
+        1,0,0,0,133,134,5,44,0,0,134,21,1,0,0,0,135,144,5,45,0,0,136,141,
+        3,60,30,0,137,138,5,49,0,0,138,140,3,60,30,0,139,137,1,0,0,0,140,
         143,1,0,0,0,141,139,1,0,0,0,141,142,1,0,0,0,142,145,1,0,0,0,143,
         141,1,0,0,0,144,136,1,0,0,0,144,145,1,0,0,0,145,146,1,0,0,0,146,
-        147,5,44,0,0,147,23,1,0,0,0,148,149,5,40,0,0,149,150,5,43,0,0,150,
-        151,5,37,0,0,151,157,5,44,0,0,152,153,5,40,0,0,153,154,5,43,0,0,
-        154,155,5,40,0,0,155,157,5,44,0,0,156,148,1,0,0,0,156,152,1,0,0,
-        0,157,25,1,0,0,0,158,159,5,3,0,0,159,160,5,41,0,0,160,161,5,40,0,
-        0,161,162,5,42,0,0,162,27,1,0,0,0,163,164,5,40,0,0,164,165,5,48,
-        0,0,165,166,5,4,0,0,166,167,5,41,0,0,167,168,5,42,0,0,168,29,1,0,
-        0,0,169,170,5,40,0,0,170,171,5,28,0,0,171,172,3,60,30,0,172,31,1,
-        0,0,0,173,174,5,40,0,0,174,175,5,29,0,0,175,176,3,60,30,0,176,33,
-        1,0,0,0,177,178,5,11,0,0,178,179,5,41,0,0,179,180,3,60,30,0,180,
-        181,5,42,0,0,181,35,1,0,0,0,182,183,5,7,0,0,183,184,5,41,0,0,184,
-        185,3,60,30,0,185,186,5,42,0,0,186,188,3,42,21,0,187,189,3,38,19,
+        147,5,46,0,0,147,23,1,0,0,0,148,149,5,42,0,0,149,150,5,45,0,0,150,
+        151,5,39,0,0,151,157,5,46,0,0,152,153,5,42,0,0,153,154,5,45,0,0,
+        154,155,5,42,0,0,155,157,5,46,0,0,156,148,1,0,0,0,156,152,1,0,0,
+        0,157,25,1,0,0,0,158,159,5,3,0,0,159,160,5,43,0,0,160,161,5,42,0,
+        0,161,162,5,44,0,0,162,27,1,0,0,0,163,164,5,42,0,0,164,165,5,50,
+        0,0,165,166,5,4,0,0,166,167,5,43,0,0,167,168,5,44,0,0,168,29,1,0,
+        0,0,169,170,5,42,0,0,170,171,5,28,0,0,171,172,3,60,30,0,172,31,1,
+        0,0,0,173,174,5,42,0,0,174,175,5,29,0,0,175,176,3,60,30,0,176,33,
+        1,0,0,0,177,178,5,11,0,0,178,179,5,43,0,0,179,180,3,60,30,0,180,
+        181,5,44,0,0,181,35,1,0,0,0,182,183,5,7,0,0,183,184,5,43,0,0,184,
+        185,3,60,30,0,185,186,5,44,0,0,186,188,3,42,21,0,187,189,3,38,19,
         0,188,187,1,0,0,0,188,189,1,0,0,0,189,191,1,0,0,0,190,192,3,40,20,
         0,191,190,1,0,0,0,191,192,1,0,0,0,192,37,1,0,0,0,193,194,5,8,0,0,
-        194,195,5,41,0,0,195,196,3,60,30,0,196,197,5,42,0,0,197,199,3,42,
+        194,195,5,43,0,0,195,196,3,60,30,0,196,197,5,44,0,0,197,199,3,42,
         21,0,198,200,3,38,19,0,199,198,1,0,0,0,199,200,1,0,0,0,200,39,1,
         0,0,0,201,202,5,9,0,0,202,203,3,42,21,0,203,41,1,0,0,0,204,208,5,
-        45,0,0,205,207,3,8,4,0,206,205,1,0,0,0,207,210,1,0,0,0,208,206,1,
+        47,0,0,205,207,3,8,4,0,206,205,1,0,0,0,207,210,1,0,0,0,208,206,1,
         0,0,0,208,209,1,0,0,0,209,211,1,0,0,0,210,208,1,0,0,0,211,212,5,
-        46,0,0,212,43,1,0,0,0,213,214,5,12,0,0,214,215,5,40,0,0,215,216,
-        5,13,0,0,216,217,5,40,0,0,217,218,3,42,21,0,218,45,1,0,0,0,219,220,
-        5,14,0,0,220,221,5,41,0,0,221,222,3,60,30,0,222,223,5,42,0,0,223,
+        48,0,0,212,43,1,0,0,0,213,214,5,12,0,0,214,215,5,42,0,0,215,216,
+        5,13,0,0,216,217,5,42,0,0,217,218,3,42,21,0,218,45,1,0,0,0,219,220,
+        5,14,0,0,220,221,5,43,0,0,221,222,3,60,30,0,222,223,5,44,0,0,223,
         224,3,42,21,0,224,47,1,0,0,0,225,226,5,10,0,0,226,227,3,60,30,0,
-        227,49,1,0,0,0,228,229,5,5,0,0,229,230,5,41,0,0,230,231,5,40,0,0,
-        231,232,5,47,0,0,232,233,3,54,27,0,233,235,5,42,0,0,234,236,5,16,
+        227,49,1,0,0,0,228,229,5,5,0,0,229,230,5,43,0,0,230,231,5,42,0,0,
+        231,232,5,49,0,0,232,233,3,54,27,0,233,235,5,44,0,0,234,236,5,16,
         0,0,235,234,1,0,0,0,235,236,1,0,0,0,236,51,1,0,0,0,237,238,5,6,0,
         0,238,239,5,13,0,0,239,244,3,54,27,0,240,241,5,6,0,0,241,242,5,13,
-        0,0,242,244,5,40,0,0,243,237,1,0,0,0,243,240,1,0,0,0,244,53,1,0,
-        0,0,245,246,3,60,30,0,246,247,5,48,0,0,247,248,5,48,0,0,248,249,
-        3,60,30,0,249,55,1,0,0,0,250,255,5,40,0,0,251,252,5,47,0,0,252,254,
-        5,40,0,0,253,251,1,0,0,0,254,257,1,0,0,0,255,253,1,0,0,0,255,256,
+        0,0,242,244,5,42,0,0,243,237,1,0,0,0,243,240,1,0,0,0,244,53,1,0,
+        0,0,245,246,3,60,30,0,246,247,5,50,0,0,247,248,5,50,0,0,248,249,
+        3,60,30,0,249,55,1,0,0,0,250,255,5,42,0,0,251,252,5,49,0,0,252,254,
+        5,42,0,0,253,251,1,0,0,0,254,257,1,0,0,0,255,253,1,0,0,0,255,256,
         1,0,0,0,256,57,1,0,0,0,257,255,1,0,0,0,258,263,3,60,30,0,259,260,
-        5,47,0,0,260,262,3,60,30,0,261,259,1,0,0,0,262,265,1,0,0,0,263,261,
+        5,49,0,0,260,262,3,60,30,0,261,259,1,0,0,0,262,265,1,0,0,0,263,261,
         1,0,0,0,263,264,1,0,0,0,264,59,1,0,0,0,265,263,1,0,0,0,266,267,6,
-        30,-1,0,267,284,3,20,10,0,268,284,3,24,12,0,269,284,3,26,13,0,270,
-        284,3,52,26,0,271,272,5,33,0,0,272,284,3,60,30,8,273,274,5,41,0,
-        0,274,275,3,60,30,0,275,276,5,42,0,0,276,284,1,0,0,0,277,284,5,40,
-        0,0,278,284,5,37,0,0,279,284,5,38,0,0,280,284,5,39,0,0,281,284,5,
-        34,0,0,282,284,5,35,0,0,283,266,1,0,0,0,283,268,1,0,0,0,283,269,
-        1,0,0,0,283,270,1,0,0,0,283,271,1,0,0,0,283,273,1,0,0,0,283,277,
-        1,0,0,0,283,278,1,0,0,0,283,279,1,0,0,0,283,280,1,0,0,0,283,281,
-        1,0,0,0,283,282,1,0,0,0,284,299,1,0,0,0,285,286,10,12,0,0,286,287,
-        7,0,0,0,287,298,3,60,30,13,288,289,10,11,0,0,289,290,7,1,0,0,290,
-        298,3,60,30,12,291,292,10,10,0,0,292,293,7,2,0,0,293,298,3,60,30,
-        11,294,295,10,9,0,0,295,296,7,3,0,0,296,298,3,60,30,10,297,285,1,
-        0,0,0,297,288,1,0,0,0,297,291,1,0,0,0,297,294,1,0,0,0,298,301,1,
-        0,0,0,299,297,1,0,0,0,299,300,1,0,0,0,300,61,1,0,0,0,301,299,1,0,
-        0,0,22,66,74,76,101,108,117,123,131,141,144,156,188,191,199,208,
-        235,243,255,263,283,297,299
+        30,-1,0,267,296,3,20,10,0,268,296,3,24,12,0,269,296,3,26,13,0,270,
+        296,3,52,26,0,271,272,5,33,0,0,272,296,3,60,30,10,273,274,5,36,0,
+        0,274,275,5,43,0,0,275,276,3,60,30,0,276,277,5,44,0,0,277,296,1,
+        0,0,0,278,279,5,37,0,0,279,280,5,43,0,0,280,281,3,60,30,0,281,282,
+        5,49,0,0,282,283,3,60,30,0,283,284,5,44,0,0,284,296,1,0,0,0,285,
+        286,5,43,0,0,286,287,3,60,30,0,287,288,5,44,0,0,288,296,1,0,0,0,
+        289,296,5,42,0,0,290,296,5,39,0,0,291,296,5,40,0,0,292,296,5,41,
+        0,0,293,296,5,34,0,0,294,296,5,35,0,0,295,266,1,0,0,0,295,268,1,
+        0,0,0,295,269,1,0,0,0,295,270,1,0,0,0,295,271,1,0,0,0,295,273,1,
+        0,0,0,295,278,1,0,0,0,295,285,1,0,0,0,295,289,1,0,0,0,295,290,1,
+        0,0,0,295,291,1,0,0,0,295,292,1,0,0,0,295,293,1,0,0,0,295,294,1,
+        0,0,0,296,311,1,0,0,0,297,298,10,14,0,0,298,299,7,0,0,0,299,310,
+        3,60,30,15,300,301,10,13,0,0,301,302,7,1,0,0,302,310,3,60,30,14,
+        303,304,10,12,0,0,304,305,7,2,0,0,305,310,3,60,30,13,306,307,10,
+        11,0,0,307,308,7,3,0,0,308,310,3,60,30,12,309,297,1,0,0,0,309,300,
+        1,0,0,0,309,303,1,0,0,0,309,306,1,0,0,0,310,313,1,0,0,0,311,309,
+        1,0,0,0,311,312,1,0,0,0,312,61,1,0,0,0,313,311,1,0,0,0,22,66,74,
+        76,101,108,117,123,131,141,144,156,188,191,199,208,235,243,255,263,
+        295,309,311
     ]
 
 class RogueLangParser ( Parser ):
@@ -135,19 +140,20 @@ class RogueLangParser ( Parser ):
                      "'def'", "'layer'", "'procedure'", "'+'", "'-'", "'*'", 
                      "'/'", "'>'", "'>='", "'<'", "'<='", "'=='", "'!='", 
                      "'+='", "'-='", "'%'", "'and'", "'or'", "'not'", "'True'", 
-                     "'False'", "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
-                     "<INVALID>", "'('", "')'", "'['", "']'", "'{'", "'}'", 
-                     "','", "'.'", "'='" ]
+                     "'False'", "'sqrt'", "'pow'", "<INVALID>", "<INVALID>", 
+                     "<INVALID>", "<INVALID>", "<INVALID>", "'('", "')'", 
+                     "'['", "']'", "'{'", "'}'", "','", "'.'", "'='" ]
 
     symbolicNames = [ "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
                       "<INVALID>", "<INVALID>", "<INVALID>", "IF", "ELIF", 
                       "ELSE", "RETURN", "PRINT", "FOR", "IN", "WHILE", "DEF", 
                       "LAYER", "PROCEDURE", "PLUS", "MINUS", "MULT", "DIV", 
                       "GT", "GTE", "LT", "LTE", "EQ", "NEQ", "PEQ", "MEQ", 
-                      "MOD", "AND", "OR", "NOT", "TRUE", "FALSE", "COMMENT_SINGLELINE", 
-                      "INT", "FLOAT", "STRING", "ID", "OPEN_PARENTH", "CLOSED_PARENTH", 
-                      "OPEN_BRACK", "CLOSED_BRACK", "OPEN_CURL", "CLOSED_CURL", 
-                      "COMMA", "DOT", "EQUAL_SIGN", "WS" ]
+                      "MOD", "AND", "OR", "NOT", "TRUE", "FALSE", "SQRT", 
+                      "POW", "COMMENT_SINGLELINE", "INT", "FLOAT", "STRING", 
+                      "ID", "OPEN_PARENTH", "CLOSED_PARENTH", "OPEN_BRACK", 
+                      "CLOSED_BRACK", "OPEN_CURL", "CLOSED_CURL", "COMMA", 
+                      "DOT", "EQUAL_SIGN", "WS" ]
 
     RULE_prog = 0
     RULE_object = 1
@@ -225,21 +231,23 @@ class RogueLangParser ( Parser ):
     NOT=33
     TRUE=34
     FALSE=35
-    COMMENT_SINGLELINE=36
-    INT=37
-    FLOAT=38
-    STRING=39
-    ID=40
-    OPEN_PARENTH=41
-    CLOSED_PARENTH=42
-    OPEN_BRACK=43
-    CLOSED_BRACK=44
-    OPEN_CURL=45
-    CLOSED_CURL=46
-    COMMA=47
-    DOT=48
-    EQUAL_SIGN=49
-    WS=50
+    SQRT=36
+    POW=37
+    COMMENT_SINGLELINE=38
+    INT=39
+    FLOAT=40
+    STRING=41
+    ID=42
+    OPEN_PARENTH=43
+    CLOSED_PARENTH=44
+    OPEN_BRACK=45
+    CLOSED_BRACK=46
+    OPEN_CURL=47
+    CLOSED_CURL=48
+    COMMA=49
+    DOT=50
+    EQUAL_SIGN=51
+    WS=52
 
     def __init__(self, input:TokenStream, output:TextIO = sys.stdout):
         super().__init__(input, output)
@@ -292,7 +300,7 @@ class RogueLangParser ( Parser ):
             self.state = 66
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            while (((_la) & ~0x3f) == 0 and ((1 << _la) & 39505109245164) != 0):
+            while (((_la) & ~0x3f) == 0 and ((1 << _la) & 158046206614764) != 0):
                 self.state = 63
                 self.stat()
                 self.state = 68
@@ -370,7 +378,7 @@ class RogueLangParser ( Parser ):
             self.state = 76
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            while (((_la) & ~0x3f) == 0 and ((1 << _la) & 39505109245166) != 0):
+            while (((_la) & ~0x3f) == 0 and ((1 << _la) & 158046206614766) != 0):
                 self.state = 74
                 self._errHandler.sync(self)
                 token = self._input.LA(1)
@@ -378,7 +386,7 @@ class RogueLangParser ( Parser ):
                     self.state = 72
                     self.field()
                     pass
-                elif token in [2, 3, 5, 6, 7, 10, 11, 12, 14, 15, 33, 34, 35, 37, 38, 39, 40, 41, 45]:
+                elif token in [2, 3, 5, 6, 7, 10, 11, 12, 14, 15, 33, 34, 35, 36, 37, 39, 40, 41, 42, 43, 47]:
                     self.state = 73
                     self.stat()
                     pass
@@ -744,7 +752,7 @@ class RogueLangParser ( Parser ):
             self.state = 108
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            if _la==49:
+            if _la==51:
                 self.state = 107
                 self.assignment()
 
@@ -922,7 +930,7 @@ class RogueLangParser ( Parser ):
             self.state = 123
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            if _la==40:
+            if _la==42:
                 self.state = 122
                 self.params()
 
@@ -986,7 +994,7 @@ class RogueLangParser ( Parser ):
             self.state = 131
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            if (((_la) & ~0x3f) == 0 and ((1 << _la) & 4320737099848) != 0):
+            if (((_la) & ~0x3f) == 0 and ((1 << _la) & 17308718202952) != 0):
                 self.state = 130
                 self.args()
 
@@ -1052,13 +1060,13 @@ class RogueLangParser ( Parser ):
             self.state = 144
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            if (((_la) & ~0x3f) == 0 and ((1 << _la) & 4320737099848) != 0):
+            if (((_la) & ~0x3f) == 0 and ((1 << _la) & 17308718202952) != 0):
                 self.state = 136
                 self.expr(0)
                 self.state = 141
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
-                while _la==47:
+                while _la==49:
                     self.state = 137
                     self.match(RogueLangParser.COMMA)
                     self.state = 138
@@ -1667,7 +1675,7 @@ class RogueLangParser ( Parser ):
             self.state = 208
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            while (((_la) & ~0x3f) == 0 and ((1 << _la) & 39505109245164) != 0):
+            while (((_la) & ~0x3f) == 0 and ((1 << _la) & 158046206614764) != 0):
                 self.state = 205
                 self.stat()
                 self.state = 210
@@ -2092,7 +2100,7 @@ class RogueLangParser ( Parser ):
             self.state = 255
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            while _la==47:
+            while _la==49:
                 self.state = 251
                 self.match(RogueLangParser.COMMA)
                 self.state = 252
@@ -2154,7 +2162,7 @@ class RogueLangParser ( Parser ):
             self.state = 263
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            while _la==47:
+            while _la==49:
                 self.state = 259
                 self.match(RogueLangParser.COMMA)
                 self.state = 260
@@ -2206,11 +2214,20 @@ class RogueLangParser ( Parser ):
                 return self.getTypedRuleContext(RogueLangParser.ExprContext,i)
 
 
+        def SQRT(self):
+            return self.getToken(RogueLangParser.SQRT, 0)
+
         def OPEN_PARENTH(self):
             return self.getToken(RogueLangParser.OPEN_PARENTH, 0)
 
         def CLOSED_PARENTH(self):
             return self.getToken(RogueLangParser.CLOSED_PARENTH, 0)
+
+        def POW(self):
+            return self.getToken(RogueLangParser.POW, 0)
+
+        def COMMA(self):
+            return self.getToken(RogueLangParser.COMMA, 0)
 
         def ID(self):
             return self.getToken(RogueLangParser.ID, 0)
@@ -2290,7 +2307,7 @@ class RogueLangParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 283
+            self.state = 295
             self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,19,self._ctx)
             if la_ == 1:
@@ -2317,51 +2334,77 @@ class RogueLangParser ( Parser ):
                 self.state = 271
                 self.match(RogueLangParser.NOT)
                 self.state = 272
-                self.expr(8)
+                self.expr(10)
                 pass
 
             elif la_ == 6:
                 self.state = 273
-                self.match(RogueLangParser.OPEN_PARENTH)
+                self.match(RogueLangParser.SQRT)
                 self.state = 274
-                self.expr(0)
+                self.match(RogueLangParser.OPEN_PARENTH)
                 self.state = 275
+                self.expr(0)
+                self.state = 276
                 self.match(RogueLangParser.CLOSED_PARENTH)
                 pass
 
             elif la_ == 7:
-                self.state = 277
-                self.match(RogueLangParser.ID)
+                self.state = 278
+                self.match(RogueLangParser.POW)
+                self.state = 279
+                self.match(RogueLangParser.OPEN_PARENTH)
+                self.state = 280
+                self.expr(0)
+                self.state = 281
+                self.match(RogueLangParser.COMMA)
+                self.state = 282
+                self.expr(0)
+                self.state = 283
+                self.match(RogueLangParser.CLOSED_PARENTH)
                 pass
 
             elif la_ == 8:
-                self.state = 278
-                self.match(RogueLangParser.INT)
+                self.state = 285
+                self.match(RogueLangParser.OPEN_PARENTH)
+                self.state = 286
+                self.expr(0)
+                self.state = 287
+                self.match(RogueLangParser.CLOSED_PARENTH)
                 pass
 
             elif la_ == 9:
-                self.state = 279
-                self.match(RogueLangParser.FLOAT)
+                self.state = 289
+                self.match(RogueLangParser.ID)
                 pass
 
             elif la_ == 10:
-                self.state = 280
-                self.match(RogueLangParser.STRING)
+                self.state = 290
+                self.match(RogueLangParser.INT)
                 pass
 
             elif la_ == 11:
-                self.state = 281
-                self.match(RogueLangParser.TRUE)
+                self.state = 291
+                self.match(RogueLangParser.FLOAT)
                 pass
 
             elif la_ == 12:
-                self.state = 282
+                self.state = 292
+                self.match(RogueLangParser.STRING)
+                pass
+
+            elif la_ == 13:
+                self.state = 293
+                self.match(RogueLangParser.TRUE)
+                pass
+
+            elif la_ == 14:
+                self.state = 294
                 self.match(RogueLangParser.FALSE)
                 pass
 
 
             self._ctx.stop = self._input.LT(-1)
-            self.state = 299
+            self.state = 311
             self._errHandler.sync(self)
             _alt = self._interp.adaptivePredict(self._input,21,self._ctx)
             while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
@@ -2369,17 +2412,17 @@ class RogueLangParser ( Parser ):
                     if self._parseListeners is not None:
                         self.triggerExitRuleEvent()
                     _prevctx = localctx
-                    self.state = 297
+                    self.state = 309
                     self._errHandler.sync(self)
                     la_ = self._interp.adaptivePredict(self._input,20,self._ctx)
                     if la_ == 1:
                         localctx = RogueLangParser.ExprContext(self, _parentctx, _parentState)
                         self.pushNewRecursionContext(localctx, _startState, self.RULE_expr)
-                        self.state = 285
-                        if not self.precpred(self._ctx, 12):
+                        self.state = 297
+                        if not self.precpred(self._ctx, 14):
                             from antlr4.error.Errors import FailedPredicateException
-                            raise FailedPredicateException(self, "self.precpred(self._ctx, 12)")
-                        self.state = 286
+                            raise FailedPredicateException(self, "self.precpred(self._ctx, 14)")
+                        self.state = 298
                         localctx.op = self._input.LT(1)
                         _la = self._input.LA(1)
                         if not((((_la) & ~0x3f) == 0 and ((1 << _la) & 1076887552) != 0)):
@@ -2387,18 +2430,18 @@ class RogueLangParser ( Parser ):
                         else:
                             self._errHandler.reportMatch(self)
                             self.consume()
-                        self.state = 287
-                        self.expr(13)
+                        self.state = 299
+                        self.expr(15)
                         pass
 
                     elif la_ == 2:
                         localctx = RogueLangParser.ExprContext(self, _parentctx, _parentState)
                         self.pushNewRecursionContext(localctx, _startState, self.RULE_expr)
-                        self.state = 288
-                        if not self.precpred(self._ctx, 11):
+                        self.state = 300
+                        if not self.precpred(self._ctx, 13):
                             from antlr4.error.Errors import FailedPredicateException
-                            raise FailedPredicateException(self, "self.precpred(self._ctx, 11)")
-                        self.state = 289
+                            raise FailedPredicateException(self, "self.precpred(self._ctx, 13)")
+                        self.state = 301
                         localctx.op = self._input.LT(1)
                         _la = self._input.LA(1)
                         if not(_la==18 or _la==19):
@@ -2406,18 +2449,18 @@ class RogueLangParser ( Parser ):
                         else:
                             self._errHandler.reportMatch(self)
                             self.consume()
-                        self.state = 290
-                        self.expr(12)
+                        self.state = 302
+                        self.expr(14)
                         pass
 
                     elif la_ == 3:
                         localctx = RogueLangParser.ExprContext(self, _parentctx, _parentState)
                         self.pushNewRecursionContext(localctx, _startState, self.RULE_expr)
-                        self.state = 291
-                        if not self.precpred(self._ctx, 10):
+                        self.state = 303
+                        if not self.precpred(self._ctx, 12):
                             from antlr4.error.Errors import FailedPredicateException
-                            raise FailedPredicateException(self, "self.precpred(self._ctx, 10)")
-                        self.state = 292
+                            raise FailedPredicateException(self, "self.precpred(self._ctx, 12)")
+                        self.state = 304
                         localctx.op = self._input.LT(1)
                         _la = self._input.LA(1)
                         if not((((_la) & ~0x3f) == 0 and ((1 << _la) & 264241152) != 0)):
@@ -2425,18 +2468,18 @@ class RogueLangParser ( Parser ):
                         else:
                             self._errHandler.reportMatch(self)
                             self.consume()
-                        self.state = 293
-                        self.expr(11)
+                        self.state = 305
+                        self.expr(13)
                         pass
 
                     elif la_ == 4:
                         localctx = RogueLangParser.ExprContext(self, _parentctx, _parentState)
                         self.pushNewRecursionContext(localctx, _startState, self.RULE_expr)
-                        self.state = 294
-                        if not self.precpred(self._ctx, 9):
+                        self.state = 306
+                        if not self.precpred(self._ctx, 11):
                             from antlr4.error.Errors import FailedPredicateException
-                            raise FailedPredicateException(self, "self.precpred(self._ctx, 9)")
-                        self.state = 295
+                            raise FailedPredicateException(self, "self.precpred(self._ctx, 11)")
+                        self.state = 307
                         localctx.op = self._input.LT(1)
                         _la = self._input.LA(1)
                         if not(_la==31 or _la==32):
@@ -2444,12 +2487,12 @@ class RogueLangParser ( Parser ):
                         else:
                             self._errHandler.reportMatch(self)
                             self.consume()
-                        self.state = 296
-                        self.expr(10)
+                        self.state = 308
+                        self.expr(12)
                         pass
 
              
-                self.state = 301
+                self.state = 313
                 self._errHandler.sync(self)
                 _alt = self._interp.adaptivePredict(self._input,21,self._ctx)
 
@@ -2475,19 +2518,19 @@ class RogueLangParser ( Parser ):
 
     def expr_sempred(self, localctx:ExprContext, predIndex:int):
             if predIndex == 0:
-                return self.precpred(self._ctx, 12)
+                return self.precpred(self._ctx, 14)
          
 
             if predIndex == 1:
-                return self.precpred(self._ctx, 11)
+                return self.precpred(self._ctx, 13)
          
 
             if predIndex == 2:
-                return self.precpred(self._ctx, 10)
+                return self.precpred(self._ctx, 12)
          
 
             if predIndex == 3:
-                return self.precpred(self._ctx, 9)
+                return self.precpred(self._ctx, 11)
          
 
 

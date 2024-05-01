@@ -1,6 +1,7 @@
 # Interpreter.py
 import json
 import random
+import math
 from grammar_files.generated.RogueLangParser import RogueLangParser
 from grammar_files.generated.RogueLangVisitor import RogueLangVisitor
 from modules.Interpreter.Environment import Environment
@@ -276,6 +277,16 @@ class Interpreter(RogueLangVisitor):
             return self.visit(ctx.listLength())
         elif ctx.random():
             return self.visit(ctx.random())
+        elif ctx.SQRT():
+            try:
+                return math.sqrt(self.visit(ctx.expr(0))) 
+            except:
+                raise Exception("Cannot find square root of: " + self.visit(ctx.expr(0)))
+        elif ctx.POW():
+            try:
+                return pow(self.visit(ctx.expr(0)), self.visit(ctx.expr(1))) 
+            except:
+                raise Exception("Cannot find power of: " + self.visit(ctx.expr(0)) + " and " + self.visit(ctx.expr(1)))
 
         elif ctx.getChildCount() == 3:
             left = self.visit(ctx.expr(0))
@@ -286,7 +297,7 @@ class Interpreter(RogueLangVisitor):
             elif right:  # Binary operation
                 match operator:
                     case '+':
-                        return left + right
+                        return left + right 
                     case '-':
                         return left - right
                     case '*':

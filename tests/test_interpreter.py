@@ -342,3 +342,74 @@ def test_random_choice():
     print(output)
 
     assert json.loads(output) == {'x': 2} or {'x': 3} or {'x': 4}
+
+#TESTING SQUAREROOT OPERATIONS
+def test_sqrt_op():
+    code = '''
+    Map {
+        procedure {
+            x = sqrt(9)
+        }
+        field x
+    }
+    '''
+    run_test_prog(code, {"x": 3.0})
+
+def test_sqrt_op_float():
+    code = '''
+    Map {
+        procedure {
+            x = sqrt(9.0)
+        }
+        field x
+    }
+    '''
+    run_test_prog(code, {"x": 3.0})
+
+def test_sqrt_op_var():
+    code = '''
+    Map {
+        procedure {
+            let y = 9 
+            x = sqrt(y)
+        }
+        field x
+    }
+    '''
+    run_test_prog(code, {"x": 3.0})
+
+#TESTING POWER OF OPERATIONS
+def test_pow_op():
+    code = '''
+    Map {
+        procedure {
+            x = pow(4, 2)
+        }
+        field x
+    }
+    '''
+    run_test_prog(code, {"x": 16})
+
+def test_pow_op_neg():
+    code = '''
+    Map {
+        procedure {
+            x = pow(2, -2)
+        }
+        field x
+    }
+    '''
+    run_test_prog(code, {"x": 0.25})
+
+def test_pow_op_var():
+    code = '''
+    Map {
+        procedure {
+            let y = 4
+            let z = 2
+            x = pow(y, z)
+        }
+        field x
+    }
+    '''
+    run_test_prog(code, {"x": 16})
