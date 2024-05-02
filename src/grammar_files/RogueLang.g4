@@ -24,6 +24,7 @@ stat:   printStat
       | minusEquals
       | listPop
       | whiteNoiseStat     // WhiteNoise statement
+      | structDef
       | expr;
 
 // Variable declarations and assignments
@@ -31,9 +32,9 @@ varDeclStat       : 'let' varDecl;
 varDecl           : ID assignment?;
 
 assignStat        : ID structFieldAccess* listAccess* assignment;
-assignment        : EQUAL_SIGN expr
+assignment        : EQUAL_SIGN struct
                   | EQUAL_SIGN list
-                  | EQUAL_SIGN struct;
+                  | EQUAL_SIGN expr;
 
 // Function declaration and calls
 functionDecl      : DEF ID OPEN_PARENTH params? CLOSED_PARENTH statBlock;
@@ -48,10 +49,10 @@ listLength        : 'len' OPEN_PARENTH ID CLOSED_PARENTH;
 listPop           : ID DOT 'pop' OPEN_PARENTH CLOSED_PARENTH;
 
 // Structs
-struct            : ID OPEN_CURL (structField assignment)+ CLOSED_CURL;
+struct            : ID OPEN_CURL (structField assignment)* CLOSED_CURL;
 structDef         : 'struct' ID OPEN_CURL structField+ CLOSED_CURL;
 structField       : ID;
-structFieldAccess : DOT ID;
+structFieldAccess : DOT ID listAccess*;
 
 // Basic operations and control flow
 plusEquals        : ID PEQ expr;

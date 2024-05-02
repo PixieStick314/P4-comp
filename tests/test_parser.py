@@ -218,3 +218,11 @@ def test_string():
 
     assert tree.getChild(0).getText() == 'let'
     assert tree.getChild(1).assignment().expr().getText() == '"meow"'
+
+def test_struct_assign():
+    code = '= Cat {says = "meow"}'
+    parser = setup_parser(code)
+    tree = parser.assignment()
+
+    assert tree.getChild(0).getSymbol().type == RogueLangParser.EQUAL_SIGN
+    assert tree.getChild(1).getRuleIndex() == RogueLangParser.RULE_struct

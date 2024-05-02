@@ -88,13 +88,14 @@ class Interpreter(RogueLangVisitor):
 
         if ctx.structFieldAccess():
             fields = []
-            for field in ctx.structFieldAccess():
-                fields.append(self.visit(field))
+            indices = []
+            for i in range(len(ctx.structFieldAccess())):
+                fields.append(self.visit(ctx.structFieldAccess(i))[0])
+                indices.append(self.visit(ctx.structFieldAccess(i))[1])
             struct = self.environment.get(name)
 
-            value = self.environment.assign_to_struct_field(struct, fields, value)
-
-        if ctx.listAccess():
+            value = self.environment.assign_to_struct_field(struct, fields, value, indices)
+        elif ctx.listAccess():
             index = []
             for i in ctx.listAccess():
                 index.append(self.visit(i))
@@ -108,9 +109,7 @@ class Interpreter(RogueLangVisitor):
 
     def visitAssignment(self, ctx:RogueLangParser.AssignmentContext):
         if ctx.struct():
-            parent = self.visit(ctx.struct())
-            instance = StructInstance(parent)
-            return instance
+            return self.visit(ctx.struct())
         if self.verbose:
             print(f"Performing assignment for context: {ctx}")
         return self.visitChildren(ctx)
@@ -162,10 +161,10 @@ class Interpreter(RogueLangVisitor):
 
     def visitStructDef(self, ctx:RogueLangParser.StructDefContext):
         name = ctx.ID().getText()
-        fields = []
+        fields = {}
 
         for field in ctx.structField():
-            fields.append(self.visit(field))
+            fields[self.visit(field)] = None
         struct = Struct(name, fields)
         self.environment.define(struct.name, struct)
 
@@ -313,7 +312,15 @@ class Interpreter(RogueLangVisitor):
         return bounds
 
     def visitStructFieldAccess(self, ctx:RogueLangParser.StructFieldAccessContext):
-        return ctx.ID().getText()
+        name = ctx.ID().getText()
+
+        if ctx.listAccess():
+            indices = []
+            for index in ctx.listAccess():
+                indices.append(self.visit(index))
+            return name, indices
+        else:
+            return name, None
 
     def visitExpr(self, ctx):
         if ctx.listAccess():
@@ -325,9 +332,11 @@ class Interpreter(RogueLangVisitor):
         if ctx.structFieldAccess():
             name = ctx.ID().getText()
             field_names = []
-            for field_name in ctx.structFieldAccess():
-                field_names.append(self.visit(field_name))
-            return self.environment.get_struct_field(name, field_names)
+            indices = []
+            for i in range(len(ctx.structFieldAccess())):
+                field_names.append(self.visit(ctx.structFieldAccess(i))[0])
+                indices.append(self.visit(ctx.structFieldAccess(i))[1])
+            return self.environment.get_struct_field(name, field_names, indices)
         elif ctx.ID():
             return self.environment.get(ctx.ID().getText())
         elif ctx.STRING():

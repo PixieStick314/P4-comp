@@ -153,3 +153,14 @@ def test_lexer_plus_equals():
     tokens = get_tokens_from_string(code)
 
     assert tokens[0].type == RogueLangLexer.PEQ
+
+def test_lexer_struct_assign():
+    code = 'Cat {says = "meow"}'
+    tokens = get_tokens_from_string(code)
+
+    assert tokens[0].type == RogueLangLexer.ID
+    assert tokens[1].type == RogueLangLexer.OPEN_CURL
+    assert tokens[2].type == RogueLangLexer.ID
+    assert tokens[3].type == RogueLangLexer.EQUAL_SIGN
+    assert tokens[4].type == RogueLangLexer.STRING
+    assert tokens[5].type == RogueLangLexer.CLOSED_CURL

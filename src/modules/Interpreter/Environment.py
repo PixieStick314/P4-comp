@@ -37,38 +37,55 @@ class Environment:
         else:
             raise Exception("Undefined list: {}".format(name))
 
-    def assign_to_list_element(self, variable, index, value):
-        if len(index) > 1:
-            i = index.pop(0)
+    def assign_to_list_element(self, variable, indices, value):
+        if len(indices) > 1:
+            i = indices.pop(0)
             sublist = variable[i]
-            variable[i] = self.assign_to_list_element(sublist, index, value)
+            variable[i] = self.assign_to_list_element(sublist, indices, value)
             return variable
         else:
-            variable[index[0]] = value
+            variable[indices[0]] = value
             return variable
 
-    def get_struct_field(self, name, fields):
+    def get_struct_field(self, name, fields, indices):
         if name in self.values:
             struct = self.values[name]
             if len(fields) == 1:
-                return struct.get_field(fields[0])
-            else:
-                for field in fields:
-                    struct = struct.get_field(field)
+                if indices[0] is None:
+                    return struct.get_field(fields[0])
+                else:
+                    struct = struct.get_field(fields[0])
+                    for index_list in indices:
+                        for index in index_list:
+                            struct = struct[index]
                     return struct
+            else:
+                for i in range(len(fields)):
+                    struct = struct.get_field(fields[i])
+                    if indices[i] is not None:
+                        for index in indices[i]:
+                            struct = struct[index]
+                return struct
         elif self.enclosing is not None:
             return self.enclosing.get_struct_field(name, fields)
         else:
             raise Exception("Undefined field: {}".format(name))
 
-    def assign_to_struct_field(self, struct, fields, value):
+    def assign_to_struct_field(self, struct, fields, value, indices):
         if len(fields) > 1:
             field = fields.pop(0)
-            nested_struct = struct[field]
-            struct[field] = self.assign_to_struct_field(nested_struct, fields, value)
+            index_list = indices.pop(0)
+            nested_struct = struct.fields[field]
+            if index_list is not None:
+                for index in index_list:
+                    nested_struct = nested_struct[index]
+            struct.fields[field] = self.assign_to_struct_field(nested_struct, fields, value)
             return struct
         else:
-            struct[fields[0]] = value
+            if indices[0] is None:
+                struct.fields[fields[0]] = value
+            else:
+                struct.fields[fields[0]] = self.assign_to_list_element(struct.fields[fields[0]], indices[0], value)
             return struct
 
     def plus_equals(self, name, value):
