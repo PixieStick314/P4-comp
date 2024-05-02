@@ -84,9 +84,28 @@ class Interpreter(RogueLangVisitor):
     def visitAssignStat(self, ctx:RogueLangParser.AssignStatContext):
         name = ctx.ID().getText()
         value = self.visitAssignment(ctx.assignment())
+
+        if ctx.listAccess():
+            index = []
+            for i in ctx.listAccess():
+                index.append(self.visit(i))
+            variable = self.environment.get(name)
+
+            value = self.environment.assign_to_list_element(variable, index, value)
+
         self.environment.assign(name, value)
         if self.verbose:
             print(f"Assigned variable '{name}' with value '{value}'")
+
+    def list_assign(self, variable, index, value):
+        if len(index) > 1:
+            i = index.pop(0)
+            sublist = variable[i]
+            variable[i] = self.list_assign(sublist, index, value)
+            return variable
+        else:
+            variable[index[0]] = value
+            return variable
 
     def visitAssignment(self, ctx:RogueLangParser.AssignmentContext):
         if self.verbose:
@@ -96,20 +115,31 @@ class Interpreter(RogueLangVisitor):
     def visitList(self, ctx:RogueLangParser.ListContext):
         value = []
 
-        for expr in ctx.expr():
-            value.append(self.visit(expr))
+        for element in ctx.listElement():
+            value.append(self.visit(element))
 
         return value
+
+    def visitListElement(self, ctx:RogueLangParser.ListElementContext):
+        return self.visitChildren(ctx)
 
     def visitPlusEquals(self, ctx:RogueLangParser.PlusEqualsContext):
         name = ctx.ID().getText()
         value = self.visit(ctx.expr())
-        self.environment.plus_equals(name, value)
+        variable = self.environment.get(name)
+        if isinstance(variable, list):
+            self.environment.plus_equals(name, value)
+        elif isinstance(variable, int):
+            self.environment.assign(name, (variable + value))
 
     def visitMinusEquals(self, ctx:RogueLangParser.MinusEqualsContext):
         name = ctx.ID().getText()
         value = self.visit(ctx.expr())
-        self.environment.minus_equals(name, value)
+        variable = self.environment.get(name)
+        if isinstance(variable, list):
+            self.environment.minus_equals(name, value)
+        elif isinstance(variable, int):
+            self.environment.assign(name, (variable - value))
 
     def visitListPop(self, ctx:RogueLangParser.ListPopContext):
         self.environment.get(ctx.ID().getText()).pop()
@@ -211,31 +241,29 @@ class Interpreter(RogueLangVisitor):
         # Returns a placeholder for unhandled cases
         return "ERROR"
 
-    def visitListElement(self, ctx:RogueLangParser.ListElementContext):
+    def visitListAccess(self, ctx:RogueLangParser.ListAccessContext):
         if ctx.INT():
-            name = ctx.ID(0).getText()
-            index = int(ctx.INT().getText())
-            return self.environment.get_list_element(name, index)
+            return int(ctx.INT().getText())
         else:
-            name = ctx.ID(0).getText()
-            index = int(self.environment.get(ctx.ID(1).getText()))
-            return self.environment.get_list_element(name, index)
+            return self.environment.get(ctx.ID().getText())
 
     def visitListLength(self, ctx:RogueLangParser.ListLengthContext):
         list = self.environment.get(ctx.ID().getText())
         return len(list)
 
-    # Visitor method to handle WhiteNoise
-    def visitWhiteNoiseStat(self, ctx):
-        # Get the 2D array variable name
-        array_param = ctx.arrayParam.text
-        array = self.environment.getVariable(array_param)
+    def visitWhiteNoiseStat(self, ctx:RogueLangParser.WhiteNoiseStatContext):
+        array_param = ctx.ID().getText()
+        array = self.environment.get(array_param)
 
-        # Get the range and parse it
-        range_param = ctx.rangeParam.text
-        start, end = [int(x) for x in range_param.split('..')]
+        if array is None:
+            raise ValueError(f"Array with ID {array_param} not found in environment.") 
+        if ctx.range_():
+            range_expr = ctx.range_()
+            start = int(range_expr.expr(0).getText())
+            end = int(range_expr.expr(1).getText())
+        else:
+            start, end = 0, 1
 
-        # Randomize elements within the given range
         for row in array:
             for i in range(len(row)):
                 row[i] = random.randint(start, end)
@@ -257,7 +285,13 @@ class Interpreter(RogueLangVisitor):
         return bounds
 
     def visitExpr(self, ctx):
-        if ctx.ID():
+        if ctx.listAccess():
+            name = ctx.ID().getText()
+            index = []
+            for i in ctx.listAccess():
+                index.append(self.visit(i))
+            return self.environment.get_list_element(name, index)
+        elif ctx.ID():
             return self.environment.get(ctx.ID().getText())
         elif ctx.STRING():
             return ctx.STRING().getText().replace('"', '')
@@ -271,8 +305,6 @@ class Interpreter(RogueLangVisitor):
             return float(ctx.FLOAT().getText())
         elif ctx.functionCall():
             return self.visit(ctx.functionCall())
-        elif ctx.listElement():
-            return self.visit(ctx.listElement())
         elif ctx.listLength():
             return self.visit(ctx.listLength())
         elif ctx.random():

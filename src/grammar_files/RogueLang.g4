@@ -30,7 +30,7 @@ stat:   printStat
 varDeclStat       : 'let' varDecl;
 varDecl           : ID assignment?;
 
-assignStat        : ID assignment;
+assignStat        : ID listAccess* assignment;
 assignment        : EQUAL_SIGN expr
                   | EQUAL_SIGN list;
 
@@ -39,9 +39,10 @@ functionDecl      : DEF ID OPEN_PARENTH params? CLOSED_PARENTH statBlock;
 functionCall      : ID OPEN_PARENTH args? CLOSED_PARENTH;
 
 // Array and list structures
-list              : OPEN_BRACK (expr (COMMA expr)*)? CLOSED_BRACK;
-listElement       : ID OPEN_BRACK INT CLOSED_BRACK
-                  | ID OPEN_BRACK ID CLOSED_BRACK;
+list              : OPEN_BRACK (listElement (COMMA listElement)*)? CLOSED_BRACK;
+listElement       : expr | list;
+listAccess        : OPEN_BRACK INT CLOSED_BRACK
+                  | OPEN_BRACK ID CLOSED_BRACK;
 listLength        : 'len' OPEN_PARENTH ID CLOSED_PARENTH;
 listPop           : ID DOT 'pop' OPEN_PARENTH CLOSED_PARENTH;
 
@@ -58,7 +59,7 @@ whileLoop         : WHILE OPEN_PARENTH expr CLOSED_PARENTH statBlock;
 returnStat        : RETURN expr;
 
 // Algorithm implementations and random
-whiteNoiseStat    : 'WhiteNoise' '(' arrayParam=ID ',' rangeParam=range ')' LAYER?;
+whiteNoiseStat    : 'WhiteNoise' '(' ID (',' range)? ')' LAYER?;
 random            : 'random' IN range
                   | 'random' IN ID;
 
@@ -70,7 +71,7 @@ args              : expr (COMMA expr)* ;
 
 // Expression structures
 expr              : functionCall
-                  | listElement
+                  | ID listAccess+
                   | listLength
                   | random
                   | expr op=(MULT | DIV | MOD) expr

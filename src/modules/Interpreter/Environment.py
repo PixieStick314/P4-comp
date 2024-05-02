@@ -24,12 +24,28 @@ class Environment:
 
     def get_list_element(self, name, index):
         if name in self.values:
-            list_values = self.values[name]
-            return list_values[index]
+            if len(index) == 1:
+                value = self.values[name]
+                return value[index[0]]
+            else:
+                value = self.values[name]
+                for i in index:
+                    value = value[i]
+                return value
         elif self.enclosing is not None:
             return self.enclosing.get_list_element(name, index)
         else:
             raise Exception("Undefined list: {}".format(name))
+
+    def assign_to_list_element(self, variable, index, value):
+        if len(index) > 1:
+            i = index.pop(0)
+            sublist = variable[i]
+            variable[i] = self.assign_to_list_element(sublist, index, value)
+            return variable
+        else:
+            variable[index[0]] = value
+            return variable
 
     def plus_equals(self, name, value):
         if name in self.values:
