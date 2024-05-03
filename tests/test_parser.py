@@ -218,3 +218,25 @@ def test_string():
 
     assert tree.getChild(0).getText() == 'let'
     assert tree.getChild(1).assignment().expr().getText() == '"meow"'
+
+def test_Sqrt_Op():
+    code = 'sqrt(9)'
+    parser = setup_parser(code)
+    tree = parser.expr()
+
+    assert tree.getChild(0).getSymbol().type == RogueLangParser.SQRT
+    assert tree.getChild(1).getSymbol().type == RogueLangParser.OPEN_PARENTH
+    assert tree.getChild(2).getRuleIndex() == RogueLangParser.RULE_expr   
+    assert tree.getChild(3).getSymbol().type == RogueLangParser.CLOSED_PARENTH
+
+def test_Sqrt_Op():
+    code = 'pow(1,2)'
+    parser = setup_parser(code)
+    tree = parser.expr()
+
+    assert tree.getChild(0).getSymbol().type == RogueLangParser.POW
+    assert tree.getChild(1).getSymbol().type == RogueLangParser.OPEN_PARENTH
+    assert tree.getChild(2).getRuleIndex() == RogueLangParser.RULE_expr 
+    assert tree.getChild(3).getSymbol().type == RogueLangParser.COMMA
+    assert tree.getChild(4).getRuleIndex() == RogueLangParser.RULE_expr   
+    assert tree.getChild(5).getSymbol().type == RogueLangParser.CLOSED_PARENTH

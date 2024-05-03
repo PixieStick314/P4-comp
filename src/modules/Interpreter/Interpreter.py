@@ -1,6 +1,7 @@
 # Interpreter.py
 import json
 import random
+import math
 from grammar_files.generated.RogueLangParser import RogueLangParser
 from grammar_files.generated.RogueLangVisitor import RogueLangVisitor
 from modules.Interpreter.Environment import Environment

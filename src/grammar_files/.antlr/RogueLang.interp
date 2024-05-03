@@ -122,7 +122,6 @@ functionDecl
 functionCall
 list
 listElement
-listAccess
 listLength
 listPop
 plusEquals
