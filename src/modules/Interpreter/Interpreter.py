@@ -471,41 +471,52 @@ class Interpreter(RogueLangVisitor):
             return name, None
 
     def visitExpr(self, ctx):
-      try:
-        if ctx.listAccess():
-            name = ctx.ID().getText()
-            indices = []
-            for index in ctx.listAccess():
-                indices.append(self.visit(index))
-            return self.environment.get_list_element(name, indices)
-        if ctx.structFieldAccess():
-            name = ctx.ID().getText()
-            field_names = []
-            indices = []
-            for i in range(len(ctx.structFieldAccess())):
-                field_names.append(self.visit(ctx.structFieldAccess(i))[0])
-                indices.append(self.visit(ctx.structFieldAccess(i))[1])
-            return self.environment.get_struct_field(name, field_names, indices)
-        elif ctx.ID():
-            return self.environment.get(ctx.ID().getText())
-        elif ctx.STRING():
-            return ctx.STRING().getText().replace('"', '')
-        elif ctx.TRUE() or ctx.getText().lower() == 'true':
-            return True
-        elif ctx.FALSE() or ctx.getText().lower() == 'false':
-            return False
-        elif ctx.INT():
-            return int(ctx.INT().getText())
-        elif ctx.FLOAT():
-            return float(ctx.FLOAT().getText())
-        elif ctx.functionCall():
-            return self.visit(ctx.functionCall())
-        elif ctx.listLength():
-            return self.visit(ctx.listLength())
-        elif ctx.random():
-            return self.visit(ctx.random())
+        try:
+            if ctx.listAccess():
+                name = ctx.ID().getText()
+                indices = []
+                for index in ctx.listAccess():
+                    indices.append(self.visit(index))
+                return self.environment.get_list_element(name, indices)
+            if ctx.structFieldAccess():
+                name = ctx.ID().getText()
+                field_names = []
+                indices = []
+                for i in range(len(ctx.structFieldAccess())):
+                    field_names.append(self.visit(ctx.structFieldAccess(i))[0])
+                    indices.append(self.visit(ctx.structFieldAccess(i))[1])
+                return self.environment.get_struct_field(name, field_names, indices)
+            elif ctx.ID():
+                return self.environment.get(ctx.ID().getText())
+            elif ctx.STRING():
+                return ctx.STRING().getText().replace('"', '')
+            elif ctx.TRUE() or ctx.getText().lower() == 'true':
+                return True
+            elif ctx.FALSE() or ctx.getText().lower() == 'false':
+                return False
+            elif ctx.INT():
+                return int(ctx.INT().getText())
+            elif ctx.FLOAT():
+                return float(ctx.FLOAT().getText())
+            elif ctx.functionCall():
+                return self.visit(ctx.functionCall())
+            elif ctx.listLength():
+                return self.visit(ctx.listLength())
+            elif ctx.random():
+                return self.visit(ctx.random())
+            elif ctx.SQRT():
+                try:
+                    return math.sqrt(self.visit(ctx.expr(0)))
+                except:
+                    raise Exception("Cannot find square root of: " + self.visit(ctx.expr(0)))
+            elif ctx.POW():
+                try:
+                    return pow(self.visit(ctx.expr(0)), self.visit(ctx.expr(1)))
+                except:
+                    raise Exception(
+                        "Cannot find power of: " + self.visit(ctx.expr(0)) + " and " + self.visit(ctx.expr(1)))
 
-        elif ctx.getChildCount() == 3:
+            elif ctx.getChildCount() == 3:
                 left = self.visit(ctx.expr(0))
                 right = self.visit(ctx.expr(1)) if ctx.expr(1) else None
                 operator = ctx.getChild(1).getText()
