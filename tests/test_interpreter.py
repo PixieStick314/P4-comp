@@ -449,3 +449,55 @@ def test_whiteNoise():
         
         for value in row:
             assert value in (0, 1), f"Value {value} is not 0 or 1"
+
+def test_struct():
+    code = '''Map {
+        procedure {
+        let cat = Cat{
+            says = "meow"
+        }
+        x = cat.says
+        }
+        field x
+        }
+        struct Cat{
+            says
+        }
+        '''
+
+    run_test_prog(code, {'x': "meow"})
+
+def test_struct_with_list_field_get():
+    code = '''Map {
+        procedure {
+        let my_struct = Struct{
+            array = [1, 2, 3]
+        }
+        x = my_struct.array[0]
+        }
+        field x
+        }
+        struct Struct{
+            array
+        }
+        '''
+
+    run_test_prog(code, {'x': 1})
+
+def test_struct_with_list_field_assign():
+    code = '''Map {
+        procedure {
+        let my_struct = Struct{
+            array = [1, 2, 3]
+        }
+        my_struct.array[0] = 4
+        x = my_struct.array[0]
+        }
+        field x
+        }
+        struct Struct{
+            array
+        }
+        '''
+
+    run_test_prog(code, {'x': 4})

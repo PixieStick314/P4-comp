@@ -6,6 +6,8 @@ from grammar_files.generated.RogueLangParser import RogueLangParser
 from grammar_files.generated.RogueLangVisitor import RogueLangVisitor
 from modules.Interpreter.Environment import Environment
 from modules.Interpreter.Function import Function
+from modules.Interpreter.Struct import Struct
+from modules.Interpreter.StructInstance import StructInstance
 
 
 class Interpreter(RogueLangVisitor):
@@ -109,37 +111,33 @@ class Interpreter(RogueLangVisitor):
             raise ValueError(f"Inappropriate value for variable '{name}': {str(e)}")
 
     def visitAssignStat(self, ctx:RogueLangParser.AssignStatContext):
-        try:
-            name = ctx.ID().getText()
-            value = self.visitAssignment(ctx.assignment())
-            if ctx.listAccess():
-                index = [self.visit(i) for i in ctx.listAccess()]
-                variable = self.environment.get(name)
-                value = self.list_assign(variable, index, value)
-            self.environment.assign(name, value)
-            if self.verbose:
-                print(f"Assigned variable '{name}' with value '{value}'")
-        except Exception as e:
-            print(f"Error assigning to variable '{name}': {str(e)}")
-            raise RuntimeError(f"Assignment failed for variable '{name}': {str(e)}")
+        name = ctx.ID().getText()
+        value = self.visitAssignment(ctx.assignment())
 
-    def list_assign(self, variable, index, value):
-        try:
-            if self.verbose:
-                print(f"Starting list assignment with variable: {variable}, index: {index}, value: {value}")
-            if len(index) > 1:
-                i = index.pop(0)
-                sublist = variable[i]
-                variable[i] = self.list_assign(sublist, index, value)
-                return variable
-            else:
-                variable[index[0]] = value
-                return variable
-        except Exception as e:
-            print(f"Error in list assignment: {str(e)}")
-            raise RuntimeError(f"Failed to assign to list: {str(e)}")
+        if ctx.structFieldAccess():
+            fields = []
+            indices = []
+            for i in range(len(ctx.structFieldAccess())):
+                fields.append(self.visit(ctx.structFieldAccess(i))[0])
+                indices.append(self.visit(ctx.structFieldAccess(i))[1])
+            struct = self.environment.get(name)
+
+            value = self.environment.assign_to_struct_field(struct, fields, value, indices)
+        elif ctx.listAccess():
+            index = []
+            for i in ctx.listAccess():
+                index.append(self.visit(i))
+            variable = self.environment.get(name)
+
+            value = self.environment.assign_to_list_element(variable, index, value)
+
+        self.environment.assign(name, value)
+        if self.verbose:
+            print(f"Assigned variable '{name}' with value '{value}'")
 
     def visitAssignment(self, ctx:RogueLangParser.AssignmentContext):
+        if ctx.struct():
+            return self.visit(ctx.struct())
         if self.verbose:
             print(f"Performing assignment for context: {ctx}")
         try:
@@ -210,6 +208,31 @@ class Interpreter(RogueLangVisitor):
         except Exception as e:
             print(f"Error in visitListPop: {str(e)}")
             raise RuntimeError(f"List pop operation failed: {str(e)}")
+
+    def visitStruct(self, ctx:RogueLangParser.StructContext):
+        parent = self.environment.get(ctx.ID().getText())
+        fields = {}
+
+        for i in range(len(ctx.structField())):
+            field_name = self.visit(ctx.structField(i))
+            if field_name not in parent.fields:
+                raise Exception("Struct {} has no field named {}".format(parent.name, field_name))
+            value = self.visit(ctx.assignment(i))
+            fields[field_name] = value
+        instance = StructInstance(parent, fields)
+        return instance
+
+    def visitStructDef(self, ctx:RogueLangParser.StructDefContext):
+        name = ctx.ID().getText()
+        fields = {}
+
+        for field in ctx.structField():
+            fields[self.visit(field)] = None
+        struct = Struct(name, fields)
+        self.environment.define(struct.name, struct)
+
+    def visitStructField(self, ctx:RogueLangParser.StructFieldContext):
+        return ctx.ID().getText()
 
     def visitStatBlock(self, ctx):
         previous = self.environment
@@ -436,32 +459,53 @@ class Interpreter(RogueLangVisitor):
             print(f"Error in visitRange: {str(e)}")
             raise RuntimeError(f"Range evaluation failed: {str(e)}")
 
-    def visitExpr(self, ctx):
-        try:
-            if ctx.listAccess():
-                name = ctx.ID().getText()
-                index = [self.visit(i) for i in ctx.listAccess()]
-                result = self.environment.get_list_element(name, index)
-            elif ctx.ID():
-                result = self.environment.get(ctx.ID().getText())
-            elif ctx.STRING():
-                result = ctx.STRING().getText().replace('"', '')
-            elif ctx.TRUE() or ctx.getText().lower() == 'true':
-                result = True
-            elif ctx.FALSE() or ctx.getText().lower() == 'false':
-                result = False
-            elif ctx.INT():
-                result = int(ctx.INT().getText())
-            elif ctx.FLOAT():
-                result = float(ctx.FLOAT().getText())
-            elif ctx.functionCall():
-                result = self.visit(ctx.functionCall())
-            elif ctx.listLength():
-                result = self.visit(ctx.listLength())
-            elif ctx.random():
-                result = self.visit(ctx.random())
+    def visitStructFieldAccess(self, ctx:RogueLangParser.StructFieldAccessContext):
+        name = ctx.ID().getText()
 
-            elif ctx.getChildCount() == 3:
+        if ctx.listAccess():
+            indices = []
+            for index in ctx.listAccess():
+                indices.append(self.visit(index))
+            return name, indices
+        else:
+            return name, None
+
+    def visitExpr(self, ctx):
+      try:
+        if ctx.listAccess():
+            name = ctx.ID().getText()
+            indices = []
+            for index in ctx.listAccess():
+                indices.append(self.visit(index))
+            return self.environment.get_list_element(name, indices)
+        if ctx.structFieldAccess():
+            name = ctx.ID().getText()
+            field_names = []
+            indices = []
+            for i in range(len(ctx.structFieldAccess())):
+                field_names.append(self.visit(ctx.structFieldAccess(i))[0])
+                indices.append(self.visit(ctx.structFieldAccess(i))[1])
+            return self.environment.get_struct_field(name, field_names, indices)
+        elif ctx.ID():
+            return self.environment.get(ctx.ID().getText())
+        elif ctx.STRING():
+            return ctx.STRING().getText().replace('"', '')
+        elif ctx.TRUE() or ctx.getText().lower() == 'true':
+            return True
+        elif ctx.FALSE() or ctx.getText().lower() == 'false':
+            return False
+        elif ctx.INT():
+            return int(ctx.INT().getText())
+        elif ctx.FLOAT():
+            return float(ctx.FLOAT().getText())
+        elif ctx.functionCall():
+            return self.visit(ctx.functionCall())
+        elif ctx.listLength():
+            return self.visit(ctx.listLength())
+        elif ctx.random():
+            return self.visit(ctx.random())
+
+        elif ctx.getChildCount() == 3:
                 left = self.visit(ctx.expr(0))
                 right = self.visit(ctx.expr(1)) if ctx.expr(1) else None
                 operator = ctx.getChild(1).getText()

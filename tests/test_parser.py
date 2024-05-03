@@ -219,6 +219,15 @@ def test_string():
     assert tree.getChild(0).getText() == 'let'
     assert tree.getChild(1).assignment().expr().getText() == '"meow"'
 
+
+def test_struct_assign():
+    code = '= Cat {says = "meow"}'
+    parser = setup_parser(code)
+    tree = parser.assignment()
+
+    assert tree.getChild(0).getSymbol().type == RogueLangParser.EQUAL_SIGN
+    assert tree.getChild(1).getRuleIndex() == RogueLangParser.RULE_struct
+
 def test_Sqrt_Op():
     code = 'sqrt(9)'
     parser = setup_parser(code)
@@ -240,3 +249,4 @@ def test_Sqrt_Op():
     assert tree.getChild(3).getSymbol().type == RogueLangParser.COMMA
     assert tree.getChild(4).getRuleIndex() == RogueLangParser.RULE_expr   
     assert tree.getChild(5).getSymbol().type == RogueLangParser.CLOSED_PARENTH
+

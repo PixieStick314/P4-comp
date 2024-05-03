@@ -90,6 +90,26 @@ class RogueLangVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by RogueLangParser#struct.
+    def visitStruct(self, ctx:RogueLangParser.StructContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by RogueLangParser#structDef.
+    def visitStructDef(self, ctx:RogueLangParser.StructDefContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by RogueLangParser#structField.
+    def visitStructField(self, ctx:RogueLangParser.StructFieldContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by RogueLangParser#structFieldAccess.
+    def visitStructFieldAccess(self, ctx:RogueLangParser.StructFieldAccessContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by RogueLangParser#plusEquals.
     def visitPlusEquals(self, ctx:RogueLangParser.PlusEqualsContext):
         return self.visitChildren(ctx)
