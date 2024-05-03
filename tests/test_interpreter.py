@@ -66,7 +66,6 @@ def test_nested_if_stat():
     '''
     run_test_prog(code, {"x": 3})
 
-
 def test_elif_stat():
     code = '''Map {
     procedure {
@@ -85,7 +84,6 @@ def test_elif_stat():
     '''
     run_test_prog(code, {"x": 2})
 
-
 def test_else_stat():
     code = '''Map {
     procedure {
@@ -101,7 +99,6 @@ def test_else_stat():
     '''
     run_test_prog(code, {"x": 3})
 
-
 def test_while_loop():
     code = '''Map {
     procedure {
@@ -113,7 +110,6 @@ def test_while_loop():
     }
     '''
     run_test_prog(code, {"x": 0})
-
 
 def test_nested_function_call():
     code = '''Map {
@@ -131,7 +127,6 @@ def test_nested_function_call():
     '''
     run_test_prog(code, {"x": 3})
 
-
 def test_list():
     code = '''Map {
     procedure {
@@ -141,7 +136,6 @@ def test_list():
     }
     '''
     run_test_prog(code, {"x": [3, 2, 1]})
-
 
 def test_list_add():
     code = '''Map {
@@ -153,7 +147,6 @@ def test_list_add():
     '''
     run_test_prog(code, {"x": [1, 2, 3, 4]})
 
-
 def test_list_element():
     code = '''Map {
     procedure {
@@ -164,7 +157,6 @@ def test_list_element():
     }
     '''
     run_test_prog(code, {"x": 3})
-
 
 def test_list_element_variable_index():
     code = '''Map {
@@ -178,7 +170,6 @@ def test_list_element_variable_index():
     '''
     run_test_prog(code, {"x": 3})
 
-
 def test_list_pop():
     code = '''Map {
     procedure {
@@ -188,7 +179,6 @@ def test_list_pop():
     }
     '''
     run_test_prog(code, {"x": [1, 2, 3]})
-
 
 def test_for_loop():
     code = '''Map {
@@ -202,7 +192,6 @@ def test_for_loop():
     }
     '''
     run_test_prog(code, {"x": 7})
-
 
 def test_comparisons():
     code = '''Map {
@@ -283,8 +272,6 @@ def test_basic_2d_array():
         ]
     }
     run_test_prog(code, expected_output)
-
-# TODO: def test_white_noise():, Can't as of now because there is no seed input.
 
 def test_random_range():
     code = '''Map {
@@ -402,7 +389,6 @@ def test_nested_list():
 
     run_test_prog(code, {'x': [[1, 2], [3, 4]]})
 
-
 def test_nested_list_access():
     code = '''Map {
     procedure {
@@ -414,8 +400,6 @@ def test_nested_list_access():
     '''
 
     run_test_prog(code, {'x': 4})
-
-
 
 def test_nested_list_assign():
     code = '''Map {
