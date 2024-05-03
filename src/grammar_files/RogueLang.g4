@@ -68,9 +68,10 @@ returnStat        : RETURN expr;
 
 // Algorithm implementations and random
 whiteNoiseStat    : 'WhiteNoise' '(' ID (',' range)? ')' LAYER?;
-random            : 'random' IN range
-                  | 'random' IN ID;
+random            : RANDOM IN range (COMMA seedRule)?
+                  | RANDOM IN ID (COMMA seedRule)?;
 
+seedRule          : SEED OPEN_PARENTH expr CLOSED_PARENTH;
 range             : expr DOT DOT expr;
 
 // Helpers
@@ -112,6 +113,8 @@ WHILE            : 'while' ;
 DEF              : 'def' ;
 LAYER            : 'layer';
 PROCEDURE        : 'procedure';
+SEED             : 'seed' ;
+RANDOM           : 'random';
 
 // Lexer Rules
 PLUS              : '+' ;

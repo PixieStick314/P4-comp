@@ -137,6 +137,16 @@ public interface RogueLangListener extends ParseTreeListener {
 	 */
 	void exitListElement(RogueLangParser.ListElementContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link RogueLangParser#listAccess}.
+	 * @param ctx the parse tree
+	 */
+	void enterListAccess(RogueLangParser.ListAccessContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RogueLangParser#listAccess}.
+	 * @param ctx the parse tree
+	 */
+	void exitListAccess(RogueLangParser.ListAccessContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link RogueLangParser#listLength}.
 	 * @param ctx the parse tree
 	 */
@@ -156,6 +166,46 @@ public interface RogueLangListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitListPop(RogueLangParser.ListPopContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RogueLangParser#struct}.
+	 * @param ctx the parse tree
+	 */
+	void enterStruct(RogueLangParser.StructContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RogueLangParser#struct}.
+	 * @param ctx the parse tree
+	 */
+	void exitStruct(RogueLangParser.StructContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RogueLangParser#structDef}.
+	 * @param ctx the parse tree
+	 */
+	void enterStructDef(RogueLangParser.StructDefContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RogueLangParser#structDef}.
+	 * @param ctx the parse tree
+	 */
+	void exitStructDef(RogueLangParser.StructDefContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RogueLangParser#structField}.
+	 * @param ctx the parse tree
+	 */
+	void enterStructField(RogueLangParser.StructFieldContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RogueLangParser#structField}.
+	 * @param ctx the parse tree
+	 */
+	void exitStructField(RogueLangParser.StructFieldContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RogueLangParser#structFieldAccess}.
+	 * @param ctx the parse tree
+	 */
+	void enterStructFieldAccess(RogueLangParser.StructFieldAccessContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RogueLangParser#structFieldAccess}.
+	 * @param ctx the parse tree
+	 */
+	void exitStructFieldAccess(RogueLangParser.StructFieldAccessContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link RogueLangParser#plusEquals}.
 	 * @param ctx the parse tree
