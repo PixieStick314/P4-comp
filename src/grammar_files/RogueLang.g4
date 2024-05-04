@@ -57,7 +57,7 @@ structFieldAccess : DOT ID listAccess*;
 // Basic operations and control flow
 plusEquals        : ID PEQ expr;
 minusEquals       : ID MEQ expr;
-printStat         : PRINT OPEN_PARENTH expr CLOSED_PARENTH;
+printStat         : PRINT OPEN_PARENTH expr (PLUS expr)* CLOSED_PARENTH;
 ifStat            : IF OPEN_PARENTH expr CLOSED_PARENTH statBlock elifStat? elseStat?;
 elifStat          : ELIF OPEN_PARENTH expr CLOSED_PARENTH statBlock elifStat?;
 elseStat          : ELSE statBlock;
