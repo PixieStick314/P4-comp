@@ -1,15 +1,16 @@
 grammar RogueLang;
 
 // Main program structure
-prog:   object (stat)* ;
+prog:   stat* outputObject stat* ;
 
 // object definition: creates an object with a procedure and optional output fields
-object: ID OPEN_CURL procedure (field | stat)* CLOSED_CURL;
-
+outputObject: 'output' type ID OPEN_CURL (outputField | stat)* procedure (outputField | stat)* CLOSED_CURL;
+type        : 'Custom'
+            | 'TileMap';
 // Procedure definition: a block of statements that defines a procedure
 procedure         : PROCEDURE statBlock;
 // Output field: an output declaration with a variable
-field             : 'field' varDecl;
+outputField       : 'output' varDecl;
 
 stat:   printStat
       | varDeclStat
