@@ -31,8 +31,9 @@ stat:   printStat
 varDeclStat       : 'let' varDecl;
 varDecl           : ID assignment?;
 
-assignStat        : ID structFieldAccess* listAccess* assignment;
+assignStat        : ID structFieldAccess* hashKey? listAccess* assignment;
 assignment        : EQUAL_SIGN struct
+                  | EQUAL_SIGN hashTable
                   | EQUAL_SIGN list
                   | EQUAL_SIGN expr;
 
@@ -47,6 +48,13 @@ listAccess        : OPEN_BRACK INT CLOSED_BRACK
                   | OPEN_BRACK ID CLOSED_BRACK;
 listLength        : 'len' OPEN_PARENTH ID CLOSED_PARENTH;
 listPop           : ID DOT 'pop' OPEN_PARENTH CLOSED_PARENTH;
+
+//Hash tables
+hashTable         : OPEN_CURL (keyValuePair (COMMA keyValuePair)*)? CLOSED_CURL;
+keyValuePair      : STRING COLON expr
+                  | ID COLON expr;
+hashKey           : OPEN_BRACK STRING CLOSED_BRACK
+                  | OPEN_BRACK ID CLOSED_BRACK;
 
 // Structs
 struct            : ID OPEN_CURL (structField assignment)* CLOSED_CURL;
@@ -80,6 +88,7 @@ args              : expr (COMMA expr)* ;
 // Expression structures
 expr              : functionCall
                   | ID structFieldAccess+
+                  | ID hashKey
                   | ID listAccess+
                   | listLength
                   | random
@@ -153,6 +162,7 @@ OPEN_CURL        : '{' ;
 CLOSED_CURL      : '}' ;
 COMMA            : ',' ;
 DOT              : '.' ;
+COLON            : ':' ;
 EQUAL_SIGN       : '=' ;
 
 // Lexer fragments for character components

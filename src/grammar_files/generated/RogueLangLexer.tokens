@@ -49,8 +49,9 @@ OPEN_CURL=48
 CLOSED_CURL=49
 COMMA=50
 DOT=51
-EQUAL_SIGN=52
-WS=53
+COLON=52
+EQUAL_SIGN=53
+WS=54
 'field'=1
 'let'=2
 'len'=3
@@ -97,4 +98,5 @@ WS=53
 '}'=49
 ','=50
 '.'=51
-'='=52
+':'=52
+'='=53

@@ -501,3 +501,30 @@ def test_struct_with_list_field_assign():
         '''
 
     run_test_prog(code, {'x': 4})
+
+def test_hash_table_assign():
+    code = '''
+    Map {
+    procedure {
+    let my_hash = {"a": 1, "b": 2}
+    x = my_hash["a"]
+    }
+    field x
+    }
+    '''
+
+    run_test_prog(code, {"x": 1})
+
+def test_hash_table_get():
+    code = '''
+        Map {
+        procedure {
+        let my_hash = {"a": 1, "b": 2}
+        my_hash["a"] = 3
+        x = my_hash["a"]
+        }
+        field x
+        }
+        '''
+
+    run_test_prog(code, {"x": 3})

@@ -123,6 +123,11 @@ class Interpreter(RogueLangVisitor):
             struct = self.environment.get(name)
 
             value = self.environment.assign_to_struct_field(struct, fields, value, indices)
+        elif ctx.hashKey():
+            hash_table = self.environment.get(name)
+            key = self.visit(ctx.hashKey())
+            hash_table[key] = value
+            value = hash_table
         elif ctx.listAccess():
             index = []
             for i in ctx.listAccess():
@@ -136,8 +141,6 @@ class Interpreter(RogueLangVisitor):
             print(f"Assigned variable '{name}' with value '{value}'")
 
     def visitAssignment(self, ctx:RogueLangParser.AssignmentContext):
-        if ctx.struct():
-            return self.visit(ctx.struct())
         if self.verbose:
             print(f"Performing assignment for context: {ctx}")
         try:
@@ -208,6 +211,23 @@ class Interpreter(RogueLangVisitor):
         except Exception as e:
             print(f"Error in visitListPop: {str(e)}")
             raise RuntimeError(f"List pop operation failed: {str(e)}")
+
+    def visitHashTable(self, ctx:RogueLangParser.HashTableContext):
+        hash_table = {}
+        for key_value_pair in ctx.keyValuePair():
+            key, value = self.visit(key_value_pair)
+            hash_table[key] = value
+
+        return hash_table
+
+    def visitKeyValuePair(self, ctx:RogueLangParser.KeyValuePairContext):
+        if ctx.ID():
+            key = self.environment.get(ctx.ID().getText())
+        else:
+            key = ctx.STRING().getText()
+        value = self.visit(ctx.expr())
+
+        return key, value
 
     def visitStruct(self, ctx:RogueLangParser.StructContext):
         parent = self.environment.get(ctx.ID().getText())
@@ -470,6 +490,12 @@ class Interpreter(RogueLangVisitor):
         else:
             return name, None
 
+    def visitHashKey(self, ctx:RogueLangParser.HashKeyContext):
+        if ctx.STRING():
+            return ctx.STRING().getText()
+        else:
+            return self.environment.get(ctx.ID().getText())
+
     def visitExpr(self, ctx):
         try:
             if ctx.listAccess():
@@ -478,7 +504,12 @@ class Interpreter(RogueLangVisitor):
                 for index in ctx.listAccess():
                     indices.append(self.visit(index))
                 return self.environment.get_list_element(name, indices)
-            if ctx.structFieldAccess():
+            elif ctx.hashKey():
+                name = ctx.ID().getText()
+                hash_table = self.environment.get(name)
+                key = self.visit(ctx.hashKey())
+                return hash_table[key]
+            elif ctx.structFieldAccess():
                 name = ctx.ID().getText()
                 field_names = []
                 indices = []
