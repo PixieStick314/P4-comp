@@ -1,4 +1,4 @@
-# Generated from C:/Users/lokes/PycharmProjects/P4-comp/src/grammar_files/RogueLang.g4 by ANTLR 4.13.1
+# Generated from /home/ronaldj/code/P4-comp/src/grammar_files/RogueLang.g4 by ANTLR 4.13.1
 from antlr4 import *
 if "." in __name__:
     from .RogueLangParser import RogueLangParser
