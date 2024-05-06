@@ -114,6 +114,6 @@ class Environment:
         elif self.enclosing is not None:
             return self.enclosing.get_seed()
         else:
-            self.seed = datetime.now()
+            self.seed = str(datetime.now())
             print(f"No seed set, using {self.seed}")
             return self.seed

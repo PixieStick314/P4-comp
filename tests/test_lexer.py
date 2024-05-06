@@ -187,13 +187,13 @@ def test_pow():
     assert tokens[4].type == RogueLangLexer.INT
     assert tokens[5].type == RogueLangLexer.CLOSED_PARENTH
 
-def test_pow():
+def test_seed():
     code = 'seed(7)'
 
     tokens = get_tokens_from_string(code)
 
-    assert tokens[4].type == RogueLangLexer.SEED
-    assert tokens[5].type == RogueLangLexer.OPEN_PARENTH
-    assert tokens[6].type == RogueLangLexer.INT
-    assert tokens[7].type == RogueLangLexer.CLOSED_PARENTH
+    assert tokens[0].type == RogueLangLexer.SEED
+    assert tokens[1].type == RogueLangLexer.OPEN_PARENTH
+    assert tokens[2].type == RogueLangLexer.INT
+    assert tokens[3].type == RogueLangLexer.CLOSED_PARENTH
 

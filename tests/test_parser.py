@@ -253,6 +253,9 @@ def test_Sqrt_Op():
 def test_seed():
     code = 'seed(7)'
     parser = setup_parser(code)
-    tree = parser.random()
+    tree = parser.seed()
 
-    assert tree.getChild(4).getRuleIndex() == RogueLangParser.RULE_seedRule   
+    assert tree.getChild(0).getSymbol().type == RogueLangParser.SEED
+    assert tree.getChild(1).getSymbol().type == RogueLangParser.OPEN_PARENTH
+    assert tree.getChild(2).getRuleIndex() == RogueLangParser.RULE_expr
+    assert tree.getChild(3).getSymbol().type == RogueLangParser.CLOSED_PARENTH

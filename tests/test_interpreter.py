@@ -507,7 +507,11 @@ def test_struct_with_list_output_assign():
 
 
 def test_random_seed():
-    code = '''Map {
+    code = '''output Custom Map {
+    output x = 10000000
+    output y = 103
+    output z = 30420
+    output a = 9009090
     procedure {
     let b = [1, 2, 3, 4, 5, 6, 7, 8, 9]
     seed(2000)
@@ -519,10 +523,6 @@ def test_random_seed():
     seed(1500)
     a = random in b
     }
-    field x = 10000000
-    field y = 103
-    field z = 30420
-    field a = 9009090
     }
     '''
 
@@ -537,10 +537,12 @@ def test_random_seed():
 
     assert output1 == output2
 
-    #assert json.loads(output) == {"x": 461, "y": 380, "z": 319, "a": 5}
-
 def test_random_without_seed():
-    code = '''Map {
+    code = '''output Custom Map {
+    output x = 10000000
+    output y = 103
+    output z = 30420
+    output a = 9009090
     procedure {
     let b = [1, 2, 3, 4, 5, 6, 7, 8, 9]
     x = random in 2..1000
@@ -548,10 +550,6 @@ def test_random_without_seed():
     z = random in 2..1000
     a = random in b
     }
-    field x = 10000000
-    field y = 103
-    field z = 30420
-    field a = 9009090
     }
     '''
 
