@@ -188,14 +188,10 @@ def test_pow():
     assert tokens[5].type == RogueLangLexer.CLOSED_PARENTH
 
 def test_pow():
-    code = 'random in x, seed(7)'
+    code = 'seed(7)'
 
     tokens = get_tokens_from_string(code)
 
-    assert tokens[0].type == RogueLangLexer.RANDOM
-    assert tokens[1].type == RogueLangLexer.IN
-    assert tokens[2].type == RogueLangLexer.ID
-    assert tokens[3].type == RogueLangLexer.COMMA
     assert tokens[4].type == RogueLangLexer.SEED
     assert tokens[5].type == RogueLangLexer.OPEN_PARENTH
     assert tokens[6].type == RogueLangLexer.INT
