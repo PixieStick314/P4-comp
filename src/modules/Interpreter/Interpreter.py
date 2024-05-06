@@ -25,7 +25,7 @@ class Interpreter(RogueLangVisitor):
         try:
             for stat in ctx.stat():
                 self.visit(stat)
-            result = self.visit(ctx.object_())
+            result = self.visit(ctx.outputObject())
             if self.verbose:
                 print("Finished visiting program.")
             return result
@@ -33,14 +33,14 @@ class Interpreter(RogueLangVisitor):
             print(f"Error visiting program: {str(e)}")
             raise RuntimeError(f"Failed during program execution: {str(e)}")
 
-    def visitObject(self, ctx:RogueLangParser.ObjectContext):
+    def visitOutputObject(self, ctx:RogueLangParser.OutputObjectContext):
         if self.verbose:
             print("Visiting object...")
         previous = self.environment
         self.environment = Environment(previous)
         fields = []
         try:
-            for field in ctx.field():
+            for field in ctx.outputField():
                 field_name = self.visit(field)
                 fields.append(field_name)
                 if self.verbose:
@@ -49,8 +49,8 @@ class Interpreter(RogueLangVisitor):
                 self.visit(stat)
             self.visit(ctx.procedure())
         except Exception as e:
-            print(f"Error during object construction: {str(e)}")
-            raise RuntimeError(f"Object creation failed due to: {str(e)}")
+            print(f"Error during output object construction: {str(e)}")
+            raise RuntimeError(f"Output object creation failed due to: {str(e)}")
         finally:
             output = {field: self.environment.get(field) for field in fields}
             self.environment = previous
@@ -58,7 +58,7 @@ class Interpreter(RogueLangVisitor):
                 print("Object visitation completed.")
             return json.dumps(output)
 
-    def visitField(self, ctx:RogueLangParser.FieldContext):
+    def visitOutputField(self, ctx:RogueLangParser.OutputFieldContext):
         try:
             field = self.visit(ctx.varDecl())
             if self.verbose:
