@@ -210,3 +210,10 @@ cython_debug/
 #.idea/
 
 generated_files/
+/src/grammar_files/generated/Dungeon.interp
+/src/grammar_files/generated/Dungeon.tokens
+/src/grammar_files/generated/DungeonLexer.interp
+/src/grammar_files/generated/DungeonLexer.py
+/src/grammar_files/generated/DungeonLexer.tokens
+/src/grammar_files/generated/DungeonParser.py
+/src/grammar_files/generated/DungeonVisitor.py
