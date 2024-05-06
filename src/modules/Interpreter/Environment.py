@@ -112,9 +112,9 @@ class Environment:
 
     def check_seed(self):
         if self.seed is not None:
-            print(f"Using seed: {self.seed}")
+            pass
         elif self.enclosing is not None:
-            print(f"Using seed: {self.seed}")
+            self.enclosing.check_seed()
         else:
             self.seed = str(datetime.now())
             random.seed(self.seed)
