@@ -1,4 +1,4 @@
-grammar RogueLang;
+grammar Dungeon;
 
 // Main program structure
 prog:   stat* outputObject stat* ;

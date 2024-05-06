@@ -1,16 +1,16 @@
 # test_interpreter.py
 import json
 
-from grammar_files.generated.RogueLangParser import RogueLangParser
-from grammar_files.generated.RogueLangLexer import RogueLangLexer
+from grammar_files.generated.DungeonParser import DungeonParser
+from grammar_files.generated.DungeonLexer import DungeonLexer
 from antlr4 import *
 
 from modules.Interpreter.Interpreter import Interpreter
 
 def setup_parser(str):
-    lexer = RogueLangLexer(InputStream(str))
+    lexer = DungeonLexer(InputStream(str))
     stream = CommonTokenStream(lexer)
-    parser = RogueLangParser(stream)
+    parser = DungeonParser(stream)
     return parser
 
 def run_test_prog(code, expected_output):

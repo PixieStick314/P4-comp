@@ -2,15 +2,15 @@
 import json
 import random
 import math
-from grammar_files.generated.RogueLangParser import RogueLangParser
-from grammar_files.generated.RogueLangVisitor import RogueLangVisitor
+from grammar_files.generated.DungeonParser import DungeonParser
+from grammar_files.generated.DungeonVisitor import DungeonVisitor
 from modules.Interpreter.Environment import Environment
 from modules.Interpreter.Function import Function
 from modules.Interpreter.Struct import Struct
 from modules.Interpreter.StructInstance import StructInstance
 
 
-class Interpreter(RogueLangVisitor):
+class Interpreter(DungeonVisitor):
     def __init__(self):
         super().__init__()
         self.verbose = False
@@ -19,7 +19,7 @@ class Interpreter(RogueLangVisitor):
     def set_verbose(self, verbose):
         self.verbose = verbose
 
-    def visitProg(self, ctx:RogueLangParser.ProgContext):
+    def visitProg(self, ctx:DungeonParser.ProgContext):
         if self.verbose:
             print("Starting to visit program...")
         try:
@@ -33,7 +33,7 @@ class Interpreter(RogueLangVisitor):
             print(f"Error visiting program: {str(e)}")
             raise RuntimeError(f"Failed during program execution: {str(e)}")
 
-    def visitOutputObject(self, ctx:RogueLangParser.OutputObjectContext):
+    def visitOutputObject(self, ctx:DungeonParser.OutputObjectContext):
         if self.verbose:
             print("Visiting object...")
         previous = self.environment
@@ -58,7 +58,7 @@ class Interpreter(RogueLangVisitor):
                 print("Object visitation completed.")
             return json.dumps(output)
 
-    def visitOutputField(self, ctx:RogueLangParser.OutputFieldContext):
+    def visitOutputField(self, ctx:DungeonParser.OutputFieldContext):
         try:
             field = self.visit(ctx.varDecl())
             if self.verbose:
@@ -68,7 +68,7 @@ class Interpreter(RogueLangVisitor):
             print(f"Error in field visitation: {str(e)}")
             raise RuntimeError(f"Failed to process field '{field}': {str(e)}")
 
-    def visitProcedure(self, ctx:RogueLangParser.ProcedureContext):
+    def visitProcedure(self, ctx:DungeonParser.ProcedureContext):
         try:
             if self.verbose:
                 print("Visiting procedure block...")
@@ -79,7 +79,7 @@ class Interpreter(RogueLangVisitor):
             print(f"Error during procedure execution: {str(e)}")
             raise RuntimeError(f"Procedure execution failed: {str(e)}")
 
-    def visitPrintStat(self, ctx:RogueLangParser.PrintStatContext):
+    def visitPrintStat(self, ctx:DungeonParser.PrintStatContext):
         try:
             text = self.visit(ctx.expr())
             print(text)
@@ -98,7 +98,7 @@ class Interpreter(RogueLangVisitor):
             print(f"Error declaring variable in visitVarDeclStat: {str(e)}")
             raise RuntimeError(f"Variable declaration failed in statement: {str(e)}")
 
-    def visitVarDecl(self, ctx:RogueLangParser.VarDeclContext):
+    def visitVarDecl(self, ctx:DungeonParser.VarDeclContext):
         try:
             name = ctx.ID().getText()
             value = self.visit(ctx.assignment()) if ctx.assignment() else None
@@ -110,7 +110,7 @@ class Interpreter(RogueLangVisitor):
             print(f"Error in visitVarDecl for variable '{name}': {str(e)}")
             raise ValueError(f"Inappropriate value for variable '{name}': {str(e)}")
 
-    def visitAssignStat(self, ctx:RogueLangParser.AssignStatContext):
+    def visitAssignStat(self, ctx:DungeonParser.AssignStatContext):
         name = ctx.ID().getText()
         value = self.visitAssignment(ctx.assignment())
 
@@ -135,7 +135,7 @@ class Interpreter(RogueLangVisitor):
         if self.verbose:
             print(f"Assigned variable '{name}' with value '{value}'")
 
-    def visitAssignment(self, ctx:RogueLangParser.AssignmentContext):
+    def visitAssignment(self, ctx:DungeonParser.AssignmentContext):
         if ctx.struct():
             return self.visit(ctx.struct())
         if self.verbose:
@@ -146,7 +146,7 @@ class Interpreter(RogueLangVisitor):
             print(f"Error during assignment: {str(e)}")
             raise RuntimeError(f"Assignment processing failed: {str(e)}")
 
-    def visitList(self, ctx:RogueLangParser.ListContext):
+    def visitList(self, ctx:DungeonParser.ListContext):
         try:
             value = [self.visit(element) for element in ctx.listElement()]
             if self.verbose:
@@ -156,7 +156,7 @@ class Interpreter(RogueLangVisitor):
             print(f"Error creating list in visitList: {str(e)}")
             raise RuntimeError(f"List creation failed: {str(e)}")
 
-    def visitListElement(self, ctx:RogueLangParser.ListElementContext):
+    def visitListElement(self, ctx:DungeonParser.ListElementContext):
         try:
             element_value = self.visitChildren(ctx)
             if self.verbose:
@@ -166,7 +166,7 @@ class Interpreter(RogueLangVisitor):
             print(f"Error processing list element in visitListElement: {str(e)}")
             raise RuntimeError(f"List element processing failed: {str(e)}")
 
-    def visitPlusEquals(self, ctx:RogueLangParser.PlusEqualsContext):
+    def visitPlusEquals(self, ctx:DungeonParser.PlusEqualsContext):
         try:
             name = ctx.ID().getText()
             value = self.visit(ctx.expr())
@@ -181,7 +181,7 @@ class Interpreter(RogueLangVisitor):
             print(f"Error in visitPlusEquals for '{name}': {str(e)}")
             raise ValueError(f"Invalid operation on variable '{name}': {str(e)}")
 
-    def visitMinusEquals(self, ctx:RogueLangParser.MinusEqualsContext):
+    def visitMinusEquals(self, ctx:DungeonParser.MinusEqualsContext):
         try:
             name = ctx.ID().getText()
             value = self.visit(ctx.expr())
@@ -196,7 +196,7 @@ class Interpreter(RogueLangVisitor):
             print(f"Error in visitMinusEquals for '{name}': {str(e)}")
             raise ValueError(f"Invalid operation on variable '{name}': {str(e)}")
 
-    def visitListPop(self, ctx:RogueLangParser.ListPopContext):
+    def visitListPop(self, ctx:DungeonParser.ListPopContext):
         try:
             list_var = self.environment.get(ctx.ID().getText())
             list_var.pop()
@@ -209,7 +209,7 @@ class Interpreter(RogueLangVisitor):
             print(f"Error in visitListPop: {str(e)}")
             raise RuntimeError(f"List pop operation failed: {str(e)}")
 
-    def visitStruct(self, ctx:RogueLangParser.StructContext):
+    def visitStruct(self, ctx:DungeonParser.StructContext):
         parent = self.environment.get(ctx.ID().getText())
         fields = {}
 
@@ -222,7 +222,7 @@ class Interpreter(RogueLangVisitor):
         instance = StructInstance(parent, fields)
         return instance
 
-    def visitStructDef(self, ctx:RogueLangParser.StructDefContext):
+    def visitStructDef(self, ctx:DungeonParser.StructDefContext):
         name = ctx.ID().getText()
         fields = {}
 
@@ -231,7 +231,7 @@ class Interpreter(RogueLangVisitor):
         struct = Struct(name, fields)
         self.environment.define(struct.name, struct)
 
-    def visitStructField(self, ctx:RogueLangParser.StructFieldContext):
+    def visitStructField(self, ctx:DungeonParser.StructFieldContext):
         return ctx.ID().getText()
 
     def visitStatBlock(self, ctx):
@@ -250,7 +250,7 @@ class Interpreter(RogueLangVisitor):
             if self.verbose:
                 print("Completed statement block visitation.")
 
-    def visitIfStat(self, ctx:RogueLangParser.IfStatContext):
+    def visitIfStat(self, ctx:DungeonParser.IfStatContext):
         try:
             if self.verbose:
                 print("Evaluating If statement condition...")
@@ -264,7 +264,7 @@ class Interpreter(RogueLangVisitor):
             print(f"Error in If statement: {str(e)}")
             raise RuntimeError(f"If statement execution failed: {str(e)}")
 
-    def visitElifStat(self, ctx:RogueLangParser.ElifStatContext):
+    def visitElifStat(self, ctx:DungeonParser.ElifStatContext):
         try:
             if self.verbose:
                 print("Evaluating Elif statement condition...")
@@ -276,7 +276,7 @@ class Interpreter(RogueLangVisitor):
             print(f"Error in Elif statement: {str(e)}")
             raise RuntimeError(f"Elif statement execution failed: {str(e)}")
 
-    def visitElseStat(self, ctx:RogueLangParser.ElseStatContext):
+    def visitElseStat(self, ctx:DungeonParser.ElseStatContext):
         try:
             if self.verbose:
                 print("Executing Else block...")
@@ -319,7 +319,7 @@ class Interpreter(RogueLangVisitor):
         if self.verbose:
             print("Completed While loop.")
 
-    def visitFunctionDecl(self, ctx:RogueLangParser.FunctionDeclContext):
+    def visitFunctionDecl(self, ctx:DungeonParser.FunctionDeclContext):
         try:
             name = ctx.ID().getText()
             params = self.visit(ctx.params()) if ctx.params() is not None else None
@@ -334,7 +334,7 @@ class Interpreter(RogueLangVisitor):
             print(error_message)
             raise RuntimeError(error_message) from e
 
-    def visitParams(self, ctx:RogueLangParser):
+    def visitParams(self, ctx:DungeonParser):
         try:
             params = [id.getText() for id in ctx.ID()]
             if self.verbose:
@@ -344,7 +344,7 @@ class Interpreter(RogueLangVisitor):
             print("Error visiting parameters:", str(e))
             raise
 
-    def visitFunctionCall(self, ctx:RogueLangParser.FunctionCallContext):
+    def visitFunctionCall(self, ctx:DungeonParser.FunctionCallContext):
         name = ctx.ID().getText()
         args = self.visit(ctx.args()) if ctx.args() is not None else None
         if self.verbose:
@@ -365,7 +365,7 @@ class Interpreter(RogueLangVisitor):
         finally:
             self.environment = previous
 
-    def visitArgs(self, ctx:RogueLangParser.ArgsContext):
+    def visitArgs(self, ctx:DungeonParser.ArgsContext):
         try:
             args = [self.visitChildren(ctx)]
             if self.verbose:
@@ -389,7 +389,7 @@ class Interpreter(RogueLangVisitor):
         # Returns a placeholder for unhandled cases
         return "ERROR: Unhandled Case"
 
-    def visitListAccess(self, ctx:RogueLangParser.ListAccessContext):
+    def visitListAccess(self, ctx:DungeonParser.ListAccessContext):
         if self.verbose:
             print("Accessing list element...")
         try:
@@ -401,7 +401,7 @@ class Interpreter(RogueLangVisitor):
             print(f"Error accessing list: {str(e)}")
             raise RuntimeError(f"List access failed: {str(e)}")
 
-    def visitListLength(self, ctx:RogueLangParser.ListLengthContext):
+    def visitListLength(self, ctx:DungeonParser.ListLengthContext):
         try:
             list = self.environment.get(ctx.ID().getText())
             length = len(list)
@@ -412,7 +412,7 @@ class Interpreter(RogueLangVisitor):
             print(f"Error getting length of list '{ctx.ID().getText()}':", str(e))
             raise
 
-    def visitWhiteNoiseStat(self, ctx:RogueLangParser.WhiteNoiseStatContext):
+    def visitWhiteNoiseStat(self, ctx:DungeonParser.WhiteNoiseStatContext):
         try:
             array_param = ctx.ID().getText()
             array = self.environment.get(array_param)
@@ -434,11 +434,11 @@ class Interpreter(RogueLangVisitor):
             print(f"Error in visitWhiteNoiseStat: {str(e)}")
             raise RuntimeError(f"White noise application failed: {str(e)}")
 
-    def visitSeed(self, ctx:RogueLangParser.SeedContext):
+    def visitSeed(self, ctx:DungeonParser.SeedContext):
         self.environment.seed = self.visit(ctx.expr())
         random.seed(self.environment.seed)
 
-    def visitRandom(self, ctx:RogueLangParser.RandomContext):
+    def visitRandom(self, ctx:DungeonParser.RandomContext):
         try:
             self.environment.check_seed()
 
@@ -457,7 +457,7 @@ class Interpreter(RogueLangVisitor):
             print(f"Error in visitRandom: {str(e)}")
             raise RuntimeError(f"Random value generation failed: {str(e)}")
 
-    def visitRange(self, ctx:RogueLangParser.RangeContext):
+    def visitRange(self, ctx:DungeonParser.RangeContext):
         try:
             bounds = [self.visit(i) for i in ctx.expr()]
             if self.verbose:
@@ -467,7 +467,7 @@ class Interpreter(RogueLangVisitor):
             print(f"Error in visitRange: {str(e)}")
             raise RuntimeError(f"Range evaluation failed: {str(e)}")
 
-    def visitStructFieldAccess(self, ctx:RogueLangParser.StructFieldAccessContext):
+    def visitStructFieldAccess(self, ctx:DungeonParser.StructFieldAccessContext):
         name = ctx.ID().getText()
 
         if ctx.listAccess():
