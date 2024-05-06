@@ -1,11 +1,12 @@
 # test_interpreter.py
 import json
 
-from grammar_files.generated.RogueLangParser import RogueLangParser
-from grammar_files.generated.RogueLangLexer import RogueLangLexer
+from src.grammar_files.generated.RogueLangParser import RogueLangParser
+from src.grammar_files.generated.RogueLangLexer import RogueLangLexer
+
 from antlr4 import *
 
-from modules.Interpreter.Interpreter import Interpreter
+from src.modules.Interpreter.Interpreter import Interpreter
 
 def setup_parser(str):
     lexer = RogueLangLexer(InputStream(str))
@@ -501,3 +502,28 @@ def test_struct_with_list_field_assign():
         '''
 
     run_test_prog(code, {'x': 4})
+
+def test_a_star():
+    code = '''
+    Map {
+    procedure {
+        grid = [
+        [0, 0, 0, 0, 0],
+        [0, 1, 1, 1, 0],
+        [0, 0, 0, 0, 0],
+        [0, 1, 1, 1, 0],
+        [0, 0, 0, 0, 0]
+    ]
+
+
+        
+        start = [0, 0]
+        goal = [4, 4]
+        
+        path = astar(start, goal, grid)
+    }
+    field path
+    }
+    '''
+
+    run_test_prog(code, {'path': [[0, 0], [1, 0], [2, 0], [3, 0], [4, 0], [4, 1], [4, 2], [4, 3], [4, 4]]})

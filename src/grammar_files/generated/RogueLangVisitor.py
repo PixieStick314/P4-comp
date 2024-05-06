@@ -164,6 +164,11 @@ class RogueLangVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by RogueLangParser#astarStat.
+    def visitAstarStat(self, ctx:RogueLangParser.AstarStatContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by RogueLangParser#random.
     def visitRandom(self, ctx:RogueLangParser.RandomContext):
         return self.visitChildren(ctx)
