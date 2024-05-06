@@ -174,6 +174,11 @@ class RogueLangVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by RogueLangParser#seed.
+    def visitSeed(self, ctx:RogueLangParser.SeedContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by RogueLangParser#range.
     def visitRange(self, ctx:RogueLangParser.RangeContext):
         return self.visitChildren(ctx)

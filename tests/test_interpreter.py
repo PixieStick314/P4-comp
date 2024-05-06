@@ -290,6 +290,7 @@ def test_random_range():
 
     assert json.loads(output) == {'x': 2} or {'x': 3} or {'x': 4}
 
+
 def test_random_choice():
     code = '''output Custom map {
     procedure {
@@ -299,6 +300,7 @@ def test_random_choice():
     output x = 1
     }
     '''
+
     parser = setup_parser(code)
     tree = parser.prog()
     visitor = Interpreter()
@@ -307,6 +309,7 @@ def test_random_choice():
     print(output)
 
     assert json.loads(output) == {'x': 2} or {'x': 3} or {'x': 4}
+
 
 #TESTING SQUAREROOT OPERATIONS
 def test_sqrt_op():
@@ -501,3 +504,68 @@ def test_struct_with_list_output_assign():
         '''
 
     run_test_prog(code, {'x': 4})
+
+
+def test_random_seed():
+    code = '''Map {
+    procedure {
+    let b = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    seed(2000)
+    x = random in 2..1000
+    seed(1750)
+    y = random in 2..1000
+    seed(1500)
+    z = random in 2..1000
+    seed(1500)
+    a = random in b
+    }
+    field x = 10000000
+    field y = 103
+    field z = 30420
+    field a = 9009090
+    }
+    '''
+
+    parser = setup_parser(code)
+    tree = parser.prog()
+    visitor = Interpreter()
+    output1 = visitor.visit(tree)
+    output2 = visitor.visit(tree)
+
+    print(output1)
+    print(output2)
+
+    assert output1 == output2
+
+    #assert json.loads(output) == {"x": 461, "y": 380, "z": 319, "a": 5}
+
+def test_random_without_seed():
+    code = '''Map {
+    procedure {
+    let b = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    x = random in 2..1000
+    y = random in 2..1000
+    z = random in 2..1000
+    a = random in b
+    }
+    field x = 10000000
+    field y = 103
+    field z = 30420
+    field a = 9009090
+    }
+    '''
+
+    parser = setup_parser(code)
+    tree = parser.prog()
+    visitor = Interpreter()
+    output1 = visitor.visit(tree)
+
+    parser = setup_parser(code)
+    tree = parser.prog()
+    visitor = Interpreter()
+    output2 = visitor.visit(tree)
+
+    print(output1)
+    print(output2)
+
+    assert output1 != output2
