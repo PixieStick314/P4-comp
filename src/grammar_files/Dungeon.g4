@@ -1,15 +1,16 @@
-grammar RogueLang;
+grammar Dungeon;
 
 // Main program structure
-prog:   object (stat)* ;
+prog:   stat* outputObject stat* ;
 
 // object definition: creates an object with a procedure and optional output fields
-object: ID OPEN_CURL procedure (field | stat)* CLOSED_CURL;
-
+outputObject: 'output' type ID OPEN_CURL (outputField | stat)* procedure (outputField | stat)* CLOSED_CURL;
+type        : 'Custom'
+            | 'TileMap';
 // Procedure definition: a block of statements that defines a procedure
 procedure         : PROCEDURE statBlock;
 // Output field: an output declaration with a variable
-field             : 'field' varDecl;
+outputField       : 'output' varDecl;
 
 stat:   printStat
       | varDeclStat
@@ -23,9 +24,12 @@ stat:   printStat
       | plusEquals
       | minusEquals
       | listPop
-      | whiteNoiseStat     // WhiteNoise statement
-      | astarStat
+      | whiteNoiseStat     // White Noise statement
+      | astarStat          // aStar statement
+      | bspStat            // Binary Space Partition statement
+      | perlinNoiseStat    // Perlin Noise statement
       | structDef
+      | seed
       | expr;
 
 // Variable declarations and assignments
@@ -35,7 +39,8 @@ varDecl           : ID assignment?;
 assignStat        : ID structFieldAccess* listAccess* assignment;
 assignment        : EQUAL_SIGN struct
                   | EQUAL_SIGN list
-                  | EQUAL_SIGN expr;
+                  | EQUAL_SIGN expr
+                  | EQUAL_SIGN stat;
 
 // Function declaration and calls
 functionDecl      : DEF ID OPEN_PARENTH params? CLOSED_PARENTH statBlock;
@@ -68,12 +73,21 @@ whileLoop         : WHILE OPEN_PARENTH expr CLOSED_PARENTH statBlock;
 returnStat        : RETURN expr;
 
 // Algorithm implementations and random
-whiteNoiseStat    : 'WhiteNoise' '(' ID (',' range)? ')' LAYER?;
-astarStat         : 'astar' OPEN_PARENTH ID COMMA ID COMMA ID COMMA CLOSED_PARENTH;
-random            : 'random' IN range
-                  | 'random' IN ID;
+whiteNoiseStat    : 'WhiteNoise' OPEN_PARENTH whiteNoiseParams CLOSED_PARENTH;
+astarStat         : 'astar' OPEN_PARENTH astarParams CLOSED_PARENTH;
+bspStat           : 'bsp' OPEN_PARENTH bspParams CLOSED_PARENTH;
+perlinNoiseStat   : 'PerlinNoise' OPEN_PARENTH perlinParams CLOSED_PARENTH;
+random            : RANDOM IN range
+                  | RANDOM IN ID;
 
+seed              : SEED OPEN_PARENTH expr CLOSED_PARENTH;
 range             : expr DOT DOT expr;
+
+// Algorithm helpers
+whiteNoiseParams  : ID (COMMA range)?;
+astarParams       : ID COMMA ID COMMA ID;
+bspParams         : ID (COMMA INT)? (COMMA STRING)? (COMMA INT)?;
+perlinParams      : ID (COMMA FLOAT)? (COMMA INT)? (COMMA FLOAT)? (COMMA FLOAT)?;
 
 // Helpers
 params            : ID (COMMA ID)* ;
@@ -105,7 +119,6 @@ expr              : functionCall
 IF               : 'if';
 ELIF             : 'elif';
 ELSE             : 'else';         
-
 RETURN           : 'return';
 PRINT            : 'print' ;
 FOR              : 'for' ;
@@ -114,37 +127,39 @@ WHILE            : 'while' ;
 DEF              : 'def' ;
 LAYER            : 'layer';
 PROCEDURE        : 'procedure';
+SEED             : 'seed' ;
+RANDOM           : 'random';
 
 // Lexer Rules
-PLUS              : '+' ;
-MINUS             : '-' ;
-MULT              : '*' ;
-DIV               : '/' ;
-GT                : '>' ;
-GTE               : '>=';
-LT                : '<' ;
-LTE               : '<=';
-EQ                : '==';
-NEQ               : '!=';
-PEQ               : '+=';
-MEQ               : '-=';
-MOD               : '%' ;
-AND               : 'and';
-OR                : 'or';
-NOT               : 'not';
-TRUE              : 'True' ;
-FALSE             : 'False' ;
-SQRT              : 'sqrt' ;
-POW               : 'pow' ;
+PLUS             : '+' ;
+MINUS            : '-' ;
+MULT             : '*' ;
+DIV              : '/' ;
+GT               : '>' ;
+GTE              : '>=';
+LT               : '<' ;
+LTE              : '<=';
+EQ               : '==';
+NEQ              : '!=';
+PEQ              : '+=';
+MEQ              : '-=';
+MOD              : '%' ;
+AND              : 'and';
+OR               : 'or';
+NOT              : 'not';
+TRUE             : 'True' ;
+FALSE            : 'False' ;
+SQRT             : 'sqrt' ;
+POW              : 'pow' ;
 
 // Single line comments
 COMMENT_SINGLELINE: '//' ~[\r\n]* -> skip ;
 
 // Lexer rules for common tokens
-INT               : '-'? DIGIT+;
-FLOAT             : '-'? DIGIT+ '.' DIGIT+;
-STRING            : '"' (ESC | ~["\\])* '"' ; // Use fragment for escaped characters
-ID                : LETTER (LETTER | DIGIT)* ;
+INT              : '-'? DIGIT+;
+FLOAT            : '-'? DIGIT+ '.' DIGIT+;
+STRING           : '"' (ESC | ~["\\])* '"' ; // Use fragment for escaped characters
+ID               : LETTER (LETTER | DIGIT)* ;
 
 // Opening and closing symbols
 OPEN_PARENTH     : '(' ;
@@ -158,9 +173,9 @@ DOT              : '.' ;
 EQUAL_SIGN       : '=' ;
 
 // Lexer fragments for character components
-fragment LETTER           : [a-zA-Z_];
-fragment ESC              : '\\' (['"\\tn]); // Define ESC for escape sequences in strings, doesn't work
-fragment DIGIT             : [0-9_];
+fragment LETTER  : [a-zA-Z_];
+fragment ESC     : '\\' (['"\\tn]); // Define ESC for escape sequences in strings, doesn't work
+fragment DIGIT   : [0-9_];
 
 // Whitespace handling
-WS       : [ \t\r\n]+ -> skip ; // skip spaces, tabs, newlines
+WS               : [ \t\r\n]+ -> skip ; // skip spaces, tabs, newlines

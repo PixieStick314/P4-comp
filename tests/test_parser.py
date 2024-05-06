@@ -1,13 +1,13 @@
 #   test_parser.py
-from grammar_files.generated.RogueLangParser import RogueLangParser
-from grammar_files.generated.RogueLangLexer import RogueLangLexer
+from grammar_files.generated.DungeonParser import DungeonParser
+from grammar_files.generated.DungeonLexer import DungeonLexer
 from antlr4 import *
 
 
 def setup_parser(str):
-    lexer = RogueLangLexer(InputStream(str))
+    lexer = DungeonLexer(InputStream(str))
     stream = CommonTokenStream(lexer)
-    parser = RogueLangParser(stream)
+    parser = DungeonParser(stream)
     return parser
 
 
@@ -16,7 +16,7 @@ def test_ambiguity_print_stat():
     parser = setup_parser(test)
     tree = parser.stat()
 
-    assert tree.getChild(0).getRuleIndex() == RogueLangParser.RULE_printStat
+    assert tree.getChild(0).getRuleIndex() == DungeonParser.RULE_printStat
 
 
 def test_ambiguity_var_decl():
@@ -24,7 +24,7 @@ def test_ambiguity_var_decl():
     parser = setup_parser(test)
     tree = parser.stat()
 
-    assert tree.getChild(0).getRuleIndex() == RogueLangParser.RULE_varDeclStat
+    assert tree.getChild(0).getRuleIndex() == DungeonParser.RULE_varDeclStat
 
 
 def test_ambiguity_function_decl():
@@ -32,7 +32,7 @@ def test_ambiguity_function_decl():
     parser = setup_parser(test)
     tree = parser.stat()
 
-    assert tree.getChild(0).getRuleIndex() == RogueLangParser.RULE_functionDecl
+    assert tree.getChild(0).getRuleIndex() == DungeonParser.RULE_functionDecl
 
 
 def test_ambiguity_if_stat():
@@ -40,7 +40,7 @@ def test_ambiguity_if_stat():
     parser = setup_parser(test)
     tree = parser.stat()
 
-    assert tree.getChild(0).getRuleIndex() == RogueLangParser.RULE_ifStat
+    assert tree.getChild(0).getRuleIndex() == DungeonParser.RULE_ifStat
 
 
 def test_ambiguity_for_loop():
@@ -48,7 +48,7 @@ def test_ambiguity_for_loop():
     parser = setup_parser(test)
     tree = parser.stat()
 
-    assert tree.getChild(0).getRuleIndex() == RogueLangParser.RULE_forLoop
+    assert tree.getChild(0).getRuleIndex() == DungeonParser.RULE_forLoop
 
 
 def test_ambiguity_while_loop():
@@ -56,7 +56,7 @@ def test_ambiguity_while_loop():
     parser = setup_parser(test)
     tree = parser.stat()
 
-    assert tree.getChild(0).getRuleIndex() == RogueLangParser.RULE_whileLoop
+    assert tree.getChild(0).getRuleIndex() == DungeonParser.RULE_whileLoop
 
 
 def test_ambiguity_stat_block():
@@ -64,7 +64,7 @@ def test_ambiguity_stat_block():
     parser = setup_parser(test)
     tree = parser.stat()
 
-    assert tree.getChild(0).getRuleIndex() == RogueLangParser.RULE_statBlock
+    assert tree.getChild(0).getRuleIndex() == DungeonParser.RULE_statBlock
 
 
 def test_ambiguity_return_stat():
@@ -72,7 +72,7 @@ def test_ambiguity_return_stat():
     parser = setup_parser(test)
     tree = parser.stat()
 
-    assert tree.getChild(0).getRuleIndex() == RogueLangParser.RULE_returnStat
+    assert tree.getChild(0).getRuleIndex() == DungeonParser.RULE_returnStat
 
 
 def test_ambiguity_expr():
@@ -80,24 +80,24 @@ def test_ambiguity_expr():
     parser = setup_parser(test)
     tree = parser.stat()
 
-    assert tree.getChild(0).getRuleIndex() == RogueLangParser.RULE_expr
+    assert tree.getChild(0).getRuleIndex() == DungeonParser.RULE_expr
 
 
 def test_print_stat():
     # string we want to test
     test = 'print ("Hello World!")'
     # parses abstract syntax tree for the specific test
-    # print("\n", tree.toStringTree(tree, RogueLangParser))
+    # print("\n", tree.toStringTree(tree, DungeonParser))
     # the print statement above can be used to visualize how the tree looks
     parser = setup_parser(test)
     # as we only want the relevant part of the tree, we put that into the tree variable
     tree = parser.printStat()
     # the following lines check if the tree and its nodes fit the specific rules defined in the grammar file
-    assert (tree.getRuleIndex() == RogueLangParser.RULE_printStat)
-    assert tree.getChild(0).getSymbol().type == RogueLangParser.PRINT
-    assert tree.getChild(1).getSymbol().type == RogueLangParser.OPEN_PARENTH
-    assert tree.getChild(2).getRuleIndex() == RogueLangParser.RULE_expr
-    assert tree.getChild(3).getSymbol().type == RogueLangParser.CLOSED_PARENTH
+    assert (tree.getRuleIndex() == DungeonParser.RULE_printStat)
+    assert tree.getChild(0).getSymbol().type == DungeonParser.PRINT
+    assert tree.getChild(1).getSymbol().type == DungeonParser.OPEN_PARENTH
+    assert tree.getChild(2).getRuleIndex() == DungeonParser.RULE_expr
+    assert tree.getChild(3).getSymbol().type == DungeonParser.CLOSED_PARENTH
 
 
 def test_var_decl():
@@ -105,12 +105,12 @@ def test_var_decl():
     parser = setup_parser(test)
     tree = parser.varDecl()
 
-    print(tree.toStringTree(tree, RogueLangParser))
+    print(tree.toStringTree(tree, DungeonParser))
 
-    assert (tree.getRuleIndex() == RogueLangParser.RULE_varDecl)
+    assert (tree.getRuleIndex() == DungeonParser.RULE_varDecl)
     assert tree.getChild(0).getText() == 'let'
-    assert tree.getChild(1).getSymbol().type == RogueLangParser.ID
-    assert tree.getChild(2).getRuleIndex() == RogueLangParser.RULE_assignment
+    assert tree.getChild(1).getSymbol().type == DungeonParser.ID
+    assert tree.getChild(2).getRuleIndex() == DungeonParser.RULE_assignment
 
 
 def test_if_stat():
@@ -118,13 +118,13 @@ def test_if_stat():
     parser = setup_parser(test)
     tree = parser.ifStat()
 
-    assert (tree.getRuleIndex() == RogueLangParser.RULE_ifStat)
-    assert tree.getChild(0).getSymbol().type == RogueLangParser.IF
-    assert tree.getChild(1).getSymbol().type == RogueLangParser.OPEN_PARENTH
-    assert tree.getChild(2).getRuleIndex() == RogueLangParser.RULE_expr
-    assert tree.getChild(3).getSymbol().type == RogueLangParser.CLOSED_PARENTH
-    assert tree.getChild(4).getRuleIndex() == RogueLangParser.RULE_statBlock
-    assert tree.getChild(5).getRuleIndex() == RogueLangParser.RULE_elseStat
+    assert (tree.getRuleIndex() == DungeonParser.RULE_ifStat)
+    assert tree.getChild(0).getSymbol().type == DungeonParser.IF
+    assert tree.getChild(1).getSymbol().type == DungeonParser.OPEN_PARENTH
+    assert tree.getChild(2).getRuleIndex() == DungeonParser.RULE_expr
+    assert tree.getChild(3).getSymbol().type == DungeonParser.CLOSED_PARENTH
+    assert tree.getChild(4).getRuleIndex() == DungeonParser.RULE_statBlock
+    assert tree.getChild(5).getRuleIndex() == DungeonParser.RULE_elseStat
 
 
 def test_for_loop():
@@ -132,12 +132,12 @@ def test_for_loop():
     parser = setup_parser(code)
     tree = parser.forLoop()
 
-    assert (tree.getRuleIndex() == RogueLangParser.RULE_forLoop)
-    assert tree.getChild(0).getSymbol().type == RogueLangParser.FOR
-    assert tree.getChild(1).getSymbol().type == RogueLangParser.ID
-    assert tree.getChild(2).getSymbol().type == RogueLangParser.IN
-    assert tree.getChild(3).getSymbol().type == RogueLangParser.ID
-    assert tree.getChild(4).getRuleIndex() == RogueLangParser.RULE_statBlock
+    assert (tree.getRuleIndex() == DungeonParser.RULE_forLoop)
+    assert tree.getChild(0).getSymbol().type == DungeonParser.FOR
+    assert tree.getChild(1).getSymbol().type == DungeonParser.ID
+    assert tree.getChild(2).getSymbol().type == DungeonParser.IN
+    assert tree.getChild(3).getSymbol().type == DungeonParser.ID
+    assert tree.getChild(4).getRuleIndex() == DungeonParser.RULE_statBlock
 
 
 def test_while_loop():
@@ -145,12 +145,12 @@ def test_while_loop():
     parser = setup_parser(code)
     tree = parser.whileLoop()
 
-    assert (tree.getRuleIndex() == RogueLangParser.RULE_whileLoop)
-    assert tree.getChild(0).getSymbol().type == RogueLangParser.WHILE
-    assert tree.getChild(1).getSymbol().type == RogueLangParser.OPEN_PARENTH
-    assert tree.getChild(2).getRuleIndex() == RogueLangParser.RULE_expr
-    assert tree.getChild(3).getSymbol().type == RogueLangParser.CLOSED_PARENTH
-    assert tree.getChild(4).getRuleIndex() == RogueLangParser.RULE_statBlock
+    assert (tree.getRuleIndex() == DungeonParser.RULE_whileLoop)
+    assert tree.getChild(0).getSymbol().type == DungeonParser.WHILE
+    assert tree.getChild(1).getSymbol().type == DungeonParser.OPEN_PARENTH
+    assert tree.getChild(2).getRuleIndex() == DungeonParser.RULE_expr
+    assert tree.getChild(3).getSymbol().type == DungeonParser.CLOSED_PARENTH
+    assert tree.getChild(4).getRuleIndex() == DungeonParser.RULE_statBlock
 
 
 def test_list_pop():
@@ -158,12 +158,12 @@ def test_list_pop():
     parser = setup_parser(code)
     tree = parser.listPop()
 
-    assert (tree.getRuleIndex() == RogueLangParser.RULE_listPop)
-    assert tree.getChild(0).getSymbol().type == RogueLangParser.ID
-    assert tree.getChild(1).getSymbol().type == RogueLangParser.DOT
+    assert (tree.getRuleIndex() == DungeonParser.RULE_listPop)
+    assert tree.getChild(0).getSymbol().type == DungeonParser.ID
+    assert tree.getChild(1).getSymbol().type == DungeonParser.DOT
     assert tree.getChild(2).getText() == 'pop'
-    assert tree.getChild(3).getSymbol().type == RogueLangParser.OPEN_PARENTH
-    assert tree.getChild(4).getSymbol().type == RogueLangParser.CLOSED_PARENTH
+    assert tree.getChild(3).getSymbol().type == DungeonParser.OPEN_PARENTH
+    assert tree.getChild(4).getSymbol().type == DungeonParser.CLOSED_PARENTH
 
 
 def test_function_decl():
@@ -171,15 +171,15 @@ def test_function_decl():
     parser = setup_parser(code)
     tree = parser.functionDecl()
 
-    print(tree.toStringTree(tree, RogueLangParser))
+    print(tree.toStringTree(tree, DungeonParser))
 
-    assert (tree.getRuleIndex() == RogueLangParser.RULE_functionDecl)
-    assert tree.getChild(0).getSymbol().type == RogueLangParser.DEF
-    assert tree.getChild(1).getSymbol().type == RogueLangParser.ID
-    assert tree.getChild(2).getSymbol().type == RogueLangParser.OPEN_PARENTH
-    assert tree.getChild(3).getRuleIndex() == RogueLangParser.RULE_params
-    assert tree.getChild(4).getSymbol().type == RogueLangParser.CLOSED_PARENTH
-    assert tree.getChild(5).getRuleIndex() == RogueLangParser.RULE_statBlock
+    assert (tree.getRuleIndex() == DungeonParser.RULE_functionDecl)
+    assert tree.getChild(0).getSymbol().type == DungeonParser.DEF
+    assert tree.getChild(1).getSymbol().type == DungeonParser.ID
+    assert tree.getChild(2).getSymbol().type == DungeonParser.OPEN_PARENTH
+    assert tree.getChild(3).getRuleIndex() == DungeonParser.RULE_params
+    assert tree.getChild(4).getSymbol().type == DungeonParser.CLOSED_PARENTH
+    assert tree.getChild(5).getRuleIndex() == DungeonParser.RULE_statBlock
 
 
 def test_function_call():
@@ -187,11 +187,11 @@ def test_function_call():
     parser = setup_parser(code)
     tree = parser.functionCall()
 
-    assert (tree.getRuleIndex() == RogueLangParser.RULE_functionCall)
-    assert tree.getChild(0).getSymbol().type == RogueLangParser.ID
-    assert tree.getChild(1).getSymbol().type == RogueLangParser.OPEN_PARENTH
-    assert tree.getChild(2).getRuleIndex() == RogueLangParser.RULE_args
-    assert tree.getChild(3).getSymbol().type == RogueLangParser.CLOSED_PARENTH
+    assert (tree.getRuleIndex() == DungeonParser.RULE_functionCall)
+    assert tree.getChild(0).getSymbol().type == DungeonParser.ID
+    assert tree.getChild(1).getSymbol().type == DungeonParser.OPEN_PARENTH
+    assert tree.getChild(2).getRuleIndex() == DungeonParser.RULE_args
+    assert tree.getChild(3).getSymbol().type == DungeonParser.CLOSED_PARENTH
 
 
 def test_nested_if_stat():
@@ -204,11 +204,11 @@ def test_nested_if_stat():
     parser = setup_parser(test)
     tree = parser.ifStat()
 
-    assert tree.getRuleIndex() == RogueLangParser.RULE_ifStat
-    assert tree.getChild(0).getSymbol().type == RogueLangParser.IF
-    assert tree.getChild(1).getSymbol().type == RogueLangParser.OPEN_PARENTH
-    assert tree.getChild(2).getRuleIndex() == RogueLangParser.RULE_expr
-    assert tree.getChild(3).getSymbol().type == RogueLangParser.CLOSED_PARENTH
+    assert tree.getRuleIndex() == DungeonParser.RULE_ifStat
+    assert tree.getChild(0).getSymbol().type == DungeonParser.IF
+    assert tree.getChild(1).getSymbol().type == DungeonParser.OPEN_PARENTH
+    assert tree.getChild(2).getRuleIndex() == DungeonParser.RULE_expr
+    assert tree.getChild(3).getSymbol().type == DungeonParser.CLOSED_PARENTH
     assert tree.getChild(4).stat()[0].ifStat() is not None
 
 def test_string():
@@ -225,28 +225,37 @@ def test_struct_assign():
     parser = setup_parser(code)
     tree = parser.assignment()
 
-    assert tree.getChild(0).getSymbol().type == RogueLangParser.EQUAL_SIGN
-    assert tree.getChild(1).getRuleIndex() == RogueLangParser.RULE_struct
+    assert tree.getChild(0).getSymbol().type == DungeonParser.EQUAL_SIGN
+    assert tree.getChild(1).getRuleIndex() == DungeonParser.RULE_struct
 
 def test_Sqrt_Op():
     code = 'sqrt(9)'
     parser = setup_parser(code)
     tree = parser.expr()
 
-    assert tree.getChild(0).getSymbol().type == RogueLangParser.SQRT
-    assert tree.getChild(1).getSymbol().type == RogueLangParser.OPEN_PARENTH
-    assert tree.getChild(2).getRuleIndex() == RogueLangParser.RULE_expr   
-    assert tree.getChild(3).getSymbol().type == RogueLangParser.CLOSED_PARENTH
+    assert tree.getChild(0).getSymbol().type == DungeonParser.SQRT
+    assert tree.getChild(1).getSymbol().type == DungeonParser.OPEN_PARENTH
+    assert tree.getChild(2).getRuleIndex() == DungeonParser.RULE_expr   
+    assert tree.getChild(3).getSymbol().type == DungeonParser.CLOSED_PARENTH
 
 def test_Sqrt_Op():
     code = 'pow(1,2)'
     parser = setup_parser(code)
     tree = parser.expr()
 
-    assert tree.getChild(0).getSymbol().type == RogueLangParser.POW
-    assert tree.getChild(1).getSymbol().type == RogueLangParser.OPEN_PARENTH
-    assert tree.getChild(2).getRuleIndex() == RogueLangParser.RULE_expr 
-    assert tree.getChild(3).getSymbol().type == RogueLangParser.COMMA
-    assert tree.getChild(4).getRuleIndex() == RogueLangParser.RULE_expr   
-    assert tree.getChild(5).getSymbol().type == RogueLangParser.CLOSED_PARENTH
+    assert tree.getChild(0).getSymbol().type == DungeonParser.POW
+    assert tree.getChild(1).getSymbol().type == DungeonParser.OPEN_PARENTH
+    assert tree.getChild(2).getRuleIndex() == DungeonParser.RULE_expr 
+    assert tree.getChild(3).getSymbol().type == DungeonParser.COMMA
+    assert tree.getChild(4).getRuleIndex() == DungeonParser.RULE_expr   
+    assert tree.getChild(5).getSymbol().type == DungeonParser.CLOSED_PARENTH
 
+def test_seed():
+    code = 'seed(7)'
+    parser = setup_parser(code)
+    tree = parser.seed()
+
+    assert tree.getChild(0).getSymbol().type == DungeonParser.SEED
+    assert tree.getChild(1).getSymbol().type == DungeonParser.OPEN_PARENTH
+    assert tree.getChild(2).getRuleIndex() == DungeonParser.RULE_expr
+    assert tree.getChild(3).getSymbol().type == DungeonParser.CLOSED_PARENTH

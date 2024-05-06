@@ -1,6 +1,13 @@
-Map {
+output Custom map {
     procedure {
-        l = 3
+        myArray = [
+            [0, 0, 0, 0, 0],
+            [0, 1, 1, 1, 0],
+            [0, 0, 0, 0, 0],
+            [0, 1, 1, 1, 0],
+            [0, 0, 0, 0, 0]
+        ]
+        PerlinNoise(myArray, 0.1, 0.5, 0.5, 2.0)
     }
-    field l = []
-    }
+    output myArray
+}
