@@ -1,6 +1,10 @@
+from datetime import datetime
+
+
 class Environment:
     def __init__(self, enclosing):
         self.values = {}
+        self.seed = None
         self.enclosing = enclosing
 
     def define(self, name, value):
@@ -103,3 +107,13 @@ class Environment:
             self.enclosing.minus_equals(name, value)
         else:
             raise Exception("Undefined variable: {}".format(name))
+
+    def get_seed(self):
+        if self.seed is not None:
+            return self.seed
+        elif self.enclosing is not None:
+            return self.enclosing.get_seed()
+        else:
+            self.seed = datetime.now()
+            print(f"No seed set, using {self.seed}")
+            return self.seed

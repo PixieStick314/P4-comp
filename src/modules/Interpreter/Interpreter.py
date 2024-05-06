@@ -434,13 +434,12 @@ class Interpreter(RogueLangVisitor):
             print(f"Error in visitWhiteNoiseStat: {str(e)}")
             raise RuntimeError(f"White noise application failed: {str(e)}")
 
-    def visitSeedRule(self, ctx:RogueLangParser.SeedRuleContext):
-        return self.visit(ctx.expr())
+    def visitSeed(self, ctx:RogueLangParser.SeedContext):
+        self.environment.seed = self.visit(ctx.expr())
 
     def visitRandom(self, ctx:RogueLangParser.RandomContext):
         try:
-            if(ctx.seedRule()):
-                    random.seed(self.visit(ctx.seedRule()))
+            random.seed(self.environment.get_seed())
         
             if ctx.range_():
                 bounds = self.visit(ctx.range_())

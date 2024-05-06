@@ -1,4 +1,4 @@
-# Generated from C:/Users/nedim/Documents/GitHub/P4-comp/src/grammar_files/RogueLang.g4 by ANTLR 4.13.1
+# Generated from C:/Users/Loke/PycharmProjects/P4-comp/src/grammar_files/RogueLang.g4 by ANTLR 4.13.1
 from antlr4 import *
 if "." in __name__:
     from .RogueLangParser import RogueLangParser
@@ -169,8 +169,8 @@ class RogueLangVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by RogueLangParser#seedRule.
-    def visitSeedRule(self, ctx:RogueLangParser.SeedRuleContext):
+    # Visit a parse tree produced by RogueLangParser#seed.
+    def visitSeed(self, ctx:RogueLangParser.SeedContext):
         return self.visitChildren(ctx)
 
 

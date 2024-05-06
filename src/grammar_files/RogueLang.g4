@@ -25,6 +25,7 @@ stat:   printStat
       | listPop
       | whiteNoiseStat     // WhiteNoise statement
       | structDef
+      | seed
       | expr;
 
 // Variable declarations and assignments
@@ -68,10 +69,10 @@ returnStat        : RETURN expr;
 
 // Algorithm implementations and random
 whiteNoiseStat    : 'WhiteNoise' '(' ID (',' range)? ')' LAYER?;
-random            : RANDOM IN range (COMMA seedRule)?
-                  | RANDOM IN ID (COMMA seedRule)?;
+random            : RANDOM IN range
+                  | RANDOM IN ID;
 
-seedRule          : SEED OPEN_PARENTH expr CLOSED_PARENTH;
+seed              : SEED OPEN_PARENTH expr CLOSED_PARENTH;
 range             : expr DOT DOT expr;
 
 // Helpers
