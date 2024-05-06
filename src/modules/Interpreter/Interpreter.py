@@ -114,27 +114,10 @@ class Interpreter(DungeonVisitor):
         name = ctx.ID().getText()
         value = self.visitAssignment(ctx.assignment())
 
-        if ctx.structFieldAccess():
-            fields = []
-            indices = []
-            for i in range(len(ctx.structFieldAccess())):
-                fields.append(self.visit(ctx.structFieldAccess(i))[0])
-                indices.append(self.visit(ctx.structFieldAccess(i))[1])
-            struct = self.environment.get(name)
-
-            value = self.environment.assign_to_struct_field(struct, fields, value, indices)
-        elif ctx.hashKey():
-            hash_table = self.environment.get(name)
-            key = self.visit(ctx.hashKey())
-            hash_table[key] = value
-            value = hash_table
-        elif ctx.listAccess():
-            index = []
-            for i in ctx.listAccess():
-                index.append(self.visit(i))
+        if ctx.inner():
             variable = self.environment.get(name)
-
-            value = self.environment.assign_to_list_element(variable, index, value)
+            index_list = self.visit(ctx.inner())
+            value = self.environment.unpack_and_assign(variable, index_list, value)
 
         self.environment.assign(name, value)
         if self.verbose:
@@ -175,7 +158,8 @@ class Interpreter(DungeonVisitor):
             value = self.visit(ctx.expr())
             variable = self.environment.get(name)
             if isinstance(variable, list):
-                self.environment.plus_equals(name, value)
+                variable.append(value)
+                self.environment.assign(name, variable)
             elif isinstance(variable, int):
                 self.environment.assign(name, variable + value)
             if self.verbose:
@@ -190,7 +174,8 @@ class Interpreter(DungeonVisitor):
             value = self.visit(ctx.expr())
             variable = self.environment.get(name)
             if isinstance(variable, list):
-                self.environment.minus_equals(name, value)
+                variable.remove(value)
+                self.environment.assign(name, variable)
             elif isinstance(variable, int):
                 self.environment.assign(name, variable - value)
             if self.verbose:
@@ -224,7 +209,7 @@ class Interpreter(DungeonVisitor):
         if ctx.ID():
             key = self.environment.get(ctx.ID().getText())
         else:
-            key = ctx.STRING().getText()
+            key = ctx.STRING().getText().replace('"', '')
         value = self.visit(ctx.expr())
 
         return key, value
@@ -408,19 +393,6 @@ class Interpreter(DungeonVisitor):
     def defaultResult(self):
         # Returns a placeholder for unhandled cases
         return "ERROR: Unhandled Case"
-
-    def visitListAccess(self, ctx:DungeonParser.ListAccessContext):
-        if self.verbose:
-            print("Accessing list element...")
-        try:
-            if ctx.INT():
-                return int(ctx.INT().getText())
-            else:
-                return self.environment.get(ctx.ID().getText())
-        except Exception as e:
-            print(f"Error accessing list: {str(e)}")
-            raise RuntimeError(f"List access failed: {str(e)}")
-
     def visitListLength(self, ctx:DungeonParser.ListLengthContext):
         try:
             list = self.environment.get(ctx.ID().getText())
@@ -487,44 +459,35 @@ class Interpreter(DungeonVisitor):
             print(f"Error in visitRange: {str(e)}")
             raise RuntimeError(f"Range evaluation failed: {str(e)}")
 
-    def visitStructFieldAccess(self, ctx:DungeonParser.StructFieldAccessContext):
-        name = ctx.ID().getText()
-
-        if ctx.listAccess():
-            indices = []
-            for index in ctx.listAccess():
-                indices.append(self.visit(index))
-            return name, indices
+    def visitInner(self, ctx:DungeonParser.InnerContext):
+        if ctx.inner():
+            if ctx.DOT():
+                inner = self.visit(ctx.inner())
+                index_list = (self.visit(ctx.structField()),) + inner
+            elif ctx.index():
+                inner = self.visit(ctx.inner())
+                index_list = (self.visit(ctx.index()),) + inner
         else:
-            return name, None
+            if ctx.DOT():
+                index_list = (self.visit(ctx.structField()),)
+            elif ctx.index():
+                index_list = (self.visit(ctx.index()),)
+        return index_list
 
-    def visitHashKey(self, ctx:DungeonParser.HashKeyContext):
-        if ctx.STRING():
-            return ctx.STRING().getText()
-        else:
-            return self.environment.get(ctx.ID().getText())
+    def visitIndex(self, ctx:DungeonParser.IndexContext):
+        if ctx.ID():
+            return ["ID", ctx.ID().getText()]
+        elif ctx.STRING():
+            return ctx.STRING().getText().replace('"', '')
+        elif ctx.INT():
+            return int(ctx.INT().getText())
 
     def visitExpr(self, ctx):
         try:
-            if ctx.listAccess():
+            if ctx.inner():
                 name = ctx.ID().getText()
-                indices = []
-                for index in ctx.listAccess():
-                    indices.append(self.visit(index))
-                return self.environment.get_list_element(name, indices)
-            elif ctx.hashKey():
-                name = ctx.ID().getText()
-                hash_table = self.environment.get(name)
-                key = self.visit(ctx.hashKey())
-                return hash_table[key]
-            elif ctx.structFieldAccess():
-                name = ctx.ID().getText()
-                field_names = []
-                indices = []
-                for i in range(len(ctx.structFieldAccess())):
-                    field_names.append(self.visit(ctx.structFieldAccess(i))[0])
-                    indices.append(self.visit(ctx.structFieldAccess(i))[1])
-                return self.environment.get_struct_field(name, field_names, indices)
+                index_list = self.visit(ctx.inner())
+                return self.environment.unpack(name, index_list)
             elif ctx.ID():
                 return self.environment.get(ctx.ID().getText())
             elif ctx.STRING():

@@ -32,7 +32,7 @@ stat:   printStat
 varDeclStat       : 'let' varDecl;
 varDecl           : ID assignment?;
 
-assignStat        : ID structFieldAccess* hashKey? listAccess* assignment;
+assignStat        : ID inner? assignment;
 assignment        : EQUAL_SIGN struct
                   | EQUAL_SIGN hashTable
                   | EQUAL_SIGN list
@@ -45,23 +45,18 @@ functionCall      : ID OPEN_PARENTH args? CLOSED_PARENTH;
 // Array and list structures
 list              : OPEN_BRACK (listElement (COMMA listElement)*)? CLOSED_BRACK;
 listElement       : expr | list;
-listAccess        : OPEN_BRACK INT CLOSED_BRACK
-                  | OPEN_BRACK ID CLOSED_BRACK;
 listLength        : 'len' OPEN_PARENTH ID CLOSED_PARENTH;
 listPop           : ID DOT 'pop' OPEN_PARENTH CLOSED_PARENTH;
 
 //Hash tables
 hashTable         : OPEN_CURL (keyValuePair (COMMA keyValuePair)*)? CLOSED_CURL;
-keyValuePair      : STRING COLON expr
-                  | ID COLON expr;
-hashKey           : OPEN_BRACK STRING CLOSED_BRACK
-                  | OPEN_BRACK ID CLOSED_BRACK;
+keyValuePair      : ID COLON expr
+                  | STRING COLON expr;
 
 // Structs
 struct            : ID OPEN_CURL (structField assignment)* CLOSED_CURL;
 structDef         : 'struct' ID OPEN_CURL structField+ CLOSED_CURL;
 structField       : ID;
-structFieldAccess : DOT ID listAccess*;
 
 // Basic operations and control flow
 plusEquals        : ID PEQ expr;
@@ -86,12 +81,15 @@ range             : expr DOT DOT expr;
 // Helpers
 params            : ID (COMMA ID)* ;
 args              : expr (COMMA expr)* ;
+inner             : DOT structField inner?
+                  | index inner?;
+index             : OPEN_BRACK STRING CLOSED_BRACK
+                  | OPEN_BRACK ID CLOSED_BRACK
+                  | OPEN_BRACK INT CLOSED_BRACK;
 
 // Expression structures
 expr              : functionCall
-                  | ID structFieldAccess+
-                  | ID hashKey
-                  | ID listAccess+
+                  | ID inner
                   | listLength
                   | random
                   | expr op=(MULT | DIV | MOD) expr

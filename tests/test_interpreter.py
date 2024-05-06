@@ -619,3 +619,18 @@ def test_hash_table_get():
         '''
 
     run_test_prog(code, {"x": 3})
+
+def test_nested_hash_table_get():
+    code = '''
+        output map {
+        procedure {
+        let my_list = [1, 2]
+        let hash_1 = {"a": my_list, "b": 3}
+        let hash_2 = {"a": hash_1, "b": 4}
+        x = hash_2["a"]["a"][0]
+        }
+        output x
+        }
+        '''
+
+    run_test_prog(code, {"x": 1})
