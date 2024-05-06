@@ -537,6 +537,34 @@ def test_random_seed():
 
     assert output1 == output2
 
+def test_random_single_seed():
+    code = '''output Custom Map {
+    output x = 10000000
+    output y = 103
+    output z = 30420
+    output a = 9009090
+    procedure {
+    let b = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    seed(2000)
+    x = random in 2..1000
+    y = random in 2..1000
+    z = random in 2..1000
+    a = random in b
+    }
+    }
+    '''
+
+    parser = setup_parser(code)
+    tree = parser.prog()
+    visitor = Interpreter()
+    output1 = visitor.visit(tree)
+    output2 = visitor.visit(tree)
+
+    print(output1)
+    print(output2)
+
+    assert output1 == output2
+
 def test_random_without_seed():
     code = '''output Custom Map {
     output x = 10000000

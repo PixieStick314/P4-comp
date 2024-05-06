@@ -436,11 +436,12 @@ class Interpreter(RogueLangVisitor):
 
     def visitSeed(self, ctx:RogueLangParser.SeedContext):
         self.environment.seed = self.visit(ctx.expr())
+        random.seed(self.environment.seed)
 
     def visitRandom(self, ctx:RogueLangParser.RandomContext):
         try:
-            random.seed(self.environment.get_seed())
-        
+            self.environment.check_seed()
+
             if ctx.range_():
                 bounds = self.visit(ctx.range_())
                 result = random.randrange(bounds[0], bounds[1])

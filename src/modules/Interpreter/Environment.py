@@ -1,5 +1,7 @@
 from datetime import datetime
 
+import random
+
 
 class Environment:
     def __init__(self, enclosing):
@@ -108,12 +110,12 @@ class Environment:
         else:
             raise Exception("Undefined variable: {}".format(name))
 
-    def get_seed(self):
+    def check_seed(self):
         if self.seed is not None:
-            return self.seed
+            print(f"Using seed: {self.seed}")
         elif self.enclosing is not None:
-            return self.enclosing.get_seed()
+            print(f"Using seed: {self.seed}")
         else:
             self.seed = str(datetime.now())
+            random.seed(self.seed)
             print(f"No seed set, using {self.seed}")
-            return self.seed
