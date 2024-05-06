@@ -1,4 +1,4 @@
-@echo off
+echo off
 setlocal
 
 REM Set the path to the ANTLR4 jar file

@@ -1,15 +1,16 @@
-grammar RogueLang;
+grammar Dungeon;
 
 // Main program structure
-prog:   object (stat)* ;
+prog:   stat* outputObject stat* ;
 
 // object definition: creates an object with a procedure and optional output fields
-object: ID OPEN_CURL procedure (field | stat)* CLOSED_CURL;
-
+outputObject: 'output' type ID OPEN_CURL (outputField | stat)* procedure (outputField | stat)* CLOSED_CURL;
+type        : 'Custom'
+            | 'TileMap';
 // Procedure definition: a block of statements that defines a procedure
 procedure         : PROCEDURE statBlock;
 // Output field: an output declaration with a variable
-field             : 'field' varDecl;
+outputField       : 'output' varDecl;
 
 stat:   printStat
       | varDeclStat
@@ -25,6 +26,7 @@ stat:   printStat
       | listPop
       | whiteNoiseStat     // WhiteNoise statement
       | structDef
+      | seed
       | expr;
 
 // Variable declarations and assignments
@@ -76,9 +78,10 @@ returnStat        : RETURN expr;
 
 // Algorithm implementations and random
 whiteNoiseStat    : 'WhiteNoise' '(' ID (',' range)? ')' LAYER?;
-random            : 'random' IN range
-                  | 'random' IN ID;
+random            : RANDOM IN range
+                  | RANDOM IN ID;
 
+seed              : SEED OPEN_PARENTH expr CLOSED_PARENTH;
 range             : expr DOT DOT expr;
 
 // Helpers
@@ -121,6 +124,8 @@ WHILE            : 'while' ;
 DEF              : 'def' ;
 LAYER            : 'layer';
 PROCEDURE        : 'procedure';
+SEED             : 'seed' ;
+RANDOM           : 'random';
 
 // Lexer Rules
 PLUS              : '+' ;

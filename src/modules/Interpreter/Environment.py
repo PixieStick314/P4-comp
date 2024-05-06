@@ -1,6 +1,12 @@
+from datetime import datetime
+
+import random
+
+
 class Environment:
     def __init__(self, enclosing):
         self.values = {}
+        self.seed = None
         self.enclosing = enclosing
 
     def define(self, name, value):
@@ -103,3 +109,13 @@ class Environment:
             self.enclosing.minus_equals(name, value)
         else:
             raise Exception("Undefined variable: {}".format(name))
+
+    def check_seed(self):
+        if self.seed is not None:
+            pass
+        elif self.enclosing is not None:
+            self.enclosing.check_seed()
+        else:
+            self.seed = str(datetime.now())
+            random.seed(self.seed)
+            print(f"No seed set, using {self.seed}")
