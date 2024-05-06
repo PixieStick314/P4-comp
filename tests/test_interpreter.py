@@ -595,12 +595,12 @@ def test_random_without_seed():
 
 def test_hash_table_assign():
     code = '''
-    Map {
+    output Custom Map {
     procedure {
     let my_hash = {"a": 1, "b": 2}
     x = my_hash["a"]
     }
-    field x
+    output x
     }
     '''
 
@@ -608,13 +608,13 @@ def test_hash_table_assign():
 
 def test_hash_table_get():
     code = '''
-        Map {
+        output Custom Map {
         procedure {
         let my_hash = {"a": 1, "b": 2}
         my_hash["a"] = 3
         x = my_hash["a"]
         }
-        field x
+        output x
         }
         '''
 
