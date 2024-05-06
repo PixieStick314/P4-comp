@@ -4,9 +4,8 @@ grammar Dungeon;
 prog:   stat* outputObject stat* ;
 
 // object definition: creates an object with a procedure and optional output fields
-outputObject: 'output' type ID OPEN_CURL (outputField | stat)* procedure (outputField | stat)* CLOSED_CURL;
-type        : 'Custom'
-            | 'TileMap';
+outputObject: 'output' type? ID OPEN_CURL (outputField | stat)* procedure (outputField | stat)* CLOSED_CURL;
+type        : 'TileMap';
 // Procedure definition: a block of statements that defines a procedure
 procedure         : PROCEDURE statBlock;
 // Output field: an output declaration with a variable
