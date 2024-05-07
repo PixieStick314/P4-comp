@@ -81,7 +81,9 @@ class Interpreter(DungeonVisitor):
 
     def visitPrintStat(self, ctx:DungeonParser.PrintStatContext):
         try:
-            text = self.visit(ctx.expr())
+            text = ""
+            for expr in ctx.expr():
+                text += self.visit(expr)
             print(text)
             if self.verbose:
                 print(f"Printed: {text}")
@@ -524,6 +526,8 @@ class Interpreter(DungeonVisitor):
                 operator = ctx.getChild(1).getText()
                 if ctx.NOT():
                     result = not left
+                elif (isinstance(left, str) and isinstance(right, str)):
+                    return str(left + right)
                 elif right:  # Binary operation
                     result = {
                         '+': left + right,
