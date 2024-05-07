@@ -500,7 +500,7 @@ class Interpreter(DungeonVisitor):
             path = astar(start, goal, grid)
             if path is None:
                 raise RuntimeError("A* algorithm failed to find a path.")
-            self.environment.assign('path', path)
+            # self.environment.assign('path', path)
 
             return path
 

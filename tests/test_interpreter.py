@@ -614,13 +614,37 @@ def test_a_star():
             ]
             let start = [0, 0]
             let goal = [4, 4]
-            let path = astar(start, goal, grid)
+            path = astar(start, goal, grid)
         }
         output path
     }
     '''
 
     run_test_prog(code, {'path': [[0, 0], [1, 0], [2, 0], [3, 0], [4, 0], [4, 1], [4, 2], [4, 3], [4, 4]]})
+
+def test_a_star_backwards():
+    code = '''
+    output Custom Map {
+        procedure {
+            let grid = [
+                [0, 0, 0, 0, 0],
+                [0, 1, 1, 1, 0],
+                [0, 0, 0, 0, 0],
+                [0, 1, 1, 1, 0],
+                [0, 0, 0, 0, 0]
+            ]
+            let start = [0, 0]
+            let goal = [4, 4]
+            start = [4, 4]
+            goal = [0 ,0]
+            hell = astar(start, goal, grid)
+        }
+        output hell
+    }
+    '''
+
+    run_test_prog(code, {'hell' : [[4, 4], [3, 4], [2, 4], [1, 4], [0, 4], [0, 3], [0, 2], [0, 1], [0, 0]]})
+
 
 def test_perlin_noise():
     code = '''
