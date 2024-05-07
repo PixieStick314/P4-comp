@@ -238,7 +238,7 @@ def test_Sqrt_Op():
     assert tree.getChild(2).getRuleIndex() == RogueLangParser.RULE_expr   
     assert tree.getChild(3).getSymbol().type == RogueLangParser.CLOSED_PARENTH
 
-def test_Sqrt_Op():
+def test_pow_op():
     code = 'pow(1,2)'
     parser = setup_parser(code)
     tree = parser.expr()
@@ -250,3 +250,9 @@ def test_Sqrt_Op():
     assert tree.getChild(4).getRuleIndex() == RogueLangParser.RULE_expr   
     assert tree.getChild(5).getSymbol().type == RogueLangParser.CLOSED_PARENTH
 
+def test_parser_a_star():
+    code = 'astar(start, goal, grid)'
+    parser = setup_parser(code)
+    tree = parser.functionCall()
+
+    assert tree.getChild(2).getRuleIndex() == RogueLangParser.RULE_args

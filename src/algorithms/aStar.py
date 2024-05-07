@@ -1,7 +1,11 @@
 import math
 
 
-def astar(start, goal, grid):
+def astar(args):
+    # Define parameters
+    start = args[0]
+    goal = args[1]
+    grid = args[2]
     # Define the size of the grid
     rows = len(grid)
     cols = len(grid[0])

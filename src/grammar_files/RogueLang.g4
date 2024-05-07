@@ -24,7 +24,6 @@ stat:   printStat
       | minusEquals
       | listPop
       | whiteNoiseStat     // WhiteNoise statement
-      | astarStat
       | structDef
       | expr;
 
@@ -69,7 +68,6 @@ returnStat        : RETURN expr;
 
 // Algorithm implementations and random
 whiteNoiseStat    : 'WhiteNoise' '(' ID (',' range)? ')' LAYER?;
-astarStat         : 'astar' OPEN_PARENTH ID COMMA ID COMMA ID COMMA CLOSED_PARENTH;
 random            : 'random' IN range
                   | 'random' IN ID;
 

@@ -1,4 +1,4 @@
-# Generated from /home/ronaldj/code/P4-comp/src/grammar_files/RogueLang.g4 by ANTLR 4.13.1
+# Generated from C:/Users/Loke/PycharmProjects/P4-comp/src/grammar_files/RogueLang.g4 by ANTLR 4.13.1
 from antlr4 import *
 if "." in __name__:
     from .RogueLangParser import RogueLangParser
@@ -161,11 +161,6 @@ class RogueLangVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by RogueLangParser#whiteNoiseStat.
     def visitWhiteNoiseStat(self, ctx:RogueLangParser.WhiteNoiseStatContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by RogueLangParser#astarStat.
-    def visitAstarStat(self, ctx:RogueLangParser.AstarStatContext):
         return self.visitChildren(ctx)
 
 

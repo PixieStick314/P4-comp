@@ -1,12 +1,12 @@
 # test_interpreter.py
 import json
 
-from src.grammar_files.generated.RogueLangParser import RogueLangParser
-from src.grammar_files.generated.RogueLangLexer import RogueLangLexer
+from grammar_files.generated.RogueLangParser import RogueLangParser
+from grammar_files.generated.RogueLangLexer import RogueLangLexer
 
 from antlr4 import *
 
-from src.modules.Interpreter.Interpreter import Interpreter
+from modules.Interpreter.Interpreter import Interpreter
 
 def setup_parser(str):
     lexer = RogueLangLexer(InputStream(str))
@@ -507,7 +507,7 @@ def test_a_star():
     code = '''
     Map {
     procedure {
-        grid = [
+        let grid = [
         [0, 0, 0, 0, 0],
         [0, 1, 1, 1, 0],
         [0, 0, 0, 0, 0],
@@ -517,8 +517,8 @@ def test_a_star():
 
 
         
-        start = [0, 0]
-        goal = [4, 4]
+        let start = [0, 0]
+        let goal = [4, 4]
         
         path = astar(start, goal, grid)
     }

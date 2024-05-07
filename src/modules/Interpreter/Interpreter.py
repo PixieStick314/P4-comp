@@ -2,14 +2,15 @@
 import json
 import random
 import math
-from src.grammar_files.generated.RogueLangParser import RogueLangParser
-from src.grammar_files.generated.RogueLangVisitor import RogueLangVisitor
-from src.modules.Interpreter.Environment import Environment
-from src.modules.Interpreter.Function import Function
-from src.modules.Interpreter.Struct import Struct
-from src.modules.Interpreter.StructInstance import StructInstance
+from grammar_files.generated.RogueLangParser import RogueLangParser
+from grammar_files.generated.RogueLangVisitor import RogueLangVisitor
+from modules.Interpreter.Environment import Environment
+from modules.Interpreter.Function import Function, NativeFunction
+from modules.Interpreter.Struct import Struct
+from modules.Interpreter.StructInstance import StructInstance
 
-from src.algorithms.aStar import astar
+from algorithms.aStar import astar
+from modules.StdLib import StdLib
 
 
 class Interpreter(RogueLangVisitor):
@@ -17,6 +18,13 @@ class Interpreter(RogueLangVisitor):
         super().__init__()
         self.verbose = False
         self.environment = Environment(None)
+
+        # There's probably a smarter way to do this
+        std_lib = StdLib()
+        native_functions = vars(std_lib)
+        for function in native_functions.keys():
+            self.environment.define(function, native_functions[function])
+
 
     def set_verbose(self, verbose):
         self.verbose = verbose
@@ -359,7 +367,11 @@ class Interpreter(RogueLangVisitor):
                 self.environment.define(params[i], args[i])
 
         try:
-            self.visit(self.environment.get(name).body)
+            function = self.environment.get(name)
+            if isinstance(function, Function):
+                self.visit(function.body)
+            elif isinstance(function, NativeFunction):
+                return function.run(args)
         except Exception as e:
             if self.verbose:
                 print(f"Error during function call '{name}': {str(e)}")
@@ -369,7 +381,7 @@ class Interpreter(RogueLangVisitor):
 
     def visitArgs(self, ctx:RogueLangParser.ArgsContext):
         try:
-            args = [self.visitChildren(ctx)]
+            args = [self.visit(arg) for arg in ctx.expr()]
             if self.verbose:
                 print("Visited arguments:", args)
             return args
@@ -436,29 +448,6 @@ class Interpreter(RogueLangVisitor):
             print(f"Error in visitWhiteNoiseStat: {str(e)}")
             raise RuntimeError(f"White noise application failed: {str(e)}")
 
-
-    def visitAstarStat(self, ctx:RogueLangParser.AstarStatContext):
-        try:
-            start_param = ctx.ID(0).getText()
-            goal_param = ctx.ID(1).getText()
-            grid_param = ctx.ID(2).getText()
-
-            start = self.environment.get(start_param)
-            goal = self.environment.get(goal_param)
-            grid = self.environment.get(grid_param)
-
-            if start is None:
-                raise ValueError(f"Start param '{start_param}' not found in environment.")
-            if goal is None:
-                raise ValueError(f"Goal param '{goal_param}' not found in environment.")
-            if grid is None:
-                raise ValueError(f"Grid param '{grid_param}' not found in environment.")
-
-            return astar(start, goal, grid)
-
-        except Exception as e:
-            print(f"Error in visitAstarStat: {str(e)}")
-            raise RuntimeError(f"Astar pathfinding failed: {str(e)}")
 
 
     def visitRandom(self, ctx:RogueLangParser.RandomContext):
