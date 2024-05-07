@@ -21,45 +21,49 @@ def run_test_prog(code, expected_output):
     assert output == json.dumps(expected_output)
 
 def test_json_dumps():
-    code = '''output Custom map {
-    procedure {
-    x = 3
-    }
-    output x = 5
+    code = '''
+    output Custom map {
+        procedure {
+            x = 3
+        }
+        output x = 5
     }
     '''
     run_test_prog(code, {"x": 3})
 
 def test_function_decl_and_call():
-    code = '''output Custom map {
-    procedure {
-    x = setTo3()
-    }
-    output x = 5
-    def setTo3() {
-    return 3
-    }
+    code = '''
+    output Custom map {
+        procedure {
+            x = setTo3()
+        }
+        output x = 5
+        def setTo3() {
+            return 3
+        }
     }
     '''
     run_test_prog(code, {"x": 3})
 
 def test_arithmetic():
-    code = '''output Custom map {
-    procedure {x = x - 1}
-    output x = 5
+    code = '''
+    output Custom map {
+        procedure {x = x - 1}
+        output x = 5
     }
     '''
     run_test_prog(code, {"x": 4})
 
 def test_nested_if_stat():
-    code = '''output Custom map {
-    procedure {
-    if(x == 5){
-    x = 4
-    if(x == 4){
-    x = 3
-    }
-    }
+    code = '''
+    output Custom map {
+        procedure {
+            if(x == 5){
+                x = 4
+            if(x == 4){
+                x = 3
+            }
+        }
     }
     output x = 5
     }
@@ -67,44 +71,47 @@ def test_nested_if_stat():
     run_test_prog(code, {"x": 3})
 
 def test_elif_stat():
-    code = '''output Custom map {
-    procedure {
-    if(x == 5){
-    x = 1
-    }
-    elif(x == 1){
-    x = 3
-    }
-    elif(x == 4){
-    x = 2
-    }
-    }
-    output x = 4
+    code = '''
+    output Custom map {
+        procedure {
+            if(x == 5){
+                x = 1
+            }
+            elif(x == 1){
+                x = 3
+            }
+            elif(x == 4){
+                x = 2
+            }
+        }
+        output x = 4
     }
     '''
     run_test_prog(code, {"x": 2})
 
 def test_else_stat():
-    code = '''output Custom map {
-    procedure {
-    if(x == 5){
-    x = 1
-    }
-    else{
-    x = 3
-    }
-    }
+    code = '''
+    output Custom map {
+        procedure {
+            if(x == 5){
+                x = 1
+            }
+            else{
+                x = 3
+            }
+        }
     output x = 4
     }
     '''
     run_test_prog(code, {"x": 3})
 
 def test_while_loop():
-    code = '''output Custom map {
-    procedure {
-    while(x > 0){
-    x = x - 1
-    }
+    code = '''
+    output Custom map {
+        procedure {
+            while(x > 0){
+                x = x - 1
+        }
     }
     output x = 5
     }
@@ -112,140 +119,152 @@ def test_while_loop():
     run_test_prog(code, {"x": 0})
 
 def test_nested_function_call():
-    code = '''output Custom map {
-    procedure {
-    x = setToX(setTo3())
-    }
-    output x = 5
-    def setToX(x){
-    return x
-    }
-    def setTo3() {
-    return 3
-    }
+    code = '''
+    output Custom map {
+        procedure {
+            x = setToX(setTo3())
+        }
+        output x = 5
+        def setToX(x){
+            return x
+        }
+        def setTo3() {
+            return 3
+        }
     }
     '''
     run_test_prog(code, {"x": 3})
 
 def test_list():
-    code = '''output Custom map {
-    procedure {
-    let y = 5
-    }
+    code = '''
+    output Custom map {
+        procedure {
+            let y = 5
+        }
     output x = [3, 2, 1]
     }
     '''
     run_test_prog(code, {"x": [3, 2, 1]})
 
 def test_list_add():
-    code = '''output Custom map {
-    procedure {
-    x += 4
-    }
+    code = '''
+    output Custom map {
+        procedure {
+            x += 4
+        }
     output x = [1, 2, 3]
     }
     '''
     run_test_prog(code, {"x": [1, 2, 3, 4]})
 
 def test_list_element():
-    code = '''output Custom map {
-    procedure {
-    let y = [3, 3]
-    x = y[0]
-    }
+    code = '''
+    output Custom map {
+        procedure {
+            let y = [3, 3]
+            x = y[0]
+        }
     output x = 1
     }
     '''
     run_test_prog(code, {"x": 3})
 
 def test_list_element_variable_index():
-    code = '''output Custom map {
-    procedure {
-    let y = [3, 3]
-    let n = 0
-    x = y[n]
-    }
+    code = '''
+    output Custom map {
+        procedure {
+            let y = [3, 3]
+            let n = 0
+            x = y[n]
+        }
     output x = 1
     }
     '''
     run_test_prog(code, {"x": 3})
 
 def test_list_pop():
-    code = '''output Custom map {
-    procedure {
-    x.pop()
-    }
+    code = '''
+    output Custom map {
+        procedure {
+            x.pop()
+        }
     output x = [1, 2, 3, 4]
     }
     '''
     run_test_prog(code, {"x": [1, 2, 3]})
 
 def test_for_loop():
-    code = '''output Custom map {
-    procedure {
-    let y = [3, 3]
-    for i in y{
-    x = x + i
-    }
-    }
+    code = '''
+    output Custom map {
+        procedure {
+            let y = [3, 3]
+            for i in y{
+                x = x + i
+            }
+        }
     output x = 1
     }
     '''
     run_test_prog(code, {"x": 7})
 
 def test_comparisons():
-    code = '''output Custom map {
-    procedure {
-    x = 1
-    let y = 1
-    x = (x > 7) or (y > 8)
-    }
+    code = '''
+    output Custom map {
+        procedure {
+            x = 1
+            let y = 1
+            x = (x > 7) or (y > 8)
+        }
     output x = True
     }
     '''
     run_test_prog(code, {"x": False})
 
 def test_function_as_parameter():
-    code = '''output Custom map {
-    procedure {
-    def animalSays(say){
-    return say()
-    }
-    x = animalSays(catSays)
-    }
+    code = '''
+    output Custom map {
+        procedure {
+            def animalSays(say){
+                return say()
+            }
+        x = animalSays(catSays)
+        }
     output x
     }
     def catSays(){
-    return "meow"
+        return "meow"
     }
     '''
     run_test_prog(code, {"x": "meow"})
 
 def test_list_length():
-    code = '''output Custom map {
-    procedure {
-    x = len(x)
-    }
+    code = '''
+    output Custom map {
+        procedure {
+            x = len(x)
+        }
     output x = [1, 2, 3]
     }
     '''
     run_test_prog(code, {"x": 3})
 
 def test_minus_equals():
-    code = '''output Custom map {
-    procedure {
-    x -= 3
-    }
+    code = '''
+    output Custom map {
+        procedure {
+            x -= 3
+        }
     output x = [1, 2, 3]
     }
     '''
     run_test_prog(code, {"x": [1, 2]})
 
 def test_list_pop():
-    code = '''output Custom map {
-    procedure {
-    x.pop()
-    }
+    code = '''
+    output Custom map {
+        procedure {
+            x.pop()
+        }
     output x = [1, 2, 3]
     }
     '''
@@ -274,10 +293,11 @@ def test_basic_2d_array():
     run_test_prog(code, expected_output)
 
 def test_random_range():
-    code = '''output Custom map {
-    procedure {
-    x = random in 2..4
-    }
+    code = '''
+    output Custom map {
+        procedure {
+            x = random in 2..4
+        }
     output x = 1
     }
     '''
@@ -292,11 +312,12 @@ def test_random_range():
 
 
 def test_random_choice():
-    code = '''output Custom map {
-    procedure {
-    let y = [2, 3, 4]
-    x = random in y
-    }
+    code = '''
+    output Custom map {
+        procedure {
+            let y = [2, 3, 4]
+            x = random in y
+        }
     output x = 1
     }
     '''
@@ -382,10 +403,11 @@ def test_pow_op_var():
     '''
     run_test_prog(code, {"x": 16})
 def test_nested_list():
-    code = '''output Custom map {
-    procedure {
-    x = [[1, 2] , [3, 4]]
-    }
+    code = '''
+    output Custom map {
+        procedure {
+            x = [[1, 2] , [3, 4]]
+        }
     output x
     }
     '''
@@ -393,11 +415,12 @@ def test_nested_list():
     run_test_prog(code, {'x': [[1, 2], [3, 4]]})
 
 def test_nested_list_access():
-    code = '''output Custom map {
-    procedure {
-    let y = [[1, 2] , [3, 4]]
-    x = y[1][1]
-    }
+    code = '''
+    output Custom map {
+        procedure {
+            let y = [[1, 2] , [3, 4]]
+            x = y[1][1]
+        }
     output x
     }
     '''
@@ -405,11 +428,12 @@ def test_nested_list_access():
     run_test_prog(code, {'x': 4})
 
 def test_nested_list_assign():
-    code = '''output Custom map {
-    procedure {
-    x = [[1, 2] , [3, 4]]
-    x[1][1] = 1
-    }
+    code = '''
+    output Custom map {
+        procedure {
+            x = [[1, 2] , [3, 4]]
+            x[1][1] = 1
+        }
     output x
     }
     '''
@@ -454,19 +478,20 @@ def test_whiteNoise():
             assert value in (0, 1), f"Value {value} is not 0 or 1"
 
 def test_struct():
-    code = '''output Custom map {
+    code = '''
+    output Custom map {
         procedure {
-        let cat = Cat{
-            says = "meow"
-        }
+            let cat = Cat{
+                says = "meow"
+            }
         x = cat.says
         }
-        output x
-        }
-        struct Cat{
-            says
-        }
-        '''
+    output x
+    }
+    struct Cat{
+        says
+    }
+    '''
 
     run_test_prog(code, {'x': "meow"})
 
