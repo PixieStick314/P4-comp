@@ -372,6 +372,8 @@ class Interpreter(RogueLangVisitor):
                 self.visit(function.body)
             elif isinstance(function, NativeFunction):
                 return function.run(args)
+            else:
+                raise RuntimeError(f"{name} is not a function.")
         except Exception as e:
             if self.verbose:
                 print(f"Error during function call '{name}': {str(e)}")
