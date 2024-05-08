@@ -1,6 +1,6 @@
 # test_interpreter.py
 import json
-
+import pytest
 from grammar_files.generated.DungeonParser import DungeonParser
 from grammar_files.generated.DungeonLexer import DungeonLexer
 from antlr4 import *
@@ -634,3 +634,99 @@ def test_nested_hash_table_get():
         '''
 
     run_test_prog(code, {"x": 1})
+
+def test_random_seed_bool():
+    code = '''output map {
+    output x = 10000000
+    output y = 103
+    output z = 30420
+    output a = 9009090
+    procedure {
+    let b = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    seed(True)
+    x = random in 2..1000
+    y = random in 2..1000
+    z = random in 2..1000
+    a = random in b
+    }
+    }
+    '''
+
+    parser = setup_parser(code)
+    tree = parser.prog()
+    visitor = Interpreter()
+    output1 = visitor.visit(tree)
+    output2 = visitor.visit(tree)
+
+    print(output1)
+    print(output2)
+
+    assert output1 == output2
+
+def test_random_seed_string():
+    code = '''output map {
+    output x = 10000000
+    output y = 103
+    output z = 30420
+    output a = 9009090
+    procedure {
+    let b = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    seed("abcde")
+    x = random in 2..1000
+    y = random in 2..1000
+    z = random in 2..1000
+    a = random in b
+    }
+    }
+    '''
+
+    parser = setup_parser(code)
+    tree = parser.prog()
+    visitor = Interpreter()
+    output1 = visitor.visit(tree)
+    output2 = visitor.visit(tree)
+
+    print(output1)
+    print(output2)
+
+    assert output1 == output2
+
+def test_call_int_as_func():
+    code = '''output map{
+    output x = 3
+    procedure{
+    x()
+    }
+    }
+    '''
+    
+    pytest.raises(Exception)
+
+
+def test_array_in_hash_in_struct():
+    code = '''output map {
+        procedure {
+        let array_outside = [1,2,3]
+        let hash_outside = {"a": array_outside}
+        let my_struct = Struct{
+            array = [1, 2, 3]
+            hash = {"a": 1, "b": 2, "c": 3}
+            array2 = [hash_outside]
+        }
+        my_struct.array[0] = 4
+        x = my_struct.array[0]
+        y = my_struct.hash["a"]
+        z = my_struct.array2[0]["a"][0]
+        }
+        output x
+        output y
+        output z
+        }
+        struct Struct{
+            array
+            hash
+            array2
+        }
+        '''
+
+    run_test_prog(code, {'x': 4, 'y': 1, 'z': 1})
