@@ -8,8 +8,6 @@ from modules.Interpreter.Environment import Environment
 from modules.Interpreter.Function import Function, NativeFunction
 from modules.Interpreter.Struct import Struct
 from modules.Interpreter.StructInstance import StructInstance
-
-from algorithms.aStar import astar
 from modules.StdLib import StdLib
 
 

@@ -1,4 +1,4 @@
-from algorithms.aStar import astar
+from modules.Algorithms.aStar import astar
 from modules.Interpreter.Function import NativeFunction
 
 
