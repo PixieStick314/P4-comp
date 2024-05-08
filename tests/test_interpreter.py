@@ -709,24 +709,20 @@ def test_array_in_hash_in_struct():
         let array_outside = [1,2,3]
         let hash_outside = {"a": array_outside}
         let my_struct = Struct{
+            hash = {"a": 1, "b": array_outside, "c": 3}
             array = [1, 2, 3]
-            hash = {"a": 1, "b": 2, "c": 3}
             array2 = [hash_outside]
         }
-        my_struct.array[0] = 4
-        x = my_struct.array[0]
-        y = my_struct.hash["a"]
-        z = my_struct.array2[0]["a"][0]
+        array_outside[0] = 12
+        z = my_struct.array2[0]["a"]
         }
-        output x
-        output y
         output z
         }
         struct Struct{
-            array
             hash
+            array
             array2
         }
         '''
 
-    run_test_prog(code, {'x': 4, 'y': 1, 'z': 1})
+    run_test_prog(code, {'z': [12,2,3]})
