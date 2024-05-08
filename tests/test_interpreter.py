@@ -708,21 +708,23 @@ def test_array_in_hash_in_struct():
         procedure {
         let array_outside = [1,2,3]
         let hash_outside = {"a": array_outside}
+        let hash2_outside = {"b": array_outside}
         let my_struct = Struct{
             hash = {"a": 1, "b": array_outside, "c": 3}
-            array = [1, 2, 3]
+            array3 = [hash_outside, hash2_outside]
             array2 = [hash_outside]
         }
         array_outside[0] = 12
         z = my_struct.array2[0]["a"]
+        y = array3[0]
         }
+        output y 
         output z
         }
         struct Struct{
             hash
-            array
             array2
         }
         '''
 
-    run_test_prog(code, {'z': [12,2,3]})
+    run_test_prog(code, {'y': 0, 'z': [12,2,3]})
