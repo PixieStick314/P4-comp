@@ -5,9 +5,12 @@ import math
 from grammar_files.generated.DungeonParser import DungeonParser
 from grammar_files.generated.DungeonVisitor import DungeonVisitor
 from modules.Interpreter.Environment import Environment
-from modules.Interpreter.Function import Function
+from modules.Interpreter.Function import Function, NativeFunction
 from modules.Interpreter.Struct import Struct
 from modules.Interpreter.StructInstance import StructInstance
+
+from algorithms.aStar import astar
+from modules.StdLib import StdLib
 
 
 class Interpreter(DungeonVisitor):
@@ -15,6 +18,13 @@ class Interpreter(DungeonVisitor):
         super().__init__()
         self.verbose = False
         self.environment = Environment(None)
+
+        # There's probably a smarter way to do this
+        std_lib = StdLib()
+        native_functions = vars(std_lib)
+        for function in native_functions.keys():
+            self.environment.define(function, native_functions[function])
+
 
     def set_verbose(self, verbose):
         self.verbose = verbose
@@ -364,7 +374,13 @@ class Interpreter(DungeonVisitor):
                 self.environment.define(params[i], args[i])
 
         try:
-            self.visit(self.environment.get(name).body)
+            function = self.environment.get(name)
+            if isinstance(function, Function):
+                self.visit(function.body)
+            elif isinstance(function, NativeFunction):
+                return function.run(args)
+            else:
+                raise RuntimeError(f"{name} is not a function.")
         except Exception as e:
             if self.verbose:
                 print(f"Error during function call '{name}': {str(e)}")
@@ -374,7 +390,7 @@ class Interpreter(DungeonVisitor):
 
     def visitArgs(self, ctx:DungeonParser.ArgsContext):
         try:
-            args = [self.visitChildren(ctx)]
+            args = [self.visit(arg) for arg in ctx.expr()]
             if self.verbose:
                 print("Visited arguments:", args)
             return args
