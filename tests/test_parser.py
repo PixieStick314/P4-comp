@@ -359,7 +359,7 @@ def test_plus_equals():
     assert tree.getChild(2).getRuleIndex() == DungeonParser.RULE_expr
 
 #Testing minus equals
-def test_plus_equals():
+def test_minus_equals():
     test = 'my_ID -= 10'
     parser = setup_parser(test)
     tree = parser.minusEquals()
@@ -434,7 +434,7 @@ def test_functionCall():
 
 #<----------Testing expr---------->
 #Function calls
-def test_functionCall():
+def test_functionCall_as_expr():
     code = 'my_ID(10, 20)'
     parser = setup_parser(code)
     tree = parser.expr()
@@ -611,7 +611,7 @@ def test_equals():
     assert tree.getChild(2).getRuleIndex() == DungeonParser.RULE_expr
 
 #Not equal
-def test_equals():
+def test_not_equals():
     code = '10 != 20'
     parser = setup_parser(code)
     tree = parser.expr()
@@ -724,7 +724,7 @@ def test_True_as_expr():
     assert tree.getChild(0).getSymbol().type == DungeonParser.TRUE
 
 #Bool false as expr
-def test_True_as_expr():
+def test_False_as_expr():
     code = 'False'
     parser = setup_parser(code)
     tree = parser.expr()
