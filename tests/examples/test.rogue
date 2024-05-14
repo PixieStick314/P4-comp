@@ -1,11 +1,11 @@
-Map {
-    procedure {
-        let x = "Hello "
-        let y = " world!"
-        let z =" Ain't it a wonderful day?"
-        a = x + y + z
-        print(x)
-        print(x + y + z)
-    }
-    field a
-    }
+map {
+     procedure {
+         myArray = [
+             [1, 2, 3], 
+             [4, 5, 6], 
+             [7, 8, 9]
+         ]
+         WhiteNoise(myArray, 0..1)
+     }
+     output myArray
+}
