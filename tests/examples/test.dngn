@@ -1,11 +1,21 @@
-output map {
+output TileMap BossRoom {
      procedure {
-         myArray = [
-             [1, 2, 3], 
-             [4, 5, 6], 
-             [7, 8, 9]
-         ]
-         WhiteNoise(myArray, 0..1)
+         map = []
+         for i in 0..10 {
+            let row = []
+            for j in 0..10 {
+                if (i == 0 or i == 9) {
+                    row += "#"
+                }
+                elif (j == 0 or j == 9) {
+                    row += "#"
+                }
+                else {
+                    row += "."
+                }
+            }
+            map += row
+         }
      }
-     output myArray
+     output map
 }

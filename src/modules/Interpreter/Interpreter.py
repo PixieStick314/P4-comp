@@ -272,7 +272,10 @@ class Interpreter(DungeonVisitor):
             if self.visit(ctx.expr()) is True:
                 self.visit(ctx.statBlock())
             elif ctx.elifStat():
-                self.visit(ctx.elifStat())
+                if self.visit(ctx.elifStat()):
+                    pass
+                elif ctx.elseStat():
+                    self.visit(ctx.elseStat())
             elif ctx.elseStat():
                 self.visit(ctx.elseStat())
         except Exception as e:
@@ -285,8 +288,11 @@ class Interpreter(DungeonVisitor):
                 print("Evaluating Elif statement condition...")
             if self.visit(ctx.expr()) is True:
                 self.visit(ctx.statBlock())
-            elif self.visit(ctx.elifStat()):
-                self.visit(ctx.elifStat())
+                return True
+            elif ctx.elifStat():
+                return self.visit(ctx.elifStat())
+            else:
+                return False
         except Exception as e:
             print(f"Error in Elif statement: {str(e)}")
             raise RuntimeError(f"Elif statement execution failed: {str(e)}")
@@ -306,7 +312,11 @@ class Interpreter(DungeonVisitor):
         previous = self.environment
         self.environment = Environment(previous)
         iterator = ctx.ID(0).getText()
-        iterable = self.environment.get(ctx.ID(1).getText())
+        if ctx.range_():
+            bounds = self.visit(ctx.range_())
+            iterable = range(bounds[0], bounds[1])
+        else:
+            iterable = self.environment.get(ctx.ID(1).getText())
         self.environment.define(iterator, iterable[0])
         i = 0
         try:
@@ -512,6 +522,9 @@ class Interpreter(DungeonVisitor):
                 return True
             elif ctx.FALSE() or ctx.getText().lower() == 'false':
                 return False
+            elif ctx.NOT():
+                expr = self.visit(ctx.expr(0))
+                return not expr
             elif ctx.INT():
                 return int(ctx.INT().getText())
             elif ctx.FLOAT():
@@ -536,28 +549,27 @@ class Interpreter(DungeonVisitor):
 
             elif ctx.getChildCount() == 3:
                 left = self.visit(ctx.expr(0))
-                right = self.visit(ctx.expr(1)) if ctx.expr(1) else None
-                operator = ctx.getChild(1).getText()
-                if ctx.NOT():
-                    result = not left
-                elif (isinstance(left, str) and isinstance(right, str)):
+                if ctx.OPEN_PARENTH():
+                    return left
+                right = self.visit(ctx.expr(1))
+                operator = ctx.op.text
+                if (isinstance(left, str) and isinstance(right, str)):
                     return str(left + right)
-                elif right:  # Binary operation
-                    result = {
-                        '+': left + right,
-                        '-': left - right,
-                        '*': left * right,
-                        '/': left / right,
-                        '>': left > right,
-                        '<': left < right,
-                        '>=': left >= right,
-                        '<=': left <= right,
-                        '==': left == right,
-                        '!=': left != right,
-                        '%': left % right,
-                        'and': left and right,
-                        'or': left or right
-                    }.get(operator, left) # default to left if operator does not match
+                elif right is not None:  # Binary operation
+                    match operator:
+                        case '+': result = left + right
+                        case '-': result = left - right
+                        case '*': result = left * right
+                        case '>': result = left > right
+                        case '<': result = left < right
+                        case '>=': result = left >= right
+                        case '<=': result = left <= right
+                        case '==': result = left == right
+                        case '!=': result = left != right
+                        case'%': result = left % right
+                        case'and': result = left and right
+                        case'or': result = left or right
+                        case '/': result = left / right
                 else:  # Unary operation
                     result = left
             else:

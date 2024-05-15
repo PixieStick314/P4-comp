@@ -196,11 +196,11 @@ def test_for_loop():
 def test_comparisons():
     code = '''output map {
     procedure {
-    x = 1
-    let y = 1
-    x = (x > 7) or (y > 8)
+    let a = 1
+    let b = 1
+    x = (a > 7) or (b > 8)
     }
-    output x = True
+    output x
     }
     '''
     run_test_prog(code, {"x": False})
@@ -634,3 +634,114 @@ def test_nested_hash_table_get():
         '''
 
     run_test_prog(code, {"x": 1})
+
+def test_empty_list():
+    code = '''
+        output map {
+        procedure {
+        x = []
+        x += 1
+        }
+        output x
+        }
+        '''
+
+    run_test_prog(code, {"x": [1]})
+
+def test_for_loop_range():
+    code = '''
+        output map {
+        procedure {
+        x = []
+        for i in 0..5 {
+            x += i
+        }
+        }
+        output x
+        }
+        '''
+
+    run_test_prog(code, {"x": [0, 1, 2, 3, 4]})
+
+def test_or():
+    code = '''
+    output map {
+    procedure {
+    x = 0
+    let a = 1
+    let b = 2
+    if (a == 1 or b == 1) {
+    x = 3}
+    elif (a == 2 or b == 3){
+    x = 4
+    }
+    }
+    output x
+    }
+    '''
+
+    run_test_prog(code, {"x": 3})
+
+def test_integration_boss_room():
+    code = '''
+    output TileMap BossRoom {
+     procedure {
+         map = []
+         for i in 0..10 {
+            let row = []
+            for j in 0..10 {
+                if (i == 0 or i == 9) {
+                    row += "#"
+                }
+                elif (j == 0 or j == 9) {
+                    row += "#"
+                }
+                else {
+                    row += "."
+                }
+            }
+            map += row
+         }
+     }
+     output map
+    }
+    '''
+
+    run_test_prog(code, {"map": [["#", "#", "#", "#", "#", "#", "#", "#", "#", "#"],
+                                 ["#", ".", ".", ".", ".", ".", ".", ".", ".", "#"],
+                                 ["#", ".", ".", ".", ".", ".", ".", ".", ".", "#"],
+                                 ["#", ".", ".", ".", ".", ".", ".", ".", ".", "#"],
+                                 ["#", ".", ".", ".", ".", ".", ".", ".", ".", "#"],
+                                 ["#", ".", ".", ".", ".", ".", ".", ".", ".", "#"],
+                                 ["#", ".", ".", ".", ".", ".", ".", ".", ".", "#"],
+                                 ["#", ".", ".", ".", ".", ".", ".", ".", ".", "#"],
+                                 ["#", ".", ".", ".", ".", ".", ".", ".", ".", "#"],
+                                 ["#", "#", "#", "#", "#", "#", "#", "#", "#", "#"]]})
+
+def test_zero_comparison():
+    code = '''
+    output map {
+    procedure {
+    x = False
+    let a = 0
+    let b = 0
+    if (a == b) {
+    x = True}
+    }
+    output x
+    }'''
+
+    run_test_prog(code, {"x": True})
+
+def test_not():
+    code = '''
+    output map {
+    procedure {
+    let a = True
+    x = (not a)
+    }
+    output x
+    }
+    '''
+
+    run_test_prog(code, {"x": False})
