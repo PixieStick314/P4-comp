@@ -1,22 +1,22 @@
 #   Executor.py
 import sys
+import argparse
 import os
 from antlr4 import *
-from grammar_files.generated.RogueLangLexer import RogueLangLexer
-from grammar_files.generated.RogueLangParser import RogueLangParser
+from grammar_files.generated.DungeonLexer import DungeonLexer
+from grammar_files.generated.DungeonParser import DungeonParser
 from modules.Interpreter.Interpreter import Interpreter
-from modules.executorHelper import check_verbose
 
 # Add the path to the generated files so they can be imported
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'grammar_files', 'generated'))
+sys.path.append(os.path.join(os.path.dirname(__file__),
+                '..', 'grammar_files', 'generated'))
 sys.path.append(os.path.join(os.path.dirname(__file__), 'modules'))
 
-verbose = any(flag in sys.argv for flag in ["-v", "--v", "-verbose", "--verbose"])
 
-def executor(file_path, verbose=False):
-    lexer = RogueLangLexer(FileStream(file_path))
+def executor(file_path, verbose):
+    lexer = DungeonLexer(FileStream(file_path))
     stream = CommonTokenStream(lexer)
-    parser = RogueLangParser(stream)
+    parser = DungeonParser(stream)
     tree = parser.prog()
 
     visitor = Interpreter()  # Create Interpreter instance
@@ -25,7 +25,27 @@ def executor(file_path, verbose=False):
 
     return output
 
+
 if __name__ == '__main__':
-    input_file = input('Enter the input file path: ')
-    result = executor(input_file, verbose)
+    # Sets up arg parsing
+    parser = argparse.ArgumentParser(
+        description="A compiler for the dngn language")
+    # Adds path arg to provide script file path via cli
+    parser.add_argument('-p', '--p', '-path', '--path', metavar="PARAM",
+                        type=str, help='Parameter for file path of script to compile')
+    # Adds verbose mode, set to false by default
+    parser.add_argument('-v', '--v', '-verbose', '--verbose', action='store_true',
+                        help="If flag is present, verbose mode will be enabled")
+    args = parser.parse_args()
+
+    # Sets verbose to args.v which is true if flag is present
+    verbose = args.v
+
+    if args.p:
+        file_path = args.p
+        result = executor(file_path, verbose)
+    else:
+        input_file = input('Enter the input file path: ')
+        result = executor(input_file, verbose)
+
     print(result)
