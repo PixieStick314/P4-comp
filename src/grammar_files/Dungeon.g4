@@ -23,7 +23,6 @@ stat:   printStat
       | plusEquals
       | minusEquals
       | listPop
-      | whiteNoiseStat     // WhiteNoise statement
       | structDef
       | seed
       | expr;
@@ -71,8 +70,7 @@ forLoop           : FOR ID IN ID statBlock
 whileLoop         : WHILE OPEN_PARENTH expr CLOSED_PARENTH statBlock;
 returnStat        : RETURN expr;
 
-// Algorithm implementations and random
-whiteNoiseStat    : 'WhiteNoise' '(' ID (',' range)? ')' LAYER?;
+// Random
 random            : RANDOM IN range
                   | RANDOM IN ID;
 

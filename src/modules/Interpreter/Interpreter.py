@@ -430,28 +430,6 @@ class Interpreter(DungeonVisitor):
             print(f"Error getting length of list '{ctx.ID().getText()}':", str(e))
             raise
 
-    def visitWhiteNoiseStat(self, ctx:DungeonParser.WhiteNoiseStatContext):
-        try:
-            array_param = ctx.ID().getText()
-            array = self.environment.get(array_param)
-            if array is None:
-                raise ValueError(f"Array with ID {array_param} not found in environment.") 
-            if ctx.range_():
-                range_expr = ctx.range_()
-                start = int(range_expr.expr(0).getText())
-                end = int(range_expr.expr(1).getText())
-            else:
-                start, end = 0, 1
-            for row in array:
-                for i in range(len(row)):
-                    row[i] = random.randint(start, end)
-            if self.verbose:
-                print(f"Applied white noise to array {array_param} with range ({start}, {end})")
-            return array
-        except Exception as e:
-            print(f"Error in visitWhiteNoiseStat: {str(e)}")
-            raise RuntimeError(f"White noise application failed: {str(e)}")
-
     def visitSeed(self, ctx:DungeonParser.SeedContext):
         self.environment.seed = self.visit(ctx.expr())
         random.seed(self.environment.seed)

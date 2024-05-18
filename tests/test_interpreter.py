@@ -422,7 +422,7 @@ def test_whiteNoise():
                 [4, 5, 6], 
                 [7, 8, 9]
             ]
-            WhiteNoise(myArray, 0..1)
+            myArray = WhiteNoise(myArray, 0, 1)
         }
         output myArray
     }
