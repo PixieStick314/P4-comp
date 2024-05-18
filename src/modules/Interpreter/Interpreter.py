@@ -6,6 +6,8 @@ from grammar_files.generated.DungeonParser import DungeonParser
 from grammar_files.generated.DungeonVisitor import DungeonVisitor
 from modules.Interpreter.Environment import Environment
 from modules.Interpreter.Function import Function, NativeFunction
+from modules.Interpreter.Layer import Layer
+from modules.Interpreter.Map import Map
 from modules.Interpreter.Struct import Struct
 from modules.Interpreter.StructInstance import StructInstance
 from modules.StdLib import StdLib
@@ -33,7 +35,7 @@ class Interpreter(DungeonVisitor):
         try:
             for stat in ctx.stat():
                 self.visit(stat)
-            result = self.visit(ctx.outputObject())
+            result = self.visit(ctx.map_())
             if self.verbose:
                 print("Finished visiting program.")
             return result
@@ -41,40 +43,46 @@ class Interpreter(DungeonVisitor):
             print(f"Error visiting program: {str(e)}")
             raise RuntimeError(f"Failed during program execution: {str(e)}")
 
-    def visitOutputObject(self, ctx:DungeonParser.OutputObjectContext):
+    def visitMap(self, ctx:DungeonParser.MapContext):
         if self.verbose:
-            print("Visiting object...")
+            print("Visiting map...")
         previous = self.environment
         self.environment = Environment(previous)
-        fields = []
+        self.environment.map = Map(ctx.ID().getText(), int(ctx.INT(0).getText()), int(ctx.INT(1).getText()))
         try:
-            for field in ctx.outputField():
-                field_name = self.visit(field)
-                fields.append(field_name)
-                if self.verbose:
-                    print(f"Visited field: {field_name}")
-            for stat in ctx.stat():
-                self.visit(stat)
+            if ctx.varDeclStat():
+                for var in ctx.varDeclStat():
+                    self.visit(var)
+                    if self.verbose:
+                        print(f"Visited field: {var}")
+            elif ctx.layer():
+                for layer in ctx.layer():
+                    self.visit(layer)
+                    if self.verbose:
+                        print(f"Visited layer: {layer}")
+            else:
+                raise RuntimeError("Map has no layers or data.")
             self.visit(ctx.procedure())
         except Exception as e:
-            print(f"Error during output object construction: {str(e)}")
-            raise RuntimeError(f"Output object creation failed due to: {str(e)}")
+            print(f"Error during map construction: {str(e)}")
+            raise RuntimeError(f"Map creation failed due to: {str(e)}")
         finally:
-            output = {field: self.environment.get(field) for field in fields}
+            layers = {}
+            data = {}
+            for key in self.environment.values.keys():
+                if isinstance(self.environment.values[key], Layer):
+                    layers[key] = self.environment.values[key].rows
+                else:
+                    data[key] = self.environment.values[key]
+            map = {ctx.ID().getText(): {}}
+            if layers:
+                map[ctx.ID().getText()]["layers"] = layers
+            if data:
+                map[ctx.ID().getText()]["data"] = data
             self.environment = previous
             if self.verbose:
-                print("Object visitation completed.")
-            return json.dumps(output)
-
-    def visitOutputField(self, ctx:DungeonParser.OutputFieldContext):
-        try:
-            field = self.visit(ctx.varDecl())
-            if self.verbose:
-                print(f"Visiting field: {field}")
-            return field
-        except Exception as e:
-            print(f"Error in field visitation: {str(e)}")
-            raise RuntimeError(f"Failed to process field '{field}': {str(e)}")
+                print("Map visitation completed.")
+            return json.dumps(map)
 
     def visitProcedure(self, ctx:DungeonParser.ProcedureContext):
         try:
@@ -86,6 +94,17 @@ class Interpreter(DungeonVisitor):
         except Exception as e:
             print(f"Error during procedure execution: {str(e)}")
             raise RuntimeError(f"Procedure execution failed: {str(e)}")
+
+    def visitLayer(self, ctx:DungeonParser.LayerContext):
+        if self.environment.map:
+            map = self.environment.map
+        else:
+            raise RuntimeError(f"Layer creation failed due to no map.")
+        if ctx.INT():
+            layer = Layer(map.dimensions[0], map.dimensions[1], int(ctx.INT().getText()))
+        else:
+            layer = Layer(map.dimensions[0], map.dimensions[1], None)
+        self.environment.define(ctx.ID().getText(), layer)
 
     def visitPrintStat(self, ctx:DungeonParser.PrintStatContext):
         try:
@@ -126,8 +145,14 @@ class Interpreter(DungeonVisitor):
 
         if ctx.inner():
             variable = self.environment.get(name)
+            if isinstance(self.environment.get(name), Layer):
+                variable = variable.rows
             index_list = self.visit(ctx.inner())
             value = self.environment.unpack_and_assign(variable, index_list, value)
+            if isinstance(self.environment.get(name), Layer):
+                layer = self.environment.get(name)
+                layer.rows = value
+                value = layer
 
         self.environment.assign(name, value)
         if self.verbose:
