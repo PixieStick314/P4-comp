@@ -5,6 +5,7 @@ prog:   stat* map stat* ;
 
 // object definition: creates an object with a procedure and optional output fields
 map:    'Map' OPEN_PARENTH INT COMMA INT CLOSED_PARENTH ID OPEN_CURL (varDeclStat | layer)+ procedure CLOSED_CURL;
+
 // Procedure definition: a block of statements that defines a procedure
 procedure         : PROCEDURE statBlock;
 
