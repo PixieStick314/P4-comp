@@ -1,7 +1,7 @@
-output TileMap BossRoom {
-     procedure {
-         map = []
-         for i in 0..10 {
+Map(10, 10) BossRoom {
+    layer terrain
+    procedure {
+        for i in 0..10 {
             let row = []
             for j in 0..10 {
                 if (i == 0 or i == 9) {
@@ -14,8 +14,7 @@ output TileMap BossRoom {
                     row += "."
                 }
             }
-            map += row
-         }
-     }
-     output map
-}
+        terrain[i] = row
+        }
+    }
+    }
