@@ -21,7 +21,7 @@ class Environment:
         elif self.enclosing is not None:
             self.enclosing.assign(name, value)
         else:
-            raise Exception("Undefined variable: {}".format(name))
+            raise RuntimeError("Undefined variable: {}".format(name))
 
     def get(self, name):
         if name in self.values:
@@ -29,7 +29,7 @@ class Environment:
         elif self.enclosing is not None:
             return self.enclosing.get(name)
         else:
-            raise Exception("Undefined variable: {}".format(name))
+            raise RuntimeError("Undefined variable: {}".format(name))
 
     def check_seed(self):
         if self.seed is not None:

@@ -173,7 +173,7 @@ def test_list_pop():
     code = '''Map(10, 10) map {
     let x = [1, 2, 3, 4]
     procedure {
-    x.pop()
+    pop(x)
     }
     }
     '''
