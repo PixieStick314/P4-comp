@@ -9,6 +9,7 @@ class Environment:
     def __init__(self, enclosing):
         self.values = {}
         self.seed = None
+        self.map = enclosing.map if enclosing else None
         self.enclosing = enclosing
 
     def define(self, name, value):
@@ -20,7 +21,7 @@ class Environment:
         elif self.enclosing is not None:
             self.enclosing.assign(name, value)
         else:
-            raise Exception("Undefined variable: {}".format(name))
+            raise RuntimeError("Undefined variable: {}".format(name))
 
     def get(self, name):
         if name in self.values:
@@ -28,7 +29,7 @@ class Environment:
         elif self.enclosing is not None:
             return self.enclosing.get(name)
         else:
-            raise Exception("Undefined variable: {}".format(name))
+            raise RuntimeError("Undefined variable: {}".format(name))
 
     def check_seed(self):
         if self.seed is not None:
@@ -78,9 +79,15 @@ class Environment:
 
     def assign_inner(self, variable, index, value):
         if isinstance(variable, list):
-            variable[index] = value
+            if isinstance(index, int):
+                variable[index] = value
+            elif isinstance(variable, list):
+                variable[self.get(index[1])] = value
         elif isinstance(variable, dict):
-            variable[index] = value
+            if isinstance(index, str):
+                variable[index] = value
+            elif isinstance(index, list):
+                variable[self.get(index[1])] = value
         elif isinstance(variable, StructInstance):
             variable.fields[index] = value
         return variable

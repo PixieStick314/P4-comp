@@ -1,15 +1,13 @@
 grammar Dungeon;
 
 // Main program structure
-prog:   stat* outputObject stat* ;
+prog:   stat* map stat* ;
 
 // object definition: creates an object with a procedure and optional output fields
-outputObject: 'output' type? ID OPEN_CURL (outputField | stat)* procedure (outputField | stat)* CLOSED_CURL;
-type        : 'TileMap';
+map:    'Map' OPEN_PARENTH INT COMMA INT CLOSED_PARENTH ID OPEN_CURL (varDeclStat | layer)+ procedure CLOSED_CURL;
+
 // Procedure definition: a block of statements that defines a procedure
 procedure         : PROCEDURE statBlock;
-// Output field: an output declaration with a variable
-outputField       : 'output' varDecl;
 
 stat:   printStat
       | varDeclStat
@@ -26,6 +24,8 @@ stat:   printStat
       | structDef
       | seed
       | expr;
+
+layer             : 'layer' ID (EQUAL_SIGN INT)?;
 
 // Variable declarations and assignments
 varDeclStat       : 'let' varDecl;
@@ -45,7 +45,7 @@ functionCall      : ID OPEN_PARENTH args? CLOSED_PARENTH;
 list              : OPEN_BRACK (listElement (COMMA listElement)*)? CLOSED_BRACK;
 listElement       : expr | list;
 listLength        : 'len' OPEN_PARENTH ID CLOSED_PARENTH;
-listPop           : ID DOT 'pop' OPEN_PARENTH CLOSED_PARENTH;
+listPop           : 'pop' OPEN_PARENTH ID CLOSED_PARENTH;
 
 //Hash tables
 hashTable         : OPEN_CURL (keyValuePair (COMMA keyValuePair)*)? CLOSED_CURL;
