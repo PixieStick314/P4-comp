@@ -1,20 +1,11 @@
 Map(10, 10) BossRoom {
-    layer terrain
+    let y
     procedure {
-        for i in 0..10 {
-            let row = []
-            for j in 0..10 {
-                if (i == 0 or i == 9) {
-                    row += "#"
-                }
-                elif (j == 0 or j == 9) {
-                    row += "#"
-                }
-                else {
-                    row += "."
-                }
-            }
-        terrain[i] = row
-        }
+        y = [
+                [1, 2, 3], 
+                [4, 5, 6], 
+                [7, 8, 9]
+            ]
+        y = astar(y[0][0], y[2][2], y)
     }
-    }
+}
