@@ -100,8 +100,8 @@ class Interpreter(DungeonVisitor):
             map = self.environment.map
         else:
             raise RuntimeError(f"Layer creation failed due to no map.")
-        if ctx.INT():
-            layer = Layer(map.dimensions[0], map.dimensions[1], int(ctx.INT().getText()))
+        if ctx.expr():
+            layer = Layer(map.dimensions[0], map.dimensions[1], self.visit(ctx.expr()))
         else:
             layer = Layer(map.dimensions[0], map.dimensions[1], None)
         self.environment.define(ctx.ID().getText(), layer)
@@ -444,6 +444,7 @@ class Interpreter(DungeonVisitor):
     def defaultResult(self):
         # Returns a placeholder for unhandled cases
         return "ERROR: Unhandled Case"
+
     def visitListLength(self, ctx:DungeonParser.ListLengthContext):
         try:
             list = self.environment.get(ctx.ID().getText())

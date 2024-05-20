@@ -3,7 +3,7 @@ grammar Dungeon;
 // Main program structure
 prog:   stat* map stat* ;
 
-// object definition: creates an object with a procedure and optional output fields
+// Map definition: creates a map with a procedure and data
 map:    'Map' OPEN_PARENTH INT COMMA INT CLOSED_PARENTH ID OPEN_CURL (varDeclStat | layer)+ procedure CLOSED_CURL;
 
 // Procedure definition: a block of statements that defines a procedure
@@ -25,7 +25,7 @@ stat:   printStat
       | seed
       | expr;
 
-layer             : 'layer' ID (EQUAL_SIGN INT)?;
+layer             : 'layer' ID (EQUAL_SIGN expr)?;
 
 // Variable declarations and assignments
 varDeclStat       : 'let' varDecl;

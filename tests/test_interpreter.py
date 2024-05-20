@@ -771,3 +771,13 @@ def test_dict_element_by_id():
     '''
 
     run_test_prog(code, {"map": {"data": {"x": "ragdoll"}}})
+
+def test_layer_decl():
+    code = '''
+    Map(2, 2) map {
+    layer x = 1
+    procedure {
+    }
+    }'''
+
+    run_test_prog(code, {"map": {"layers": {"x": [[1,1],[1,1]]}}})
