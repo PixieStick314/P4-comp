@@ -1,72 +1,105 @@
-#   Using the Language
-
-
-
-#   Extending the language
-
-This guide outlines the process of adding new functionalities to the programming language: RogueLang, including extending the grammar, updating the parser and visitor classes, and enhancing the language strategies to support code generation in multiple target languages.
-
 ## Table of Contents
+- [1: Setting up the language ](#step-1-setting-up-the-language)
+- [2: Using the language](#step-2-using-the-language)
+- [3: Running the interpreter](#step-3-running-the-interpreter)
+- [4: Usage documentation](#step-4-usage-documentation)
 
-- [Step 1: Modify the Grammar](#step-1-modify-the-grammar)
-- [Step 2: Regenerate Parser and Lexer](#step-2-regenerate-parser-and-lexer)
-- [Step 3: Update the Visitor Class](#step-3-update-the-visitor-class)
-- [Step 4: Extend the LanguageStrategy Interface](#step-4-extend-the-languagestrategy-interface)
-- [Step 5: Implement Strategy Methods](#step-5-implement-strategy-methods)
-- [Step 6: Test Your Extensions](#step-6-test-your-extensions)
-- [Step 7: Documentation](#step-7-documentation)
 
-###  Step 1: Modify the grammar
+#   1: Setting up the language
+In order for you to use Dungeon, you first need to install the required dependencies.
+- [1: Python]
+    You need Python to be able to use dungeon. Visit the official Python website at https://python.org. You'll find the latest Python version available for download, with documentation on how to properly install. You will need at least Python 3.10.
 
-Start by updating the grammar definition file (`RogueLang.g4` file). Add new rules or modify existing ones to reflect the new language features.
+- [2: Pip]
+    If you installed Python from source, with an installer from python.org, or via Homebrew you should already have pip. If you’re on Linux and installed using your OS package manager, you may have to install pip separately. See, https://packaging.python.org/en/latest/guides/installing-using-linux-tools/
 
-```antlr
-// Example of adding a new grammar rule for switch-case statements
-switchStatement
-    : 'switch' 'openParenthesies' expression 'closedParenthesies' 'openBrace' caseStatement* defaultStatement? 'closeBrace'
-    ;
-```
+- [3: Requirements]
+    To download and install the rest of the dependencies, simply type
+        pip install -r requirements.txt
+    into your terminal. This is assuming that you have correctly downloaded and installed Python and pip.
 
-###  Step 2: Reenerate parser and lexer
+#   2: Using the language
+Firstly, create a new .dngn file. This file can be created where you want, but you need to be able acces the file path of the file. 
 
-Run antlr4_run.bat to regenerate the parser, lexer, and visitor files.
+To write and use the language there are 3 steps:
+    Map(10, 10) map {
+        let x = [3, 2, 1]
+        procedure {
+            x[0] = 1
+        }
+    }
+- [Step 1: Define the map] (#step-1-Define-the-map)
+    First step is to define the map. This is done by creating a map class with and giving the map a name.
 
-###  Step 3: Update the visitor class
+    In the example above a Map is created with the ID 'map' and (EXPLAIN PARAMETERS)
 
-Adjust your custom visitor class to handle the new grammar constructs, generating appropriate code strings or performing other actions as needed.
+- [Step 2: Regenerate Parser and Lexer]
+    Second step is to define the data you want outputted in .JSON formatting.
 
-```RogueVisitor.py
-// Example of extending the visitor to handle a new construct
-class RogueVisitor(YourLanguageVisitor):
-    def visitSwitchStatement(self, ctx):
-        # Logic for visiting the switch statement
-        pass
-```
+    In the example above 'let x = [3, 2, 1]' is defined. Meaning that if no procedure is done on 'x', the output would be:
+        {"map": {"data": {"x": [3, 2, 1]}}}
+    Here we can see, that x is defined as a list with the integers: '3, 2, 1', just as we assigned 'x' to be.
 
-###  Step 4: Extend the LanguageStrategy interface
+- [Step 3: Update the Visitor Class]
+    To manipulate the previously assigned datatypes, you use commands inside a 'procedure{}'.
 
-Enhance the LanguageStrategy interface with methods corresponding to the new language features, ensuring all strategy classes will implement them.
+    In the example above, we reassign the first integer in the list to be '1' instead of '3'. This would then output:
+        {"map": {"data": {"x": [1, 2, 1]}}}
+    Here we can see that that 'x[0]' has been assigned to be '1' instead of '3'
 
-```LanguageStrategy.py
-class LanguageStrategy:
-    def switch_statement(self, expression, cases, default):
-        raise NotImplementedError
-```
+#   3: Running the interpreter
+When you have written your program, you then have to run the interpreter from your terminal. Simply type:
+    python .\executor.py
+This is assuming that you have not changed the location of the executor.py file.
+The system will then asks you for the filepath of the .dngn file:
+    'Enter the input file path:'
+If your code is functional, you should be able to paste your file path and get your output as a string in the terminal.
 
-###  Step 5: Implement Strategy Methods
+Example:
+//test.dngn
+ Map(10, 10) map {
+        let x = [3, 2, 1]
+        procedure {
+            x[0] = 1
+        }
+    }
 
-Implement the new methods in each concrete strategy class, such as PythonStrategy, CppStrategy, etc., to support code generation for the new features.
+USER:
+PS C:\Users\Lenovo\Documents\GitHub\P4-comp> python .\executor.py
 
-```PythonStrategy.py
-class PythonStrategy(LanguageStrategy):
-    def switch_statement(self, expression, cases, default):
-        # Python-specific implementation
-        pass
-```
-###  Step 6: Test your extensions
+SYSTEM:
+Enter the input file path:
 
-Thoroughly test the new language features across all target languages, ensuring correct behavior and syntax generation.
+USER:
+C:\Users\Lenovo\Documents\GitHub\P4-comp\tests\examples\test.dngn
 
-###  Step 7: Documentation
+SYSTEM:
+{"map": {"data": {"x": [1, 2, 1]}}}
 
-Update the language's documentation to include the new features, providing usage examples and highlighting any limitations.
+#   4: Usage documenatation
+[Datatypes]
+    To define a datatype simply type
+        let (YourVariableName) = (YourData)
+    Based on what you assign to the variable, it will be defined to that datatype.
+
+    Integers:
+        let x = 1
+
+    Floats:
+        let x = 1.2
+    
+    Strings:
+        let x = "Hello world!"
+
+    Arrays and matrix:
+        let x = [1, 2, 3]
+        let x = [
+            [1, 2, 3],
+            [4, 5, 6],
+            [7, 8, 9]
+        ]
+    
+    
+
+    
+    
