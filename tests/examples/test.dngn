@@ -1,6 +1,14 @@
- Map(10, 10) map {
-        let x = [3, 2, 1]
-        procedure {
-            x[0] = 1
-        }
+Map(10, 10) BossRoom {
+    let y = [
+                [1, 2, 3], 
+                [4, 5, 6], 
+                [7, 8, 9]
+            ]
+    procedure {
+        y += 10
+        pop(y)
+        pop(y)
+        pop(y)
+        pop(y)
     }
+} 

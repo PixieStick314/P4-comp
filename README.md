@@ -33,14 +33,14 @@ To write and use the language there are 3 steps:
 
     In the example above a Map is created with the ID 'map' and (EXPLAIN PARAMETERS)
 
-- [Step 2: Regenerate Parser and Lexer]
+- [Step 2: Define output]
     Second step is to define the data you want outputted in .JSON formatting.
 
     In the example above 'let x = [3, 2, 1]' is defined. Meaning that if no procedure is done on 'x', the output would be:
         {"map": {"data": {"x": [3, 2, 1]}}}
     Here we can see, that x is defined as a list with the integers: '3, 2, 1', just as we assigned 'x' to be.
 
-- [Step 3: Update the Visitor Class]
+- [Step 3: Using procedures]
     To manipulate the previously assigned datatypes, you use commands inside a 'procedure{}'.
 
     In the example above, we reassign the first integer in the list to be '1' instead of '3'. This would then output:
@@ -83,23 +83,62 @@ SYSTEM:
     Based on what you assign to the variable, it will be defined to that datatype.
 
     Integers:
-        let x = 1
+        let my_int = 1
 
     Floats:
-        let x = 1.2
+        let my_float = 1.2
     
     Strings:
-        let x = "Hello world!"
+        let my_string = "Hello world!"
 
     Arrays and matrix:
-        let x = [1, 2, 3]
-        let x = [
+        let my_array = [1, 2, 3]
+        let my_matrix = [
             [1, 2, 3],
             [4, 5, 6],
             [7, 8, 9]
         ]
-    
-    
+
+        Manipulations:
+        Add element:
+        my_array += 4 // This will add 4 to the list = [1, 2, 3, 4]
+        my_matrix += 10 // This will add 4 to the list = 
+        [
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9], 10
+        ]
+
+        Pop:
+        pop(my_array) // This will remove the latest element from the list = [1, 2]
+        pop(my_matrix) // This will remove the latest row from the list = 
+        [
+        [1, 2, 3],
+        [4, 5, 6],
+        ]
+
+        The value can then be accessed:
+        Arrays:
+        my_array[0] == 1, 
+        my_array[1] == 2, 
+        my_array[2] == 3
+
+        Matrix: 
+        my_matrix[0][0] == 1,
+        my_matrix[0][1] == 2,
+        my_matrix[1][0] == 4
+        and so on..
+
+    Hashmaps:
+        let my_hash = {"a": 1, "b": 2}
+
+        The value can then be accessed:
+        my_hash["a"] == 1
+        my_hash["b"] == 2
+
+
+
+
 
     
     
