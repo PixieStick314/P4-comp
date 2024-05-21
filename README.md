@@ -3,6 +3,10 @@
 - [2: Using the language](#step-2-using-the-language)
 - [3: Running the interpreter](#step-3-running-the-interpreter)
 - [4: Usage documentation](#step-4-usage-documentation)
+    - [4.1: Datatypes](#step-4-1-datatypes)
+    - [4.2: Basic operations](#step-4-1-datatypes)
+    - [4.3: Conditionals](#step-4-1-datatypes)
+
 
 
 #   1: Setting up the language
@@ -77,7 +81,8 @@ SYSTEM:
 {"map": {"data": {"x": [1, 2, 1]}}}
 
 #   4: Usage documenatation
-[Datatypes]
+Here you will find all of the tools the language includes. You will also find small examples of the syntax that needs to be used, in order to get a fully optimal output.
+##   4.1: Dataypes
     To define a datatype simply type
         let (YourVariableName) = (YourData)
     Based on what you assign to the variable, it will be defined to that datatype.
@@ -87,12 +92,17 @@ SYSTEM:
 
     Floats:
         let my_float = 1.2
+
+    Booleans:
+        let my_bool = True 
+        let my_bool = False 
     
     Strings:
         let my_string = "Hello world!"
 
-    Arrays and matrix:
-        let my_array = [1, 2, 3]
+    Lists:
+    2d arrays can also be assigned
+        let my_list = [1, 2, 3]
         let my_matrix = [
             [1, 2, 3],
             [4, 5, 6],
@@ -100,28 +110,32 @@ SYSTEM:
         ]
 
         Manipulations:
-        Add element:
-        my_array += 4 // This will add 4 to the list = [1, 2, 3, 4]
-        my_matrix += 10 // This will add 4 to the list = 
-        [
-        [1, 2, 3],
-        [4, 5, 6],
-        [7, 8, 9], 10
-        ]
+            Add element:
+                my_list += 4 // This will add 4 to the list = [1, 2, 3, 4]
+                my_matrix += 10 // This will add 4 to the list = 
+                [
+                [1, 2, 3],
+                [4, 5, 6],
+                [7, 8, 9], 10
+                ]
 
-        Pop:
-        pop(my_array) // This will remove the latest element from the list = [1, 2]
-        pop(my_matrix) // This will remove the latest row from the list = 
-        [
-        [1, 2, 3],
-        [4, 5, 6],
-        ]
+            Pop:
+                pop(my_list) // This will remove the latest element from the list = [1, 2]
+                pop(my_matrix) // This will remove the latest row from the list = 
+                [
+                [1, 2, 3],
+                [4, 5, 6],
+                ]
 
-        The value can then be accessed:
+            Length of a list:
+                z = len(my_list) // z will be set to 3
+                z = len(my_matrix) // z will be set to 3
+
+        The values can then be accessed:
         Arrays:
-        my_array[0] == 1, 
-        my_array[1] == 2, 
-        my_array[2] == 3
+        my_list[0] == 1, 
+        my_list[1] == 2, 
+        my_list[2] == 3
 
         Matrix: 
         my_matrix[0][0] == 1,
@@ -132,13 +146,159 @@ SYSTEM:
     Hashmaps:
         let my_hash = {"a": 1, "b": 2}
 
-        The value can then be accessed:
+        Reassign:
+        my_hash["a"] = 10
+
+        The values can then be accessed:
         my_hash["a"] == 1
         my_hash["b"] == 2
 
+    Structs:
+        let my_struct = Struct{
+            my_array = [1, 2, 3]
+            my_int = 10
+        }
+
+        Reassign:
+        my_struct.my_int = 20
+
+        The values can then be accessed:
+        my_struct.my_array[0] == 1
+        my_struct.my_array[1] == 2
+        my_struct.my_array[2] == 3
+        my_struct.my_int = 10
+
+##   4.2: Basic operations
+    Single line comments:
+    //Hello, i am a single line comment
+
+    Arithmetic operations:
+    Arithmetic operations work with both integers and floats. 
+    The '+' operator works for strings, meaning you can combine to strings into one.
+
+        Plus:
+        x = 1 + 1
+        or
+        x = 1
+        x += 1
+
+        Minus:
+        x = 1 - 1
+        or
+        x = 1
+        x -= 1
+        
+        Multiplication:
+        x = 1 * 1
+
+        Modulus:
+        x = 1 % 1
+
+    Comparison Operators:
+    Comparison operations work with both integers and floats.
+
+        Greater than:
+        10 > 1
+
+        Greater than or equal to:
+        10 >= 1
+
+        Less than:
+        10 < 1
+
+        Less than or equal to:
+        10 <= 1
+
+        Equal to: 
+        10 == 1
+
+        Not equal to:
+        10 != 1
+
+    Logic operators:
+    Logic operations work with both integers and floats.
+
+        And:
+        x < 5 and x < 10
+        Returns True if both statements are true 
+
+        Or:
+        x < 5 or x < 4
+        Returns True if one of the statements is true
+
+        Not:
+        not 10 > 1
+        Returns False if the result is true
+    
+    Random:
+        my_random = random in 2..5 // A random value between 2 and 5
+        or
+        x = [1, 2, 3]
+        my_random = random in x // A random value between 1 and 3
+
+##   4.3: Conditionals
+    If statements:
+        if(10 > 1) {
+            print("The if statement")
+        } elif (10 != 1) {
+            print("The elif statement")
+        } else {
+            print("The else statement")
+        }
+
+    For loops:
+        for i in 0..10 {
+            print("The for loop")
+        }
+
+        or
+
+        x =[1, 2, 3, 4, 5]
+
+        for i in x {
+            print("The for loop with list")
+        }
+
+    While loops:
+        while(True) {
+            print("The while loop")
+        }
+
+##   4.4: Function declaration and calling
+    Functions can be defined and return values are also included in the language
+
+    Functions:
+        def myFunction(x, y) {
+            x += 20
+            y += 20
+            x = x + y
+            return x
+        }
+        x = myFunction(1, 2) 
+
+##  4.5: Algorithms
+    White noise:
+        let my_matrix = [
+            [1, 2, 3],
+            [4, 5, 6],
+            [7, 8, 9]
+        ]
+        my_matrix = WhiteNoise(my_matrix, 0..1) // This will change all integers in my_matrix to either a '0' or '1'
+
+    BSP:
+
+
+    A*: 
+
+
+
+
+
+
 
 
 
 
     
     
+
