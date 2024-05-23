@@ -2,12 +2,21 @@ Map (8, 8) map {
     layer terrain = 0
     procedure {
         let tree = bsp(terrain, 2)
-        tree.left.left = create_room(tree.left.left)
-        tree.left.right = create_room(tree.left.right)
-        tree.right.left = create_room(tree.right.left)
-        tree.right.right = create_room(tree.right.right)
+        tree = visit_partitions(tree, create_room)
         terrain = departition(tree)
     }
+}
+
+def visit_partitions(tree, function) {
+    if (tree.depth > 1) {
+        visit_partitions(tree.left, function)
+        visit_partitions(tree.right, function)
+    }
+    else{
+    tree.left = function(tree.left)
+    tree.right = function(tree.right)
+    }
+    return tree
 }
 
 def create_room(matrix) {
