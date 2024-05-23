@@ -303,7 +303,7 @@ class Interpreter(DungeonVisitor):
                     self.visit(ctx.elseStat())
             elif ctx.elseStat():
                 self.visit(ctx.elseStat())
-        except Exception as e:
+        except RuntimeError as e:
             print(f"Error in If statement: {str(e)}")
             raise RuntimeError(f"If statement execution failed: {str(e)}")
 
@@ -318,7 +318,7 @@ class Interpreter(DungeonVisitor):
                 return self.visit(ctx.elifStat())
             else:
                 return False
-        except Exception as e:
+        except RuntimeError as e:
             print(f"Error in Elif statement: {str(e)}")
             raise RuntimeError(f"Elif statement execution failed: {str(e)}")
 
@@ -327,7 +327,7 @@ class Interpreter(DungeonVisitor):
             if self.verbose:
                 print("Executing Else block...")
             self.visit(ctx.statBlock())
-        except Exception as e:
+        except RuntimeError as e:
             print(f"Error in Else statement: {str(e)}")
             raise RuntimeError(f"Else statement execution failed: {str(e)}")
 

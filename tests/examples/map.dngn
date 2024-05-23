@@ -20,6 +20,18 @@ def visit_partitions(tree, function) {
 }
 
 def create_room(matrix) {
+    let set = [True, False]
+    let x = random in set
+
+    if (x) {
+        return room(matrix)
+    }
+    else {
+        return no_room(matrix)
+    }
+}
+
+def room(matrix) {
     let x = len(matrix[0])
     let y = len(matrix)
 
@@ -51,5 +63,17 @@ def create_room(matrix) {
         }
     }
 
+    return matrix
+}
+
+def no_room(matrix) {
+    let x = len(matrix[0])
+    let y = len(matrix)
+
+    for i in 0..y {
+        for j in 0..x {
+            matrix[i][j] = "*"
+        }
+    }
     return matrix
 }
