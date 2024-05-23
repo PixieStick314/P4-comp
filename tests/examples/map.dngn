@@ -36,11 +36,11 @@ def create_room(matrix) {
 
     index_x = x - 2
     index_y = y - 2
-    for i in 1..y-1 {
+    for i in 1..(y - 1) {
         matrix[i][1] = "#"
         matrix[i][index_x] = "#"
     }
-    for i in 1..x-1 {
+    for i in 1..(x - 1) {
         matrix[1][i] = "#"
         matrix[index_y][i] = "#"
     }
