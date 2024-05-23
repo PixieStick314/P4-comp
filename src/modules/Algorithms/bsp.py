@@ -30,7 +30,6 @@ def bsp(args):
                                             "depth": depth,
                                             "left": left_matrix,
                                             "right": right_matrix})
-
             return node
 
         else:  # Horizontal split
@@ -39,11 +38,10 @@ def bsp(args):
             upper_matrix = matrix[:split_point]
             lower_matrix = matrix[split_point:]
 
-            node = StructInstance(BSPNode, {"split_plane": "vertical",
+            node = StructInstance(BSPNode, {"split_plane": "horizontal",
                                             "depth": depth,
                                             "left": upper_matrix,
                                             "right": lower_matrix})
-
             return node
 
     if random.choice([True, False]):  # Vertical split
@@ -97,12 +95,12 @@ def departition(args):
     matrix = []
     if node.fields["split_plane"] == "vertical":
         for row in range(len(left)):
+            matrix.append(left[row] + right[row])
+    elif node.fields["split_plane"] == "horizontal":
+        for row in range(len(left)):
             matrix.append(left[row])
         for row in range(len(right)):
             matrix.append(right[row])
-    elif node.fields["split_plane"] == "horizontal":
-        for row in range(len(left)):
-            matrix.append(left[row] + right[row])
 
     layer = Layer(len(matrix), len(matrix[0]), 0)
     layer.rows = matrix
