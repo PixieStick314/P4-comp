@@ -781,3 +781,15 @@ def test_layer_decl():
     }'''
 
     run_test_prog(code, {"map": {"layers": {"x": [[1,1],[1,1]]}}})
+
+def test_bsp_and_departition():
+    code = '''
+    Map(8, 8) map {
+    layer terrain = 0
+    procedure {
+    let tree = bsp(terrain, 2)
+    terrain = departition(tree)
+    }
+    }'''
+
+    run_test_prog(code, {"map": {"layers": {"terrain": [[0] * 8] * 8}}})

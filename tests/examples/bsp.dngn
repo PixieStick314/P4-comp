@@ -1,0 +1,7 @@
+Map (10, 10) map {
+    layer terrain = 0
+    procedure {
+        let tree = bsp(terrain, 2)
+        terrain = departition(tree)
+    }
+}
