@@ -45,7 +45,7 @@ class Interpreter(DungeonVisitor):
 
     def visitMap(self, ctx:DungeonParser.MapContext):
         if self.verbose:
-            print("Visiting map...")
+            print("Visiting map.dngn...")
         previous = self.environment
         self.environment = Environment(previous)
         self.environment.map = Map(ctx.ID().getText(), int(ctx.INT(0).getText()), int(ctx.INT(1).getText()))
@@ -64,7 +64,7 @@ class Interpreter(DungeonVisitor):
                 raise RuntimeError("Map has no layers or data.")
             self.visit(ctx.procedure())
         except Exception as e:
-            print(f"Error during map construction: {str(e)}")
+            print(f"Error during map.dngn construction: {str(e)}")
             raise RuntimeError(f"Map creation failed due to: {str(e)}")
         finally:
             layers = {}
@@ -99,7 +99,7 @@ class Interpreter(DungeonVisitor):
         if self.environment.map:
             map = self.environment.map
         else:
-            raise RuntimeError(f"Layer creation failed due to no map.")
+            raise RuntimeError(f"Layer creation failed due to no map.dngn.")
         if ctx.expr():
             layer = Layer(map.dimensions[0], map.dimensions[1], self.visit(ctx.expr()))
         else:

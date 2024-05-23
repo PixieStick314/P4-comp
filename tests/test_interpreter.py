@@ -21,17 +21,17 @@ def run_test_prog(code, expected_output):
     assert output == json.dumps(expected_output)
 
 def test_json_dumps():
-    code = '''Map(10, 10) map {
+    code = '''Map(10, 10) map.dngn {
     let x = 5
     procedure {
     x = 3
     }
     }
     '''
-    run_test_prog(code, {"map": {"data": {"x": 3}}})
+    run_test_prog(code, {"map.dngn": {"data": {"x": 3}}})
 
 def test_function_decl_and_call():
-    code = '''Map(10, 10) map {
+    code = '''Map(10, 10) map.dngn {
     let x = 5
     procedure {
     x = setTo3()
@@ -41,18 +41,18 @@ def test_function_decl_and_call():
     }
     }
     '''
-    run_test_prog(code, {"map": {"data": {"x": 3}}})
+    run_test_prog(code, {"map.dngn": {"data": {"x": 3}}})
 
 def test_arithmetic():
-    code = '''Map(10, 10) map {
+    code = '''Map(10, 10) map.dngn {
     let x = 5
     procedure {x = x - 1}
     }
     '''
-    run_test_prog(code, {"map": {"data": {"x": 4}}})
+    run_test_prog(code, {"map.dngn": {"data": {"x": 4}}})
 
 def test_nested_if_stat():
-    code = '''Map(10, 10) map {
+    code = '''Map(10, 10) map.dngn {
     let x = 5
     procedure {
     if(x == 5){
@@ -64,10 +64,10 @@ def test_nested_if_stat():
     }
     }
     '''
-    run_test_prog(code, {"map": {"data": {"x": 3}}})
+    run_test_prog(code, {"map.dngn": {"data": {"x": 3}}})
 
 def test_elif_stat():
-    code = '''Map(10, 10) map {
+    code = '''Map(10, 10) map.dngn {
     let x = 4
     procedure {
     if(x == 5){
@@ -82,10 +82,10 @@ def test_elif_stat():
     }
     }
     '''
-    run_test_prog(code, {"map": {"data": {"x": 2}}})
+    run_test_prog(code, {"map.dngn": {"data": {"x": 2}}})
 
 def test_else_stat():
-    code = '''Map(10, 10) map {
+    code = '''Map(10, 10) map.dngn {
     let x = 4
     procedure {
     if(x == 5){
@@ -97,10 +97,10 @@ def test_else_stat():
     }
     }
     '''
-    run_test_prog(code, {"map": {"data": {"x": 3}}})
+    run_test_prog(code, {"map.dngn": {"data": {"x": 3}}})
 
 def test_while_loop():
-    code = '''Map(10, 10) map {
+    code = '''Map(10, 10) map.dngn {
     let x = 5
     procedure {
     while(x > 0){
@@ -109,10 +109,10 @@ def test_while_loop():
     }
     }
     '''
-    run_test_prog(code, {"map": {"data": {"x": 0}}})
+    run_test_prog(code, {"map.dngn": {"data": {"x": 0}}})
 
 def test_nested_function_call():
-    code = '''Map(10, 10) map {
+    code = '''Map(10, 10) map.dngn {
     let x = 5
     procedure {
     x = setToX(setTo3())
@@ -125,29 +125,29 @@ def test_nested_function_call():
     }
     }
     '''
-    run_test_prog(code, {"map": {"data": {"x": 3}}})
+    run_test_prog(code, {"map.dngn": {"data": {"x": 3}}})
 
 def test_list():
-    code = '''Map(10, 10) map {
+    code = '''Map(10, 10) map.dngn {
     let x = [3, 2, 1]
     procedure {
     }
     }
     '''
-    run_test_prog(code, {"map": {"data": {"x": [3, 2, 1]}}})
+    run_test_prog(code, {"map.dngn": {"data": {"x": [3, 2, 1]}}})
 
 def test_list_add():
-    code = '''Map(10, 10) map {
+    code = '''Map(10, 10) map.dngn {
     let x = [1, 2, 3]
     procedure {
     x += 4
     }
     }
     '''
-    run_test_prog(code, {"map": {"data": {"x": [1, 2, 3, 4]}}})
+    run_test_prog(code, {"map.dngn": {"data": {"x": [1, 2, 3, 4]}}})
 
 def test_list_element():
-    code = '''Map(10, 10) map {
+    code = '''Map(10, 10) map.dngn {
     let x = 1
     procedure {
     let y = [3, 3]
@@ -155,10 +155,10 @@ def test_list_element():
     }
     }
     '''
-    run_test_prog(code, {"map": {"data": {"x": 3}}})
+    run_test_prog(code, {"map.dngn": {"data": {"x": 3}}})
 
 def test_list_element_variable_index():
-    code = '''Map(10, 10) map {
+    code = '''Map(10, 10) map.dngn {
     let x = 1
     procedure {
     let y = [3, 3]
@@ -167,20 +167,20 @@ def test_list_element_variable_index():
     }
     }
     '''
-    run_test_prog(code, {"map": {"data": {"x": 3}}})
+    run_test_prog(code, {"map.dngn": {"data": {"x": 3}}})
 
 def test_list_pop():
-    code = '''Map(10, 10) map {
+    code = '''Map(10, 10) map.dngn {
     let x = [1, 2, 3, 4]
     procedure {
     pop(x)
     }
     }
     '''
-    run_test_prog(code, {"map": {"data": {"x": [1, 2, 3]}}})
+    run_test_prog(code, {"map.dngn": {"data": {"x": [1, 2, 3]}}})
 
 def test_for_loop():
-    code = '''Map(10, 10) map {
+    code = '''Map(10, 10) map.dngn {
     let x = 1
     procedure {
     let y = [3, 3]
@@ -190,10 +190,10 @@ def test_for_loop():
     }
     }
     '''
-    run_test_prog(code, {"map": {"data": {"x": 7}}})
+    run_test_prog(code, {"map.dngn": {"data": {"x": 7}}})
 
 def test_comparisons():
-    code = '''Map(10, 10) map {
+    code = '''Map(10, 10) map.dngn {
     let x
     procedure {
     let a = 1
@@ -202,10 +202,10 @@ def test_comparisons():
     }
     }
     '''
-    run_test_prog(code, {"map": {"data": {"x": False}}})
+    run_test_prog(code, {"map.dngn": {"data": {"x": False}}})
 
 def test_function_as_parameter():
-    code = '''Map(10, 10) map {
+    code = '''Map(10, 10) map.dngn {
     let x
     procedure {
     def animalSays(say){
@@ -218,41 +218,41 @@ def test_function_as_parameter():
     return "meow"
     }
     '''
-    run_test_prog(code, {"map": {"data": {"x": "meow"}}})
+    run_test_prog(code, {"map.dngn": {"data": {"x": "meow"}}})
 
 def test_list_length():
-    code = '''Map(10, 10) map {
+    code = '''Map(10, 10) map.dngn {
     let x = [1, 2, 3]
     procedure {
     x = len(x)
     }
     }
     '''
-    run_test_prog(code, {"map": {"data": {"x": 3}}})
+    run_test_prog(code, {"map.dngn": {"data": {"x": 3}}})
 
 def test_minus_equals():
-    code = '''Map(10, 10) map {
+    code = '''Map(10, 10) map.dngn {
     let x = [1, 2, 3]
     procedure {
     x -= 3
     }
     }
     '''
-    run_test_prog(code, {"map": {"data": {"x": [1, 2]}}})
+    run_test_prog(code, {"map.dngn": {"data": {"x": [1, 2]}}})
 
 def test_list_pop():
-    code = '''Map(10, 10) map {
+    code = '''Map(10, 10) map.dngn {
     let x = [1, 2, 3]
     procedure {
     x.pop()
     }
     }
     '''
-    run_test_prog(code, {"map": {"data": {"x": [1, 2]}}})
+    run_test_prog(code, {"map.dngn": {"data": {"x": [1, 2]}}})
 
 def test_basic_2d_array():
     code = '''
-    Map(10, 10) map {
+    Map(10, 10) map.dngn {
     let myArray
         procedure {
             myArray = [
@@ -263,7 +263,7 @@ def test_basic_2d_array():
         }
     }
     '''
-    expected_output = {"map": {"data": {
+    expected_output = {"map.dngn": {"data": {
         "myArray": [
             [1, 2, 3],
             [4, 5, 6],
@@ -273,7 +273,7 @@ def test_basic_2d_array():
     run_test_prog(code, expected_output)
 
 def test_random_range():
-    code = '''Map(10, 10) map {
+    code = '''Map(10, 10) map.dngn {
     let x = 1
     procedure {
     x = random in 2..4
@@ -290,7 +290,7 @@ def test_random_range():
     assert json.loads(output) == {'x': 2} or {'x': 3} or {'x': 4}
 
 def test_random_choice():
-    code = '''Map(10, 10) map {
+    code = '''Map(10, 10) map.dngn {
     let x = 1
     procedure {
     let y = [2, 3, 4]
@@ -310,29 +310,29 @@ def test_random_choice():
 
 def test_sqrt_op():
     code = '''
-    Map(10, 10) map {
+    Map(10, 10) map.dngn {
         let x
         procedure {
             x = sqrt(9)
         }
     }
     '''
-    run_test_prog(code, {"map": {"data": {"x": 3.0}}})
+    run_test_prog(code, {"map.dngn": {"data": {"x": 3.0}}})
 
 def test_sqrt_op_float():
     code = '''
-    Map(10, 10) map {
+    Map(10, 10) map.dngn {
     let x
         procedure {
             x = sqrt(9.0)
         }
     }
     '''
-    run_test_prog(code, {"map": {"data": {"x": 3.0}}})
+    run_test_prog(code, {"map.dngn": {"data": {"x": 3.0}}})
 
 def test_sqrt_op_var():
     code = '''
-    Map(10, 10) map {
+    Map(10, 10) map.dngn {
         let x
         procedure {
             let y = 9 
@@ -340,34 +340,34 @@ def test_sqrt_op_var():
         }
     }
     '''
-    run_test_prog(code, {"map": {"data": {"x": 3.0}}})
+    run_test_prog(code, {"map.dngn": {"data": {"x": 3.0}}})
 
 #TESTING POWER OF OPERATIONS
 def test_pow_op():
     code = '''
-    Map(10, 10) map {
+    Map(10, 10) map.dngn {
         let x
         procedure {
             x = pow(4, 2)
         }
     }
     '''
-    run_test_prog(code, {"map": {"data": {"x": 16}}})
+    run_test_prog(code, {"map.dngn": {"data": {"x": 16}}})
 
 def test_pow_op_neg():
     code = '''
-    Map(10, 10) map {
+    Map(10, 10) map.dngn {
         let x
         procedure {
             x = pow(2, -2)
         }
     }
     '''
-    run_test_prog(code, {"map": {"data": {"x": 0.25}}})
+    run_test_prog(code, {"map.dngn": {"data": {"x": 0.25}}})
 
 def test_pow_op_var():
     code = '''
-    Map(10, 10) map {
+    Map(10, 10) map.dngn {
         let x
         procedure {
             let y = 4
@@ -376,9 +376,9 @@ def test_pow_op_var():
         }
     }
     '''
-    run_test_prog(code, {"map": {"data": {"x": 16}}})
+    run_test_prog(code, {"map.dngn": {"data": {"x": 16}}})
 def test_nested_list():
-    code = '''Map(10, 10) map {
+    code = '''Map(10, 10) map.dngn {
     let x
     procedure {
     x = [[1, 2] , [3, 4]]
@@ -386,10 +386,10 @@ def test_nested_list():
     }
     '''
 
-    run_test_prog(code, {"map": {"data": {'x': [[1, 2], [3, 4]]}}})
+    run_test_prog(code, {"map.dngn": {"data": {'x': [[1, 2], [3, 4]]}}})
 
 def test_nested_list_access():
-    code = '''Map(10, 10) map {
+    code = '''Map(10, 10) map.dngn {
     let x
     procedure {
     let y = [[1, 2] , [3, 4]]
@@ -398,10 +398,10 @@ def test_nested_list_access():
     }
     '''
 
-    run_test_prog(code, {"map": {"data": {'x': 4}}})
+    run_test_prog(code, {"map.dngn": {"data": {'x': 4}}})
 
 def test_nested_list_assign():
-    code = '''Map(10, 10) map {
+    code = '''Map(10, 10) map.dngn {
     let x
     procedure {
     x = [[1, 2] , [3, 4]]
@@ -410,11 +410,11 @@ def test_nested_list_assign():
     }
     '''
 
-    run_test_prog(code, {"map": {"data": {'x': [[1, 2], [3, 1]]}}})
+    run_test_prog(code, {"map.dngn": {"data": {'x': [[1, 2], [3, 1]]}}})
 
 def test_whiteNoise():
     code = '''
-    Map(10, 10) map {
+    Map(10, 10) map.dngn {
         let myArray
         procedure {
             myArray = [
@@ -437,7 +437,7 @@ def test_whiteNoise():
     except json.JSONDecodeError:
         raise ValueError("Output could not be deserialized from JSON")
     
-    myArray = deserialized_output["map"]["data"]["myArray"]
+    myArray = deserialized_output["map.dngn"]["data"]["myArray"]
 
     assert isinstance(myArray, list), "Expected 'myArray' to be a list"
     
@@ -448,7 +448,7 @@ def test_whiteNoise():
             assert value in (0, 1), f"Value {value} is not 0 or 1"
 
 def test_struct():
-    code = '''Map(10, 10) map {
+    code = '''Map(10, 10) map.dngn {
         let x
         procedure {
         let cat = Cat{
@@ -462,10 +462,10 @@ def test_struct():
         }
         '''
 
-    run_test_prog(code, {"map": {"data": {'x': "meow"}}})
+    run_test_prog(code, {"map.dngn": {"data": {'x': "meow"}}})
 
 def test_struct_with_list_output_get():
-    code = '''Map(10, 10) map {
+    code = '''Map(10, 10) map.dngn {
         let x
         procedure {
         let my_struct = Struct{
@@ -479,10 +479,10 @@ def test_struct_with_list_output_get():
         }
         '''
 
-    run_test_prog(code, {"map": {"data": {'x': 1}}})
+    run_test_prog(code, {"map.dngn": {"data": {'x': 1}}})
 
 def test_struct_with_list_output_assign():
-    code = '''Map(10, 10) map {
+    code = '''Map(10, 10) map.dngn {
         let x
         procedure {
         let my_struct = Struct{
@@ -497,11 +497,11 @@ def test_struct_with_list_output_assign():
         }
         '''
 
-    run_test_prog(code, {"map": {"data": {'x': 4}}})
+    run_test_prog(code, {"map.dngn": {"data": {'x': 4}}})
 
 
 def test_random_seed():
-    code = '''Map(10, 10) map {
+    code = '''Map(10, 10) map.dngn {
     let x = 10000000
     let y = 103
     let z = 30420
@@ -532,7 +532,7 @@ def test_random_seed():
     assert output1 == output2
 
 def test_random_single_seed():
-    code = '''Map(10, 10) map {
+    code = '''Map(10, 10) map.dngn {
     let x = 10000000
     let y = 103
     let z = 30420
@@ -560,7 +560,7 @@ def test_random_single_seed():
     assert output1 == output2
 
 def test_random_without_seed():
-    code = '''Map(10, 10) map {
+    code = '''Map(10, 10) map.dngn {
     let x = 10000000
     let y = 103
     let z = 30420
@@ -592,7 +592,7 @@ def test_random_without_seed():
 
 def test_hash_table_assign():
     code = '''
-    Map(10, 10) map {
+    Map(10, 10) map.dngn {
     let x
     procedure {
     let my_hash = {"a": 1, "b": 2}
@@ -601,11 +601,11 @@ def test_hash_table_assign():
     }
     '''
 
-    run_test_prog(code, {"map": {"data": {"x": 1}}})
+    run_test_prog(code, {"map.dngn": {"data": {"x": 1}}})
 
 def test_hash_table_get():
     code = '''
-        Map(10, 10) map {
+        Map(10, 10) map.dngn {
         let x
         procedure {
         let my_hash = {"a": 1, "b": 2}
@@ -615,11 +615,11 @@ def test_hash_table_get():
         }
         '''
 
-    run_test_prog(code, {"map": {"data": {"x": 3}}})
+    run_test_prog(code, {"map.dngn": {"data": {"x": 3}}})
 
 def test_nested_hash_table_get():
     code = '''
-        Map(10, 10) map {
+        Map(10, 10) map.dngn {
         let x
         procedure {
         let my_list = [1, 2]
@@ -630,11 +630,11 @@ def test_nested_hash_table_get():
         }
         '''
 
-    run_test_prog(code, {"map": {"data": {"x": 1}}})
+    run_test_prog(code, {"map.dngn": {"data": {"x": 1}}})
 
 def test_empty_list():
     code = '''
-        Map(10, 10) map {
+        Map(10, 10) map.dngn {
         let x
         procedure {
         x = []
@@ -643,11 +643,11 @@ def test_empty_list():
         }
         '''
 
-    run_test_prog(code, {"map": {"data": {"x": [1]}}})
+    run_test_prog(code, {"map.dngn": {"data": {"x": [1]}}})
 
 def test_for_loop_range():
     code = '''
-        Map(10, 10) map {
+        Map(10, 10) map.dngn {
         let x
         procedure {
         x = []
@@ -658,11 +658,11 @@ def test_for_loop_range():
         }
         '''
 
-    run_test_prog(code, {"map": {"data": {"x": [0, 1, 2, 3, 4]}}})
+    run_test_prog(code, {"map.dngn": {"data": {"x": [0, 1, 2, 3, 4]}}})
 
 def test_or():
     code = '''
-    Map(10, 10) map {
+    Map(10, 10) map.dngn {
     let x
     procedure {
     x = 0
@@ -677,7 +677,7 @@ def test_or():
     }
     '''
 
-    run_test_prog(code, {"map": {"data": {"x": 3}}})
+    run_test_prog(code, {"map.dngn": {"data": {"x": 3}}})
 
 def test_integration_boss_room():
     code = '''
@@ -716,7 +716,7 @@ def test_integration_boss_room():
 
 def test_zero_comparison():
     code = '''
-    Map(10, 10) map {
+    Map(10, 10) map.dngn {
     let x
     procedure {
     x = False
@@ -727,11 +727,11 @@ def test_zero_comparison():
     }
     }'''
 
-    run_test_prog(code, {"map": {"data": {"x": True}}})
+    run_test_prog(code, {"map.dngn": {"data": {"x": True}}})
 
 def test_not():
     code = '''
-    Map(10, 10) map {
+    Map(10, 10) map.dngn {
     let x
     procedure {
     let a = True
@@ -740,11 +740,11 @@ def test_not():
     }
     '''
 
-    run_test_prog(code, {"map": {"data": {"x": False}}})
+    run_test_prog(code, {"map.dngn": {"data": {"x": False}}})
 
 def test_assign_list_element_by_id():
     code = '''
-    Map(10, 10) map {
+    Map(10, 10) map.dngn {
     let x
     procedure {
     let a = [1, 2, 3]
@@ -755,11 +755,11 @@ def test_assign_list_element_by_id():
     }
     '''
 
-    run_test_prog(code, {"map": {"data": {"x": 4}}})
+    run_test_prog(code, {"map.dngn": {"data": {"x": 4}}})
 
 def test_dict_element_by_id():
     code = '''
-    Map(10, 10) map {
+    Map(10, 10) map.dngn {
     let x
     procedure {
     let a = {"cat": "tabby"}
@@ -770,21 +770,21 @@ def test_dict_element_by_id():
     }
     '''
 
-    run_test_prog(code, {"map": {"data": {"x": "ragdoll"}}})
+    run_test_prog(code, {"map.dngn": {"data": {"x": "ragdoll"}}})
 
 def test_layer_decl():
     code = '''
-    Map(2, 2) map {
+    Map(2, 2) map.dngn {
     layer x = 1
     procedure {
     }
     }'''
 
-    run_test_prog(code, {"map": {"layers": {"x": [[1,1],[1,1]]}}})
+    run_test_prog(code, {"map.dngn": {"layers": {"x": [[1,1],[1,1]]}}})
 
 def test_bsp_and_departition():
     code = '''
-    Map(8, 8) map {
+    Map(8, 8) map.dngn {
     layer terrain = 0
     procedure {
     let tree = bsp(terrain, 2)
@@ -792,4 +792,61 @@ def test_bsp_and_departition():
     }
     }'''
 
-    run_test_prog(code, {"map": {"layers": {"terrain": [[0] * 8] * 8}}})
+    run_test_prog(code, {"map.dngn": {"layers": {"terrain": [[0] * 8] * 8}}})
+
+def test_full_map():
+    code = '''
+    Map (64, 64) map.dngn {
+        layer terrain = 0
+        procedure {
+            let tree = bsp(terrain, 4)
+            tree = visit_partitions(tree, create_room)
+            terrain = departition(tree)
+        }
+    }
+    
+    def visit_partitions(tree, function) {
+        if (tree.depth > 1) {
+            visit_partitions(tree.left, function)
+            visit_partitions(tree.right, function)
+        }
+        else{
+        tree.left = function(tree.left)
+        tree.right = function(tree.right)
+        }
+        return tree
+    }
+    
+    def create_room(matrix) {
+        let dim = len(matrix)
+    
+        for i in 0..dim {
+            matrix[0][i] = "*"
+            matrix[i][0] = "*"
+            matrix[i][dim] = "*"
+            matrix[dim][i] = "*"
+        }
+    
+        dim = dim - 1
+        for i in 1..dim {
+            matrix[1][i] = "#"
+            matrix[i][1] = "#"
+            matrix[i][dim] = "#"
+            matrix[dim][i] = "#"
+        }
+    
+        dim = dim - 2
+        for i in 2..dim {
+            for j in 2..dim {
+                matrix[i][j] = "."
+            }
+        }
+    
+        return matrix
+    }
+    '''
+
+    parser = setup_parser(code)
+    tree = parser.prog()
+    visitor = Interpreter()
+    output = visitor.visit(tree)

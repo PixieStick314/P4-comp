@@ -1,0 +1,55 @@
+Map (64, 64) map {
+    layer terrain = 0
+    procedure {
+        let tree = bsp(terrain, 4)
+        tree = visit_partitions(tree, create_room)
+        terrain = departition(tree)
+    }
+}
+
+def visit_partitions(tree, function) {
+    if (tree.depth > 1) {
+        visit_partitions(tree.left, function)
+        visit_partitions(tree.right, function)
+    }
+    else{
+    tree.left = function(tree.left)
+    tree.right = function(tree.right)
+    }
+    return tree
+}
+
+def create_room(matrix) {
+    let x = len(matrix[0])
+    let y = len(matrix)
+
+    let index_x = x - 1
+    let index_y = y - 1
+    for i in 0..y {
+        matrix[i][0] = "*"
+        matrix[i][index_x] = "*"
+    }
+    for i in 0..x {
+        matrix[0][i] = "*"
+        matrix[index_y][i] = "*"
+    }
+
+    index_x = x - 2
+    index_y = y - 2
+    for i in 1..y-1 {
+        matrix[i][1] = "#"
+        matrix[i][index_x] = "#"
+    }
+    for i in 1..x-1 {
+        matrix[1][i] = "#"
+        matrix[index_y][i] = "#"
+    }
+
+    for i in 2..index_y {
+        for j in 2..index_x {
+            matrix[i][j] = "."
+        }
+    }
+
+    return matrix
+}

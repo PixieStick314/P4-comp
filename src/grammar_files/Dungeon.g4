@@ -3,7 +3,7 @@ grammar Dungeon;
 // Main program structure
 prog:   stat* map stat* ;
 
-// Map definition: creates a map with a procedure and data
+// Map definition: creates a map.dngn with a procedure and data
 map:    'Map' OPEN_PARENTH INT COMMA INT CLOSED_PARENTH ID OPEN_CURL (varDeclStat | layer)+ procedure CLOSED_CURL;
 
 // Procedure definition: a block of statements that defines a procedure
