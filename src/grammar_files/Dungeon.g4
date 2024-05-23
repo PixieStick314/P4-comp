@@ -44,7 +44,7 @@ functionCall      : ID OPEN_PARENTH args? CLOSED_PARENTH;
 // Array and list structures
 list              : OPEN_BRACK (listElement (COMMA listElement)*)? CLOSED_BRACK;
 listElement       : expr | list;
-listLength        : 'len' OPEN_PARENTH ID CLOSED_PARENTH;
+listLength        : 'len' OPEN_PARENTH expr CLOSED_PARENTH;
 listPop           : 'pop' OPEN_PARENTH ID CLOSED_PARENTH;
 
 //Hash tables

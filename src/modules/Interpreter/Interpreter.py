@@ -432,14 +432,10 @@ class Interpreter(DungeonVisitor):
             raise
 
     def visitReturnStat(self, ctx):
-        try:
-            value = self.visit(ctx.expr())
-            if self.verbose:
-                print(f"Returning value {value}")
-            raise Exception(value)
-        except Exception as e:
-            print("Error during return statement evaluation:", str(e))
-            raise
+        value = self.visit(ctx.expr())
+        if self.verbose:
+            print(f"Returning value {value}")
+        raise Exception(value)
 
     def defaultResult(self):
         # Returns a placeholder for unhandled cases
@@ -447,13 +443,13 @@ class Interpreter(DungeonVisitor):
 
     def visitListLength(self, ctx:DungeonParser.ListLengthContext):
         try:
-            list = self.environment.get(ctx.ID().getText())
+            list = self.visit(ctx.expr())
             length = len(list)
             if self.verbose:
-                print(f"Length of list '{ctx.ID().getText()}': {length}")
+                print(f"Length of list '{ctx.expr().getText()}': {length}")
             return length
         except Exception as e:
-            print(f"Error getting length of list '{ctx.ID().getText()}':", str(e))
+            print(f"Error getting length of list '{ctx.expr().getText()}':", str(e))
             raise
 
     def visitSeed(self, ctx:DungeonParser.SeedContext):
