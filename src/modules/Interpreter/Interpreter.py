@@ -414,9 +414,7 @@ class Interpreter(DungeonVisitor):
                 return function.run(args)
             else:
                 raise RuntimeError(f"{name} is not a function.")
-        except Exception as e:
-            if self.verbose:
-                print(f"Error during function call '{name}': {str(e)}")
+        except ReturnException as e:
             return e.args[0]
         finally:
             self.environment = previous
@@ -432,14 +430,10 @@ class Interpreter(DungeonVisitor):
             raise
 
     def visitReturnStat(self, ctx):
-        try:
-            value = self.visit(ctx.expr())
-            if self.verbose:
-                print(f"Returning value {value}")
-            raise Exception(value)
-        except Exception as e:
-            print("Error during return statement evaluation:", str(e))
-            raise
+        value = self.visit(ctx.expr())
+        if self.verbose:
+            print(f"Returning value {value}")
+        raise ReturnException(value)
 
     def defaultResult(self):
         # Returns a placeholder for unhandled cases
@@ -584,3 +578,7 @@ class Interpreter(DungeonVisitor):
         except Exception as e:
             print(f"Error in visitExpr: {str(e)}")
             raise RuntimeError(f"Expression evaluation failed: {str(e)}")
+
+
+class ReturnException(Exception):
+    pass
