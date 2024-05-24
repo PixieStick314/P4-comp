@@ -460,7 +460,9 @@ class Interpreter(DungeonVisitor):
 
             if ctx.range_():
                 bounds = self.visit(ctx.range_())
-                result = random.randrange(bounds[0], bounds[1])
+                lower = int(bounds[0])
+                upper = int(bounds[1])
+                result = random.randrange(lower, upper)
             elif ctx.ID():
                 list = self.environment.get(ctx.ID().getText())
                 result = random.choice(list)
