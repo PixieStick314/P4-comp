@@ -82,9 +82,8 @@ params            : ID (COMMA ID)* ;
 args              : expr (COMMA expr)* ;
 inner             : DOT structField inner?
                   | index inner?;
-index             : OPEN_BRACK STRING CLOSED_BRACK
-                  | OPEN_BRACK ID CLOSED_BRACK
-                  | OPEN_BRACK INT CLOSED_BRACK;
+index             : OPEN_BRACK ID CLOSED_BRACK
+                  | OPEN_BRACK expr CLOSED_BRACK;
 
 // Expression structures
 expr              : functionCall

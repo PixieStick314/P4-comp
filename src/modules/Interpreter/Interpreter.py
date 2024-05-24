@@ -421,7 +421,7 @@ class Interpreter(DungeonVisitor):
 
     def visitArgs(self, ctx:DungeonParser.ArgsContext):
         try:
-            args = [self.visit(arg) for arg in ctx.expr()]
+            args = tuple(self.visit(arg) for arg in ctx.expr())
             if self.verbose:
                 print("Visited arguments:", args)
             return args
@@ -501,10 +501,8 @@ class Interpreter(DungeonVisitor):
     def visitIndex(self, ctx:DungeonParser.IndexContext):
         if ctx.ID():
             return ["ID", ctx.ID().getText()]
-        elif ctx.STRING():
-            return ctx.STRING().getText().replace('"', '')
-        elif ctx.INT():
-            return int(ctx.INT().getText())
+        elif ctx.expr():
+            return self.visit(ctx.expr())
 
     def visitExpr(self, ctx):
         try:
@@ -551,9 +549,7 @@ class Interpreter(DungeonVisitor):
                     return left
                 right = self.visit(ctx.expr(1))
                 operator = ctx.op.text
-                if (isinstance(left, str) and isinstance(right, str)):
-                    return str(left + right)
-                elif right is not None:  # Binary operation
+                if right is not None:  # Binary operation
                     match operator:
                         case '+': result = left + right
                         case '-': result = left - right

@@ -3,6 +3,7 @@ from datetime import datetime
 import random
 
 from modules.Interpreter.StructInstance import StructInstance
+from modules.Interpreter.Layer import Layer
 
 
 class Environment:
@@ -66,6 +67,8 @@ class Environment:
                 return variable.get_field(index[1])
             else:
                 return variable.get_field(index)
+        elif isinstance(variable, Layer):
+            return variable.rows
 
     def unpack_and_assign(self, variable, index_list, value):
         if len(index_list) > 1:
@@ -90,4 +93,6 @@ class Environment:
                 variable[self.get(index[1])] = value
         elif isinstance(variable, StructInstance):
             variable.fields[index] = value
+        elif isinstance(variable, Layer):
+            variable.rows[index] = value
         return variable

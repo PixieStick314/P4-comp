@@ -1,4 +1,4 @@
-Map (64, 64) map {
+Map (128, 128) map {
     layer terrain = 0
     procedure {
         let tree = bsp(terrain, 4)
