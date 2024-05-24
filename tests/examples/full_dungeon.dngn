@@ -53,7 +53,7 @@ def connect_rooms(tree) {
         goal[0] = random in 0..len(tree.right)
         goal[1] = random in 0..len(tree.right[0])
     }
-    let path = astar(start, goal, matrix.rows)
+    let path = astar(start, goal, matrix)
     for point in path {
         matrix[point[1]][point[0]] = "."
     }

@@ -511,7 +511,10 @@ class Interpreter(DungeonVisitor):
                 index_list = self.visit(ctx.inner())
                 return self.environment.unpack(name, index_list)
             elif ctx.ID():
-                return self.environment.get(ctx.ID().getText())
+                variable = self.environment.get(ctx.ID().getText())
+                if isinstance(variable, Layer):
+                    variable = variable.rows
+                return variable
             elif ctx.STRING():
                 return ctx.STRING().getText().replace('"', '')
             elif ctx.TRUE() or ctx.getText().lower() == 'true':
