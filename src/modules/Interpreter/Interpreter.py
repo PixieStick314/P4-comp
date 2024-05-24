@@ -149,10 +149,11 @@ class Interpreter(DungeonVisitor):
                 variable = variable.rows
             index_list = self.visit(ctx.inner())
             value = self.environment.unpack_and_assign(variable, index_list, value)
-            if isinstance(self.environment.get(name), Layer):
-                layer = self.environment.get(name)
-                layer.rows = value
-                value = layer
+
+        if isinstance(self.environment.get(name), Layer):
+            layer = self.environment.get(name)
+            layer.rows = value
+            value = layer
 
         self.environment.assign(name, value)
         if self.verbose:
