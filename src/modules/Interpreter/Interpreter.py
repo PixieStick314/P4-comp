@@ -45,7 +45,7 @@ class Interpreter(DungeonVisitor):
 
     def visitMap(self, ctx:DungeonParser.MapContext):
         if self.verbose:
-            print("Visiting map.dngn...")
+            print("Visiting map...")
         previous = self.environment
         self.environment = Environment(previous)
         self.environment.map = Map(ctx.ID().getText(), int(ctx.INT(0).getText()), int(ctx.INT(1).getText()))
@@ -64,7 +64,7 @@ class Interpreter(DungeonVisitor):
                 raise RuntimeError("Map has no layers or data.")
             self.visit(ctx.procedure())
         except Exception as e:
-            print(f"Error during map.dngn construction: {str(e)}")
+            print(f"Error during map construction: {str(e)}")
             raise RuntimeError(f"Map creation failed due to: {str(e)}")
         finally:
             layers = {}
@@ -99,7 +99,7 @@ class Interpreter(DungeonVisitor):
         if self.environment.map:
             map = self.environment.map
         else:
-            raise RuntimeError(f"Layer creation failed due to no map.dngn.")
+            raise RuntimeError(f"Layer creation failed due to no map.")
         if ctx.expr():
             layer = Layer(map.dimensions[0], map.dimensions[1], self.visit(ctx.expr()))
         else:
@@ -414,9 +414,7 @@ class Interpreter(DungeonVisitor):
                 return function.run(args)
             else:
                 raise RuntimeError(f"{name} is not a function.")
-        except Exception as e:
-            if self.verbose:
-                print(f"Error during function call '{name}': {str(e)}")
+        except ReturnException as e:
             return e.args[0]
         finally:
             self.environment = previous
@@ -435,7 +433,7 @@ class Interpreter(DungeonVisitor):
         value = self.visit(ctx.expr())
         if self.verbose:
             print(f"Returning value {value}")
-        raise Exception(value)
+        raise ReturnException(value)
 
     def defaultResult(self):
         # Returns a placeholder for unhandled cases
@@ -580,3 +578,7 @@ class Interpreter(DungeonVisitor):
         except Exception as e:
             print(f"Error in visitExpr: {str(e)}")
             raise RuntimeError(f"Expression evaluation failed: {str(e)}")
+
+
+class ReturnException(Exception):
+    pass
