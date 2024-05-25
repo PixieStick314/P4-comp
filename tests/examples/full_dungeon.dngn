@@ -53,6 +53,12 @@ def connect_rooms(tree) {
         goal[0] = random in 0..len(tree.right)
         goal[1] = random in 0..len(tree.right[0])
     }
+    if (tree.split_plane == "vertical") {
+        goal[1] = goal[1] + len(tree.right[0])
+    }
+    elif (tree.split_plane == "horizontal") {
+        goal[0] = goal[0] + len(tree.right)
+    }
     let path = astar(start, goal, matrix)
     for point in path {
         matrix[point[1]][point[0]] = "."
