@@ -21,7 +21,7 @@ def visit_partitions(tree, function) {
 
 def create_room(matrix) {
     let top_left = [ random in 1..(len(matrix) / 2), random in 1..(len(matrix[0]) / 2) ]
-    let bottom_right = [ random in (top_left[0] + 1)..len(matrix), random in (top_left[1] + 1)..len(matrix[0]) ]
+    let bottom_right = [ random in (top_left[0] + 2)..len(matrix), random in (top_left[1] + 2)..len(matrix[0]) ]
 
     for i in 0..len(matrix) {
         for j in 0..len(matrix[0]) {
