@@ -142,6 +142,16 @@ Here you will find all of the tools the language includes. You will also find sm
         my_matrix[0][1] == 2,
         my_matrix[1][0] == 4
         and so on..
+    
+    Layers:
+        Can only be initialized inside of a map declaration.
+        Fixed-size arrays that represent individual layers of a map.
+
+        Map (10, 10) map {
+            layer terrain = 0
+        }
+
+        This will create a 10x10 2d array, that is filled with 0. You can then use terrain as a standard 2d array.
 
     Hashmaps:
         let my_hash = {"a": 1, "b": 2}
@@ -167,6 +177,8 @@ Here you will find all of the tools the language includes. You will also find sm
         my_struct.my_array[1] == 2
         my_struct.my_array[2] == 3
         my_struct.my_int = 10
+
+
 
 ##   4.2: Basic operations
     Single line comments:
@@ -285,10 +297,26 @@ Here you will find all of the tools the language includes. You will also find sm
         ]
         my_matrix = WhiteNoise(my_matrix, 0..1) // This will change all integers in my_matrix to either a '0' or '1'
 
-    BSP:
+    bsp:
+        Map (64, 64) map {
+            layer terrain = 0
+                procedure {
+                    let tree = bsp(terrain, 4)
+                }
+        }
+        Tree is assigned with the function and 2 parameters are passed.
+        The first paramater can either be a layer or a 2d list, and will be the matrix that gets partioned.
+        The second parameter is how many ties the space is going to be partitioned. The slice direction is random and can either be vertical or horizontal.
+        The output is a struct that functions like a node tree.
 
+    astar: 
+        let path = astar(start, goal, matrix)
 
-    A*: 
+        astar is used to find the shortest path. It takes three parameters:
+            Start: The starting coordinate of the path.
+            Ending: The ending coordinate of the ending.
+            Matrix: The 2d array that the path is located on.
+        astar returns a list of coordinates. The coordinates show the shortest path.
 
 
 
