@@ -8,4 +8,4 @@ Map(10, 10) BossRoom {
     procedure {
         x = len(y)
     }
-} 
+}
