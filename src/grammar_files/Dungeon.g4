@@ -34,7 +34,7 @@ varDecl           : ID assignment?;
 assignStat        : ID inner? assignment;
 assignment        : EQUAL_SIGN struct
                   | EQUAL_SIGN hashTable
-                  | EQUAL_SIGN list
+                  | EQUAL_SIGN listExpr
                   | EQUAL_SIGN expr;
 
 // Function declaration and calls
@@ -42,8 +42,8 @@ functionDecl      : DEF ID OPEN_PARENTH params? CLOSED_PARENTH statBlock;
 functionCall      : ID OPEN_PARENTH args? CLOSED_PARENTH;
 
 // Array and list structures
-list              : OPEN_BRACK (listElement (COMMA listElement)*)? CLOSED_BRACK;
-listElement       : expr | list;
+listExpr              : OPEN_BRACK (listElement (COMMA listElement)*)? CLOSED_BRACK;
+listElement       : expr | listExpr;
 listLength        : 'len' OPEN_PARENTH expr CLOSED_PARENTH;
 listPop           : 'pop' OPEN_PARENTH ID CLOSED_PARENTH;
 

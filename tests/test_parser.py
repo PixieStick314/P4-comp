@@ -99,6 +99,20 @@ def test_print_stat():
     assert tree.getChild(2).getRuleIndex() == DungeonParser.RULE_expr
     assert tree.getChild(3).getSymbol().type == DungeonParser.CLOSED_PARENTH
 
+def test_parse_list():
+    test = '[1, 2, 3, 4]'
+    parser = setup_parser(test)
+    tree = parser.listExpr()
+
+    assert tree.getChild(0).getSymbol().type == DungeonParser.OPEN_BRACK
+    assert tree.getChild(1).getRuleIndex() == DungeonParser.RULE_listElement
+    assert tree.getChild(2).getSymbol().type == DungeonParser.COMMA
+    assert tree.getChild(3).getRuleIndex() == DungeonParser.RULE_listElement
+    assert tree.getChild(4).getSymbol().type == DungeonParser.COMMA
+    assert tree.getChild(5).getRuleIndex() == DungeonParser.RULE_listElement
+    assert tree.getChild(6).getSymbol().type == DungeonParser.COMMA
+    assert tree.getChild(7).getRuleIndex() == DungeonParser.RULE_listElement
+    assert tree.getChild(8).getSymbol().type == DungeonParser.CLOSED_BRACK
 
 def test_var_decl():
     test = 'let variable = 3'
@@ -154,16 +168,15 @@ def test_while_loop():
 
 
 def test_list_pop():
-    code = 'x.pop()'
+    code = 'pop(x)'
     parser = setup_parser(code)
     tree = parser.listPop()
 
     assert (tree.getRuleIndex() == DungeonParser.RULE_listPop)
-    assert tree.getChild(0).getSymbol().type == DungeonParser.ID
-    assert tree.getChild(1).getSymbol().type == DungeonParser.DOT
-    assert tree.getChild(2).getText() == 'pop'
-    assert tree.getChild(3).getSymbol().type == DungeonParser.OPEN_PARENTH
-    assert tree.getChild(4).getSymbol().type == DungeonParser.CLOSED_PARENTH
+    assert tree.getChild(0).getText() == 'pop'
+    assert tree.getChild(1).getSymbol().type == DungeonParser.OPEN_PARENTH
+    assert tree.getChild(2).getSymbol().type == DungeonParser.ID
+    assert tree.getChild(3).getSymbol().type == DungeonParser.CLOSED_PARENTH
 
 
 def test_function_decl():

@@ -10,7 +10,7 @@ from modules.Interpreter.Struct import Struct
 class ASTBuilder(DungeonVisitor):
 
     def visitProg(self, ctx: DungeonParser.ProgContext):
-        stats = [self.visit(stat) for stat in ctx.stat()]
+        stats = tuple(self.visit(stat) for stat in ctx.stat())
         map = self.visit(ctx.map_())
         return Dungeon(stats, map)
 
@@ -81,8 +81,11 @@ class ASTBuilder(DungeonVisitor):
             args = None
         return FunctionCallExpr(name, args)
 
-    def visitList(self, ctx: DungeonParser.ListContext):
-        list = [self.visit(element) for element in ctx.listElement()]
+    def visitListExpr(self, ctx: DungeonParser.ListExprContext):
+        if ctx.listElement():
+            list = [self.visit(element) for element in ctx.listElement()]
+        else:
+            list = []
         return ListExpr(list)
 
     def visitListElement(self, ctx: DungeonParser.ListElementContext):

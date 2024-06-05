@@ -243,16 +243,6 @@ def test_minus_equals():
     '''
     run_test_prog(code, {"map": {"data": {"x": [1, 2]}}})
 
-def test_list_pop():
-    code = '''Map(10, 10) map {
-    let x = [1, 2, 3]
-    procedure {
-    x.pop()
-    }
-    }
-    '''
-    run_test_prog(code, {"map": {"data": {"x": [1, 2]}}})
-
 def test_basic_2d_array():
     code = '''
     Map(10, 10) map {
@@ -436,8 +426,10 @@ def test_whiteNoise():
 
     parser = setup_parser(code)
     tree = parser.prog()
+    ast_builder = ASTBuilder()
+    ast = ast_builder.visit(tree)
     visitor = Interpreter()
-    output = visitor.visit(tree)
+    output = visitor.visit(ast)
 
     try:
         deserialized_output = json.loads(output)

@@ -2,11 +2,11 @@
 import json
 import random
 import math
-from grammar_files.generated.DungeonParser import DungeonParser
+
+from modules.AST.expr import StructExpr, Expr
 from modules.Interpreter.Environment import Environment
 from modules.Interpreter.Function import Function, NativeFunction
 from modules.Interpreter.Layer import Layer
-from modules.Interpreter.Map import Map
 from modules.Interpreter.Struct import Struct
 from modules.Interpreter.StructInstance import StructInstance
 from modules.StdLib import StdLib
@@ -108,7 +108,13 @@ class Interpreter:
 
     def visitVarDeclStat(self, ctx):
         try:
-            value = self.visit(ctx.value) if ctx.value else None
+            if isinstance(ctx.value, StructExpr):
+                struct = ctx.value
+                for field in struct.fields.keys():
+                    struct.fields[field] = self.visit(struct.fields[field])
+                value = StructInstance(struct.parent, struct.fields)
+            else:
+                value = self.visit(ctx.value) if ctx.value else None
             self.environment.define(ctx.name, value)
             if self.verbose:
                 print(f"Declared variable '{ctx.name}' with value '{value}'")
@@ -124,13 +130,15 @@ class Interpreter:
             variable = self.environment.get(name)
             if isinstance(self.environment.get(name), Layer):
                 variable = variable.rows
-            index_list = ctx.inner
+            index_list = tuple(self.visit(index) for index in ctx.inner)
             value = self.environment.unpack_and_assign(variable, index_list, value)
 
         if isinstance(self.environment.get(name), Layer):
             layer = self.environment.get(name)
-            layer.rows = value
-            value = layer
+            if isinstance(value, Layer):
+                value = layer
+            else:
+                raise TypeError(f"Layer {name} cannot be assigned to {value}.")
 
         self.environment.assign(name, value)
         if self.verbose:
@@ -180,8 +188,10 @@ class Interpreter:
         try:
             list_var = self.environment.get(ctx.name)
             list_var.pop()
+            self.environment.assign(ctx.name, list_var)
             if self.verbose:
                 print(f"Popped from list variable '{ctx.name}'.")
+            return list_var
         except IndexError:
             print(f"Error: Attempted to pop from an empty list in visitListPop")
             raise RuntimeError("Cannot pop from an empty list")
@@ -389,8 +399,17 @@ class Interpreter:
             raise RuntimeError(f"Random value generation failed: {str(e)}")
 
     def visitInnerExpr(self, ctx):
-        indices = tuple(self.visit(index) for index in ctx.indices)
-        self.environment.unpack(ctx.name, indices)
+        if isinstance(ctx.indices[0], Expr):
+            indices = (self.visit(ctx.indices[0]),)
+        else:
+            indices = (ctx.indices[0],)
+        if len(ctx.indices) > 1:
+            for i in range(1, len(ctx.indices)):
+                if isinstance(ctx.indices[i], Expr):
+                    indices = indices + (self.visit(ctx.indices[i]),)
+                else:
+                    indices = indices + (ctx.indices[i],)
+        return self.environment.unpack(ctx.name, indices)
 
     def visitBinaryOpExpr(self, ctx):
         left = self.visit(ctx.left)
