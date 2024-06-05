@@ -5,6 +5,7 @@ from grammar_files.generated.DungeonParser import DungeonParser
 from grammar_files.generated.DungeonLexer import DungeonLexer
 from antlr4 import *
 
+from modules.AST.ASTBuilder import ASTBuilder
 from modules.Interpreter.Interpreter import Interpreter
 
 def setup_parser(str):
@@ -16,8 +17,10 @@ def setup_parser(str):
 def run_test_prog(code, expected_output):
     parser = setup_parser(code)
     tree = parser.prog()
+    ast_builder = ASTBuilder()
+    ast = ast_builder.visit(tree)
     visitor = Interpreter()
-    output = visitor.visit(tree)
+    output = visitor.visit(ast)
     assert output == json.dumps(expected_output)
 
 def test_json_dumps():
@@ -282,8 +285,10 @@ def test_random_range():
     '''
     parser = setup_parser(code)
     tree = parser.prog()
+    ast_builder = ASTBuilder()
+    ast = ast_builder.visit(tree)
     visitor = Interpreter()
-    output = visitor.visit(tree)
+    output = visitor.visit(ast)
 
     print(output)
 
@@ -301,8 +306,10 @@ def test_random_choice():
 
     parser = setup_parser(code)
     tree = parser.prog()
+    ast_builder = ASTBuilder()
+    ast = ast_builder.visit(tree)
     visitor = Interpreter()
-    output = visitor.visit(tree)
+    output = visitor.visit(ast)
 
     print(output)
 
@@ -522,9 +529,11 @@ def test_random_seed():
 
     parser = setup_parser(code)
     tree = parser.prog()
+    ast_builder = ASTBuilder()
+    ast = ast_builder.visit(tree)
     visitor = Interpreter()
-    output1 = visitor.visit(tree)
-    output2 = visitor.visit(tree)
+    output1 = visitor.visit(ast)
+    output2 = visitor.visit(ast)
 
     print(output1)
     print(output2)
@@ -550,9 +559,11 @@ def test_random_single_seed():
 
     parser = setup_parser(code)
     tree = parser.prog()
+    ast_builder = ASTBuilder()
+    ast = ast_builder.visit(tree)
     visitor = Interpreter()
-    output1 = visitor.visit(tree)
-    output2 = visitor.visit(tree)
+    output1 = visitor.visit(ast)
+    output2 = visitor.visit(ast)
 
     print(output1)
     print(output2)
@@ -577,13 +588,17 @@ def test_random_without_seed():
 
     parser = setup_parser(code)
     tree = parser.prog()
+    ast_builder = ASTBuilder()
+    ast = ast_builder.visit(tree)
     visitor = Interpreter()
-    output1 = visitor.visit(tree)
+    output1 = visitor.visit(ast)
 
     parser = setup_parser(code)
     tree = parser.prog()
+    ast_builder = ASTBuilder()
+    ast = ast_builder.visit(tree)
     visitor = Interpreter()
-    output2 = visitor.visit(tree)
+    output2 = visitor.visit(ast)
 
     print(output1)
     print(output2)
@@ -879,8 +894,10 @@ def test_full_map():
 
     parser = setup_parser(code)
     tree = parser.prog()
+    ast_builder = ASTBuilder()
+    ast = ast_builder.visit(tree)
     visitor = Interpreter()
-    output = visitor.visit(tree)
+    output = visitor.visit(ast)
 
 def test_nested_access_inner():
     code = '''
@@ -962,5 +979,7 @@ def test_full_dungeon():
     '''
     parser = setup_parser(code)
     tree = parser.prog()
+    ast_builder = ASTBuilder()
+    ast = ast_builder.visit(tree)
     visitor = Interpreter()
-    output = visitor.visit(tree)
+    output = visitor.visit(ast)

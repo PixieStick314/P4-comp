@@ -4,7 +4,9 @@ class Dungeon:
         self.map = map
 
     def accept(self, visitor):
-        visitor.visitDungeon(self)
+        return visitor.visitDungeon(self)
+
+
 class MapStat:
     def __init__(self, map_def, layers, data, proc):
         self.map_def = map_def
@@ -13,4 +15,4 @@ class MapStat:
         self.proc = proc
 
     def accept(self, visitor):
-        visitor.visitMap(self)
+        return visitor.visitMapStat(self)

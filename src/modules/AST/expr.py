@@ -54,11 +54,12 @@ class VarExpr(Expr):
         self.id = id
 
     def accept(self, visitor):
-        return visitor.visitIDExpr(self)
+        return visitor.visitVarExpr(self)
 
 class ValueExpr(Expr):
-    def __init__(self, value):
+    def __init__(self, value, type):
         self.value = value
+        self.type = type
 
     def accept(self, visitor):
         return visitor.visitValueExpr(self)
@@ -75,3 +76,21 @@ class LayerExpr(Expr):
     def __init__(self, name, value):
         self.name = name
         self.value = value
+
+    def accept(self, visitor):
+        return visitor.visitLayerExpr(self)
+
+class ListExpr(Expr):
+    def __init__(self, list):
+        self.list = list
+
+    def accept(self, visitor):
+        return visitor.visitListExpr(self)
+
+class HashTableExpr(Expr):
+    def __init__(self, keys, values):
+        self.keys = keys
+        self.values = values
+
+    def accept(self, visitor):
+        return visitor.visitHashTableExpr(self)

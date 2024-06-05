@@ -7,7 +7,7 @@ class PrintStat(Stat):
         self.body = body
 
     def accept(self, visitor):
-        visitor.visitPrintStat(self)
+        return visitor.visitPrintStat(self)
 
 class VarDeclStat(Stat):
     def __init__(self, name, value):
@@ -15,15 +15,16 @@ class VarDeclStat(Stat):
         self.value = value
 
     def accept(self, visitor):
-        visitor.visitVarDeclStat(self)
+        return visitor.visitVarDeclStat(self)
 
 class AssignStat(Stat):
-    def __init__(self, name, value):
+    def __init__(self, name, value, inner):
         self.name = name
         self.value = value
+        self.inner = inner
 
     def accept(self, visitor):
-        visitor.visitAssignStat(self)
+        return visitor.visitAssignStat(self)
 
 class FunctionDeclStat(Stat):
     def __init__(self, name, params, body):
@@ -32,7 +33,7 @@ class FunctionDeclStat(Stat):
         self.body = body
 
     def accept(self, visitor):
-        visitor.visitFunctionDeclStat(self)
+        return visitor.visitFunctionDeclStat(self)
 
 class IfStat(Stat):
     def __init__(self, condition, body, elifStat, elseStat):
@@ -42,7 +43,7 @@ class IfStat(Stat):
         self.elseStat = elseStat
 
     def accept(self, visitor):
-        visitor.visitIfStat(self)
+        return visitor.visitIfStat(self)
 
 class ElifStat(Stat):
     def __init__(self, condition, body, elifStat):
@@ -50,9 +51,15 @@ class ElifStat(Stat):
         self.body = body
         self.elifStat = elifStat
 
+    def accept(self, visitor):
+        return visitor.visitElifStat(self)
+
 class ElseStat(Stat):
     def __init__(self, body):
         self.body = body
+
+    def accept(self, visitor):
+        return visitor.visitElseStat(self)
 
 class ForLoopStat(Stat):
     def __init__(self, iterator, iterable, body):
@@ -61,7 +68,7 @@ class ForLoopStat(Stat):
         self.body = body
 
     def accept(self, visitor):
-        visitor.visitForLoopStat(self)
+        return visitor.visitForLoopStat(self)
 
 class WhileLoopStat(Stat):
     def __init__(self, condition, body):
@@ -69,21 +76,21 @@ class WhileLoopStat(Stat):
         self.body = body
 
     def accept(self, visitor):
-        visitor.visitWhileLoopStat(self)
+        return visitor.visitWhileLoopStat(self)
 
 class BlockStat(Stat):
     def __init__(self, body):
         self.body = body
 
     def accept(self, visitor):
-        visitor.visitBlockStat(self)
+        return visitor.visitBlockStat(self)
 
 class ReturnStat(Stat):
     def __init__(self, value):
         self.value = value
 
     def accept(self, visitor):
-        visitor.visitReturnStat(self)
+        return visitor.visitReturnStat(self)
 
 class PlusEqualsStat(Stat):
     def __init__(self, name, value):
@@ -91,7 +98,7 @@ class PlusEqualsStat(Stat):
         self.value = value
 
     def accept(self, visitor):
-        visitor.visitPlusEqualsStat(self)
+        return visitor.visitPlusEqualsStat(self)
 
 class MinusEqualsStat(Stat):
     def __init__(self, name, value):
@@ -99,25 +106,25 @@ class MinusEqualsStat(Stat):
         self.value = value
 
     def accept(self, visitor):
-        visitor.visitMinusEqualsStat(self)
+        return visitor.visitMinusEqualsStat(self)
 
 class ListPopStat(Stat):
     def __init__(self, name):
         self.name = name
 
     def accept(self, visitor):
-        visitor.visitListPopStat(self)
+        return visitor.visitListPopStat(self)
 
 class StructDefStat(Stat):
     def __init__(self, struct):
         self.struct = struct
 
     def accept(self, visitor):
-        visitor.visitStructDefStat(self)
+        return visitor.visitStructDefStat(self)
 
 class SeedStat(Stat):
     def __init__(self, seed):
         self.seed = seed
 
     def accept(self, visitor):
-        visitor.visitSeedStat(self)
+        return visitor.visitSeedStat(self)

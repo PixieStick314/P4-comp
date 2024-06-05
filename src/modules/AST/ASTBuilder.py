@@ -61,14 +61,15 @@ class ASTBuilder(DungeonVisitor):
     def visitAssignStat(self, ctx: DungeonParser.AssignStatContext):
         name = ctx.ID().getText()
         value = self.visit(ctx.assignment())
-        return AssignStat(name, value)
+        inner = self.visit(ctx.inner()) if ctx.inner() else None
+        return AssignStat(name, value, inner)
 
     def visitAssignment(self, ctx: DungeonParser.AssignmentContext):
         return self.visitChildren(ctx)
 
     def visitFunctionDecl(self, ctx: DungeonParser.FunctionDeclContext):
         name = ctx.ID().getText()
-        params = self.visit(ctx.params())
+        params = self.visit(ctx.params()) if ctx.params() else None
         body = self.visit(ctx.statBlock())
         return FunctionDeclStat(name, params, body)
 
@@ -81,7 +82,8 @@ class ASTBuilder(DungeonVisitor):
         return FunctionCallExpr(name, args)
 
     def visitList(self, ctx: DungeonParser.ListContext):
-        return [self.visit(element) for element in ctx.listElement()]
+        list = [self.visit(element) for element in ctx.listElement()]
+        return ListExpr(list)
 
     def visitListElement(self, ctx: DungeonParser.ListElementContext):
         return self.visitChildren(ctx)
@@ -95,19 +97,21 @@ class ASTBuilder(DungeonVisitor):
         return ListPopStat(name)
 
     def visitHashTable(self, ctx: DungeonParser.HashTableContext):
-        hash_table = {}
+        keys = []
+        values = []
 
         for kv_pair in ctx.keyValuePair():
             key, value = self.visit(kv_pair)
-            hash_table[key] = value
+            keys.append(key)
+            values.append(value)
 
-        return hash_table
+        return HashTableExpr(keys, values)
 
     def visitKeyValuePair(self, ctx: DungeonParser.KeyValuePairContext):
         if ctx.ID():
             key = VarExpr(ctx.ID().getText())
         else:
-            key = ctx.STRING().getText()
+            key = ValueExpr(ctx.STRING().getText().replace('"', ''), "STRING")
         value = self.visit(ctx.expr())
         return key, value
 
@@ -142,7 +146,7 @@ class ASTBuilder(DungeonVisitor):
         return MinusEqualsStat(name, value)
 
     def visitPrintStat(self, ctx: DungeonParser.PrintStatContext):
-        body = [self.visit(expr) for expr in ctx.expr()]
+        body = tuple(self.visit(expr) for expr in ctx.expr())
         return PrintStat(body)
 
     def visitIfStat(self, ctx: DungeonParser.IfStatContext):
@@ -233,7 +237,10 @@ class ASTBuilder(DungeonVisitor):
         return indices
 
     def visitIndex(self, ctx: DungeonParser.IndexContext):
-        return self.visit(ctx.expr())
+        if ctx.expr():
+            return self.visit(ctx.expr())
+        elif ctx.ID():
+            return VarExpr(ctx.ID().getText())
 
     def visitExpr(self, ctx: DungeonParser.ExprContext):
         if ctx.functionCall():
@@ -263,17 +270,17 @@ class ASTBuilder(DungeonVisitor):
                 return VarExpr(ctx.ID().getText())
             elif ctx.INT():
                 value = ctx.INT().getText()
-                return ValueExpr(value)
+                return ValueExpr(value, "INT")
             elif ctx.FLOAT():
                 value = ctx.FLOAT().getText()
-                return ValueExpr(value)
+                return ValueExpr(value, "FLOAT")
             elif ctx.STRING():
-                value = ctx.STRING().getText()
-                return ValueExpr(value)
+                value = ctx.STRING().getText().replace('"', '')
+                return ValueExpr(value, "STRING")
             elif ctx.TRUE():
-                return ValueExpr(True)
+                return ValueExpr(True, "BOOL")
             elif ctx.FALSE():
-                return ValueExpr(False)
+                return ValueExpr(False, "BOOL")
 
     def visitUnary(self, ctx: DungeonParser.UnaryContext):
         value = self.visit(ctx.expr())

@@ -3,7 +3,6 @@ import json
 import random
 import math
 from grammar_files.generated.DungeonParser import DungeonParser
-from grammar_files.generated.DungeonVisitor import DungeonVisitor
 from modules.Interpreter.Environment import Environment
 from modules.Interpreter.Function import Function, NativeFunction
 from modules.Interpreter.Layer import Layer
@@ -13,56 +12,56 @@ from modules.Interpreter.StructInstance import StructInstance
 from modules.StdLib import StdLib
 
 
-class Interpreter(DungeonVisitor):
+class Interpreter:
     def __init__(self):
-        super().__init__()
         self.verbose = False
         self.environment = Environment(None)
 
-        # There's probably a smarter way to do this
         std_lib = StdLib()
         native_functions = vars(std_lib)
         for function in native_functions.keys():
             self.environment.define(function, native_functions[function])
 
+    def visit(self, ctx):
+        return ctx.accept(self)
 
     def set_verbose(self, verbose):
         self.verbose = verbose
 
-    def visitProg(self, ctx:DungeonParser.ProgContext):
+    def visitDungeon(self, ctx):
         if self.verbose:
-            print("Starting to visit program...")
+            print("Visiting Dungeon program...")
         try:
-            for stat in ctx.stat():
+            for stat in ctx.stats:
                 self.visit(stat)
-            result = self.visit(ctx.map_())
+            result = self.visit(ctx.map)
             if self.verbose:
                 print("Finished visiting program.")
-            return result
+            return json.dumps(result)
         except Exception as e:
             print(f"Error visiting program: {str(e)}")
             raise RuntimeError(f"Failed during program execution: {str(e)}")
 
-    def visitMap(self, ctx:DungeonParser.MapContext):
+    def visitMapStat(self, ctx):
         if self.verbose:
             print("Visiting map...")
         previous = self.environment
         self.environment = Environment(previous)
-        self.environment.map = Map(ctx.ID().getText(), int(ctx.INT(0).getText()), int(ctx.INT(1).getText()))
+        self.environment.map = ctx.map_def
         try:
-            if ctx.varDeclStat():
-                for var in ctx.varDeclStat():
+            if ctx.data:
+                for var in ctx.data:
                     self.visit(var)
                     if self.verbose:
                         print(f"Visited field: {var}")
-            elif ctx.layer():
-                for layer in ctx.layer():
+            elif ctx.layers:
+                for layer in ctx.layers:
                     self.visit(layer)
                     if self.verbose:
                         print(f"Visited layer: {layer}")
             else:
                 raise RuntimeError("Map has no layers or data.")
-            self.visit(ctx.procedure())
+            self.visit(ctx.proc)
         except Exception as e:
             print(f"Error during map construction: {str(e)}")
             raise RuntimeError(f"Map creation failed due to: {str(e)}")
@@ -74,42 +73,31 @@ class Interpreter(DungeonVisitor):
                     layers[key] = self.environment.values[key].rows
                 else:
                     data[key] = self.environment.values[key]
-            map = {ctx.ID().getText(): {}}
+            map = {self.environment.map.name: {}}
             if layers:
-                map[ctx.ID().getText()]["layers"] = layers
+                map[self.environment.map.name]["layers"] = layers
             if data:
-                map[ctx.ID().getText()]["data"] = data
+                map[self.environment.map.name]["data"] = data
             self.environment = previous
             if self.verbose:
                 print("Map visitation completed.")
-            return json.dumps(map)
+            return map
 
-    def visitProcedure(self, ctx:DungeonParser.ProcedureContext):
-        try:
-            if self.verbose:
-                print("Visiting procedure block...")
-            self.visit(ctx.statBlock())
-            if self.verbose:
-                print("Completed procedure visitation.")
-        except Exception as e:
-            print(f"Error during procedure execution: {str(e)}")
-            raise RuntimeError(f"Procedure execution failed: {str(e)}")
-
-    def visitLayer(self, ctx:DungeonParser.LayerContext):
+    def visitLayerExpr(self, ctx):
         if self.environment.map:
             map = self.environment.map
         else:
             raise RuntimeError(f"Layer creation failed due to no map.")
-        if ctx.expr():
-            layer = Layer(map.dimensions[0], map.dimensions[1], self.visit(ctx.expr()))
+        if ctx.value:
+            layer = Layer(map.dimensions[0], map.dimensions[1], self.visit(ctx.value))
         else:
             layer = Layer(map.dimensions[0], map.dimensions[1], None)
-        self.environment.define(ctx.ID().getText(), layer)
+        self.environment.define(ctx.name, layer)
 
-    def visitPrintStat(self, ctx:DungeonParser.PrintStatContext):
+    def visitPrintStat(self, ctx):
         try:
             text = ""
-            for expr in ctx.expr():
+            for expr in ctx.body:
                 text += self.visit(expr)
             print(text)
             if self.verbose:
@@ -120,34 +108,23 @@ class Interpreter(DungeonVisitor):
 
     def visitVarDeclStat(self, ctx):
         try:
-            self.visit(ctx.varDecl())
+            value = self.visit(ctx.value) if ctx.value else None
+            self.environment.define(ctx.name, value)
             if self.verbose:
-                print("Visited variable declaration statement.")
+                print(f"Declared variable '{ctx.name}' with value '{value}'")
         except Exception as e:
-            print(f"Error declaring variable in visitVarDeclStat: {str(e)}")
-            raise RuntimeError(f"Variable declaration failed in statement: {str(e)}")
+            print(f"Error in visitVarDecl for variable '{ctx.name}': {str(e)}")
+            raise ValueError(f"Inappropriate value for variable '{ctx.name}': {str(e)}")
 
-    def visitVarDecl(self, ctx:DungeonParser.VarDeclContext):
-        try:
-            name = ctx.ID().getText()
-            value = self.visit(ctx.assignment()) if ctx.assignment() else None
-            self.environment.define(name, value)
-            if self.verbose:
-                print(f"Declared variable '{name}' with value '{value}'")
-            return name
-        except Exception as e:
-            print(f"Error in visitVarDecl for variable '{name}': {str(e)}")
-            raise ValueError(f"Inappropriate value for variable '{name}': {str(e)}")
+    def visitAssignStat(self, ctx):
+        name = ctx.name
+        value = self.visit(ctx.value)
 
-    def visitAssignStat(self, ctx:DungeonParser.AssignStatContext):
-        name = ctx.ID().getText()
-        value = self.visitAssignment(ctx.assignment())
-
-        if ctx.inner():
+        if ctx.inner:
             variable = self.environment.get(name)
             if isinstance(self.environment.get(name), Layer):
                 variable = variable.rows
-            index_list = self.visit(ctx.inner())
+            index_list = ctx.inner
             value = self.environment.unpack_and_assign(variable, index_list, value)
 
         if isinstance(self.environment.get(name), Layer):
@@ -159,18 +136,9 @@ class Interpreter(DungeonVisitor):
         if self.verbose:
             print(f"Assigned variable '{name}' with value '{value}'")
 
-    def visitAssignment(self, ctx:DungeonParser.AssignmentContext):
-        if self.verbose:
-            print(f"Performing assignment for context: {ctx}")
+    def visitListExpr(self, ctx):
         try:
-            return self.visitChildren(ctx)
-        except Exception as e:
-            print(f"Error during assignment: {str(e)}")
-            raise RuntimeError(f"Assignment processing failed: {str(e)}")
-
-    def visitList(self, ctx:DungeonParser.ListContext):
-        try:
-            value = [self.visit(element) for element in ctx.listElement()]
+            value = [self.visit(element) for element in ctx.list]
             if self.verbose:
                 print(f"Created list with values: {value}")
             return value
@@ -178,62 +146,50 @@ class Interpreter(DungeonVisitor):
             print(f"Error creating list in visitList: {str(e)}")
             raise RuntimeError(f"List creation failed: {str(e)}")
 
-    def visitListElement(self, ctx:DungeonParser.ListElementContext):
-        try:
-            element_value = self.visitChildren(ctx)
-            if self.verbose:
-                print(f"Visited list element with result: {element_value}")
-            return element_value
-        except Exception as e:
-            print(f"Error processing list element in visitListElement: {str(e)}")
-            raise RuntimeError(f"List element processing failed: {str(e)}")
+    def visitPlusEqualsStat(self, ctx):
+        name = ctx.name
+        value = self.visit(ctx.value)
+        variable = self.environment.get(name)
+        if isinstance(variable, list):
+            variable.append(value)
+            self.environment.assign(name, variable)
+        elif isinstance(variable, int):
+            self.environment.assign(name, variable + value)
+        else:
+            print(f"Error in visitPlusEquals:")
+            raise ValueError(f"Invalid operation on variable '{name}'")
+        if self.verbose:
+            print(f"Performed += on variable '{name}' with increment: {value}")
 
-    def visitPlusEquals(self, ctx:DungeonParser.PlusEqualsContext):
-        try:
-            name = ctx.ID().getText()
-            value = self.visit(ctx.expr())
-            variable = self.environment.get(name)
-            if isinstance(variable, list):
-                variable.append(value)
-                self.environment.assign(name, variable)
-            elif isinstance(variable, int):
-                self.environment.assign(name, variable + value)
-            if self.verbose:
-                print(f"Performed += on variable '{name}' with increment: {value}")
-        except Exception as e:
-            print(f"Error in visitPlusEquals for '{name}': {str(e)}")
-            raise ValueError(f"Invalid operation on variable '{name}': {str(e)}")
+    def visitMinusEqualsStat(self, ctx):
+        name = ctx.name
+        value = self.visit(ctx.value)
+        variable = self.environment.get(name)
+        if isinstance(variable, list):
+            variable.remove(value)
+            self.environment.assign(name, variable)
+        elif isinstance(variable, int):
+            self.environment.assign(name, variable - value)
+        else:
+            print(f"Error in visitMinusEquals:")
+            raise ValueError(f"Invalid operation on variable '{name}'")
+        if self.verbose:
+            print(f"Performed -= on variable '{name}' with decrement: {value}")
 
-    def visitMinusEquals(self, ctx:DungeonParser.MinusEqualsContext):
+    def visitListPopStat(self, ctx):
         try:
-            name = ctx.ID().getText()
-            value = self.visit(ctx.expr())
-            variable = self.environment.get(name)
-            if isinstance(variable, list):
-                variable.remove(value)
-                self.environment.assign(name, variable)
-            elif isinstance(variable, int):
-                self.environment.assign(name, variable - value)
-            if self.verbose:
-                print(f"Performed -= on variable '{name}' with decrement: {value}")
-        except Exception as e:
-            print(f"Error in visitMinusEquals for '{name}': {str(e)}")
-            raise ValueError(f"Invalid operation on variable '{name}': {str(e)}")
-
-    def visitListPop(self, ctx:DungeonParser.ListPopContext):
-        try:
-            list_var = self.environment.get(ctx.ID().getText())
+            list_var = self.environment.get(ctx.name)
             list_var.pop()
             if self.verbose:
-                print(f"Popped from list variable '{ctx.ID().getText()}'.")
+                print(f"Popped from list variable '{ctx.name}'.")
         except IndexError:
             print(f"Error: Attempted to pop from an empty list in visitListPop")
-            raise ValueError("Cannot pop from an empty list")
+            raise RuntimeError("Cannot pop from an empty list")
         except Exception as e:
             print(f"Error in visitListPop: {str(e)}")
             raise RuntimeError(f"List pop operation failed: {str(e)}")
 
-    def visitHashTable(self, ctx:DungeonParser.HashTableContext):
+    def visitHashTableExpr(self, ctx):
         hash_table = {}
         for key_value_pair in ctx.keyValuePair():
             key, value = self.visit(key_value_pair)
@@ -241,47 +197,27 @@ class Interpreter(DungeonVisitor):
 
         return hash_table
 
-    def visitKeyValuePair(self, ctx:DungeonParser.KeyValuePairContext):
-        if ctx.ID():
-            key = self.environment.get(ctx.ID().getText())
-        else:
-            key = ctx.STRING().getText().replace('"', '')
-        value = self.visit(ctx.expr())
-
-        return key, value
-
-    def visitStruct(self, ctx:DungeonParser.StructContext):
-        parent = self.environment.get(ctx.ID().getText())
+    def visitStructExpr(self, ctx):
+        parent = self.environment.get(ctx.parent)
+        if not isinstance(parent, Struct):
+            raise RuntimeError(f"Error: {str(parent)} is not a Struct")
         fields = {}
+        for field in ctx.value.keys():
+            fields[field] = self.visit(ctx.value[field])
 
-        for i in range(len(ctx.structField())):
-            field_name = self.visit(ctx.structField(i))
-            if field_name not in parent.fields:
-                raise Exception("Struct {} has no field named {}".format(parent.name, field_name))
-            value = self.visit(ctx.assignment(i))
-            fields[field_name] = value
-        instance = StructInstance(parent, fields)
-        return instance
+        return StructInstance(parent, fields)
 
-    def visitStructDef(self, ctx:DungeonParser.StructDefContext):
-        name = ctx.ID().getText()
-        fields = {}
+    def visitStructDefStat(self, ctx):
+        self.environment.define(ctx.struct.name, ctx.struct)
 
-        for field in ctx.structField():
-            fields[self.visit(field)] = None
-        struct = Struct(name, fields)
-        self.environment.define(struct.name, struct)
-
-    def visitStructField(self, ctx:DungeonParser.StructFieldContext):
-        return ctx.ID().getText()
-
-    def visitStatBlock(self, ctx):
+    def visitBlockStat(self, ctx):
         previous = self.environment
         self.environment = Environment(previous)
         if self.verbose:
             print("Visiting statement block...")
         try:
-            self.visitChildren(ctx)
+            for stat in ctx.body:
+                self.visit(stat)
         except Exception as e:
             if self.verbose:
                 print(f"Error in statement block in visitStatBlock: {str(e)}")
@@ -291,64 +227,63 @@ class Interpreter(DungeonVisitor):
             if self.verbose:
                 print("Completed statement block visitation.")
 
-    def visitIfStat(self, ctx:DungeonParser.IfStatContext):
+    def visitIfStat(self, ctx):
         try:
             if self.verbose:
                 print("Evaluating If statement condition...")
-            if self.visit(ctx.expr()) is True:
-                self.visit(ctx.statBlock())
-            elif ctx.elifStat():
-                if self.visit(ctx.elifStat()):
+            if self.visit(ctx.condition) is True:
+                self.visit(ctx.body)
+            elif ctx.elifStat:
+                if self.visit(ctx.elifStat):
                     pass
-                elif ctx.elseStat():
-                    self.visit(ctx.elseStat())
-            elif ctx.elseStat():
-                self.visit(ctx.elseStat())
+                elif ctx.elseStat:
+                    self.visit(ctx.elseStat)
+            elif ctx.elseStat:
+                self.visit(ctx.elseStat)
         except RuntimeError as e:
             print(f"Error in If statement: {str(e)}")
             raise RuntimeError(f"If statement execution failed: {str(e)}")
 
-    def visitElifStat(self, ctx:DungeonParser.ElifStatContext):
+    def visitElifStat(self, ctx):
         try:
             if self.verbose:
                 print("Evaluating Elif statement condition...")
-            if self.visit(ctx.expr()) is True:
-                self.visit(ctx.statBlock())
+            if self.visit(ctx.condition) is True:
+                self.visit(ctx.body)
                 return True
-            elif ctx.elifStat():
-                return self.visit(ctx.elifStat())
+            elif ctx.elifStat:
+                return self.visit(ctx.elifStat)
             else:
                 return False
         except RuntimeError as e:
             print(f"Error in Elif statement: {str(e)}")
             raise RuntimeError(f"Elif statement execution failed: {str(e)}")
 
-    def visitElseStat(self, ctx:DungeonParser.ElseStatContext):
+    def visitElseStat(self, ctx):
         try:
             if self.verbose:
                 print("Executing Else block...")
-            self.visit(ctx.statBlock())
+            self.visit(ctx.body)
         except RuntimeError as e:
             print(f"Error in Else statement: {str(e)}")
             raise RuntimeError(f"Else statement execution failed: {str(e)}")
 
-    def visitForLoop(self, ctx):
+    def visitForLoopStat(self, ctx):
         if self.verbose:
             print("Starting For loop...")
         previous = self.environment
         self.environment = Environment(previous)
-        iterator = ctx.ID(0).getText()
-        if ctx.range_():
-            bounds = self.visit(ctx.range_())
-            iterable = range(bounds[0], bounds[1])
+        iterator = ctx.iterator
+        if isinstance(ctx.iterable, list):
+            iterable = range(ctx.iterable[0], ctx.iterable[1])
         else:
-            iterable = self.environment.get(ctx.ID(1).getText())
+            iterable = self.environment.get(ctx.iterable)
         self.environment.define(iterator, iterable[0])
         i = 0
         try:
             while i < len(iterable):
                 self.environment.values[iterator] = iterable[i]
-                self.visit(ctx.statBlock())
+                self.visit(ctx.body)
                 i += 1
         except Exception as e:
             print(f"Error in For loop: {str(e)}")
@@ -358,80 +293,58 @@ class Interpreter(DungeonVisitor):
             if self.verbose:
                 print("Completed For loop.")
 
-    def visitWhileLoop(self, ctx):
+    def visitWhileLoopStat(self, ctx):
         if self.verbose:
             print("Starting While loop...")
         try:
-            while self.visit(ctx.expr()):
-                self.visit(ctx.statBlock())
+            while self.visit(ctx.condition):
+                self.visit(ctx.body)
         except Exception as e:
             print(f"Error in While loop: {str(e)}")
             raise RuntimeError(f"While loop execution failed: {str(e)}")
         if self.verbose:
             print("Completed While loop.")
 
-    def visitFunctionDecl(self, ctx:DungeonParser.FunctionDeclContext):
+    def visitFunctionDeclStat(self, ctx):
         try:
-            name = ctx.ID().getText()
-            params = self.visit(ctx.params()) if ctx.params() is not None else None
-            body = ctx.statBlock()
-
-            function = Function(params, body)
-            self.environment.define(name, function)
+            function = Function(ctx.params, ctx.body)
+            self.environment.define(ctx.name, function)
             if self.verbose:
-                print(f"Defined function '{name}' with params '{params}'")
+                print(f"Defined function '{ctx.name}' with params '{ctx.params}'")
         except Exception as e:
-            error_message = f"Function declaration failed for '{name}': {str(e)}"
+            error_message = f"Function declaration failed for '{ctx.name}': {str(e)}"
             print(error_message)
             raise RuntimeError(error_message) from e
 
-    def visitParams(self, ctx:DungeonParser):
-        try:
-            params = [id.getText() for id in ctx.ID()]
-            if self.verbose:
-                print("Visited parameters:", params)
-            return params
-        except Exception as e:
-            print("Error visiting parameters:", str(e))
-            raise
-
-    def visitFunctionCall(self, ctx:DungeonParser.FunctionCallContext):
-        name = ctx.ID().getText()
-        args = self.visit(ctx.args()) if ctx.args() is not None else None
+    def visitFunctionCallExpr(self, ctx):
+        if ctx.args:
+            args = tuple(self.visit(arg) for arg in ctx.args)
+        else:
+            args = None
         if self.verbose:
-            print(f"Calling function '{name}' with arguments {args}")
+            print(f"Calling function '{ctx.name}' with arguments {args}")
         previous = self.environment
         self.environment = Environment(previous)
         if args is not None:
             for i in range(len(args)):
-                params = self.environment.get(name).params
+                params = self.environment.get(ctx.name).params
                 self.environment.define(params[i], args[i])
 
         try:
-            function = self.environment.get(name)
+            function = self.environment.get(ctx.name)
             if isinstance(function, Function):
                 self.visit(function.body)
             elif isinstance(function, NativeFunction):
                 return function.run(args)
             else:
-                raise RuntimeError(f"{name} is not a function.")
+                raise RuntimeError(f"{ctx.name} is not a function.")
         except ReturnException as e:
             return e.args[0]
         finally:
             self.environment = previous
 
-    def visitArgs(self, ctx:DungeonParser.ArgsContext):
-        try:
-            args = tuple(self.visit(arg) for arg in ctx.expr())
-            if self.verbose:
-                print("Visited arguments:", args)
-            return args
-        except Exception as e:
-            print("Error visiting arguments:", str(e))
-            raise
-
     def visitReturnStat(self, ctx):
-        value = self.visit(ctx.expr())
+        value = self.visit(ctx.value)
         if self.verbose:
             print(f"Returning value {value}")
         raise ReturnException(value)
@@ -440,33 +353,32 @@ class Interpreter(DungeonVisitor):
         # Returns a placeholder for unhandled cases
         return "ERROR: Unhandled Case"
 
-    def visitListLength(self, ctx:DungeonParser.ListLengthContext):
+    def visitListLengthExpr(self, ctx):
         try:
-            list = self.visit(ctx.expr())
+            list = self.visit(ctx.list)
             length = len(list)
             if self.verbose:
-                print(f"Length of list '{ctx.expr().getText()}': {length}")
+                print(f"Length of list: {length}")
             return length
         except Exception as e:
-            print(f"Error getting length of list '{ctx.expr().getText()}':", str(e))
+            print(f"Error getting length of list:", str(e))
             raise
 
-    def visitSeed(self, ctx:DungeonParser.SeedContext):
-        self.environment.seed = self.visit(ctx.expr())
+    def visitSeedStat(self, ctx):
+        self.environment.seed = self.visit(ctx.seed)
         random.seed(self.environment.seed)
 
-    def visitRandom(self, ctx:DungeonParser.RandomContext):
+    def visitRandomExpr(self, ctx):
         try:
             self.environment.check_seed()
 
-            if ctx.range_():
-                bounds = self.visit(ctx.range_())
-                lower = int(bounds[0])
-                upper = int(bounds[1])
+            if isinstance(ctx.space, list):
+                lower = int(self.visit(ctx.space[0]))
+                upper = int(self.visit(ctx.space[1]))
                 result = random.randrange(lower, upper)
-            elif ctx.ID():
-                list = self.environment.get(ctx.ID().getText())
-                result = random.choice(list)
+            else:
+                space = self.environment.get(ctx.space)
+                result = random.choice(space)
 
             if self.verbose:
                 print(f"Generated random value: {result}")
@@ -476,110 +388,51 @@ class Interpreter(DungeonVisitor):
             print(f"Error in visitRandom: {str(e)}")
             raise RuntimeError(f"Random value generation failed: {str(e)}")
 
-    def visitRange(self, ctx:DungeonParser.RangeContext):
-        try:
-            bounds = [self.visit(i) for i in ctx.expr()]
-            if self.verbose:
-                print(f"Evaluated range bounds: {bounds}")
-            return bounds
-        except Exception as e:
-            print(f"Error in visitRange: {str(e)}")
-            raise RuntimeError(f"Range evaluation failed: {str(e)}")
+    def visitInnerExpr(self, ctx):
+        indices = tuple(self.visit(index) for index in ctx.indices)
+        self.environment.unpack(ctx.name, indices)
 
-    def visitInner(self, ctx:DungeonParser.InnerContext):
-        if ctx.inner():
-            if ctx.DOT():
-                inner = self.visit(ctx.inner())
-                index_list = (self.visit(ctx.structField()),) + inner
-            elif ctx.index():
-                inner = self.visit(ctx.inner())
-                index_list = (self.visit(ctx.index()),) + inner
-        else:
-            if ctx.DOT():
-                index_list = (self.visit(ctx.structField()),)
-            elif ctx.index():
-                index_list = (self.visit(ctx.index()),)
-        return index_list
+    def visitBinaryOpExpr(self, ctx):
+        left = self.visit(ctx.left)
+        right = self.visit(ctx.right)
+        match ctx.op:
+            case '+': result = left + right
+            case '-': result = left - right
+            case '*': result = left * right
+            case '>': result = left > right
+            case '<': result = left < right
+            case '>=': result = left >= right
+            case '<=': result = left <= right
+            case '==': result = left == right
+            case '!=': result = left != right
+            case '%': result = left % right
+            case 'and': result = left and right
+            case 'or': result = left or right
+            case '/': result = left / right
+            case '^': result = pow(left, right)
+            case _: raise RuntimeError(f"Operation '{ctx.op}' is not supported")
+        return result
 
-    def visitIndex(self, ctx:DungeonParser.IndexContext):
-        if ctx.ID():
-            return ["ID", ctx.ID().getText()]
-        elif ctx.expr():
-            return self.visit(ctx.expr())
+    def visitUnaryOpExpr(self, ctx):
+        operand = self.visit(ctx.value)
+        match ctx.op:
+            case 'NOT': result = not operand
+            case 'SQRT': result = math.sqrt(operand)
+            case 'GROUP': result = operand
+            case _: raise RuntimeError(f"Operation '{ctx.op}' is not supported")
+        return result
 
-    def visitExpr(self, ctx):
-        try:
-            if ctx.inner():
-                name = ctx.ID().getText()
-                index_list = self.visit(ctx.inner())
-                return self.environment.unpack(name, index_list)
-            elif ctx.ID():
-                variable = self.environment.get(ctx.ID().getText())
-                if isinstance(variable, Layer):
-                    variable = variable.rows
-                return variable
-            elif ctx.STRING():
-                return ctx.STRING().getText().replace('"', '')
-            elif ctx.TRUE() or ctx.getText().lower() == 'true':
-                return True
-            elif ctx.FALSE() or ctx.getText().lower() == 'false':
-                return False
-            elif ctx.NOT():
-                expr = self.visit(ctx.expr(0))
-                return not expr
-            elif ctx.INT():
-                return int(ctx.INT().getText())
-            elif ctx.FLOAT():
-                return float(ctx.FLOAT().getText())
-            elif ctx.functionCall():
-                return self.visit(ctx.functionCall())
-            elif ctx.listLength():
-                return self.visit(ctx.listLength())
-            elif ctx.random():
-                return self.visit(ctx.random())
-            elif ctx.SQRT():
-                try:
-                    return math.sqrt(self.visit(ctx.expr(0)))
-                except:
-                    raise Exception("Cannot find square root of: " + self.visit(ctx.expr(0)))
-            elif ctx.POW():
-                try:
-                    return pow(self.visit(ctx.expr(0)), self.visit(ctx.expr(1)))
-                except:
-                    raise Exception(
-                        "Cannot find power of: " + self.visit(ctx.expr(0)) + " and " + self.visit(ctx.expr(1)))
+    def visitVarExpr(self, ctx):
+        return self.environment.get(ctx.id)
 
-            elif ctx.getChildCount() == 3:
-                left = self.visit(ctx.expr(0))
-                if ctx.OPEN_PARENTH():
-                    return left
-                right = self.visit(ctx.expr(1))
-                operator = ctx.op.text
-                if right is not None:  # Binary operation
-                    match operator:
-                        case '+': result = left + right
-                        case '-': result = left - right
-                        case '*': result = left * right
-                        case '>': result = left > right
-                        case '<': result = left < right
-                        case '>=': result = left >= right
-                        case '<=': result = left <= right
-                        case '==': result = left == right
-                        case '!=': result = left != right
-                        case'%': result = left % right
-                        case'and': result = left and right
-                        case'or': result = left or right
-                        case '/': result = left / right
-                else:  # Unary operation
-                    result = left
-            else:
-                result = self.defaultResult()
-            if self.verbose:
-                print(f"Evaluated expression result: {result}")
-            return result
-        except Exception as e:
-            print(f"Error in visitExpr: {str(e)}")
-            raise RuntimeError(f"Expression evaluation failed: {str(e)}")
+    def visitValueExpr(self, ctx):
+        match ctx.type:
+            case 'INT': result = int(ctx.value)
+            case 'FLOAT': result = float(ctx.value)
+            case 'STRING': result = ctx.value
+            case 'BOOL': result = ctx.value
+            case _: raise RuntimeError(f"Type '{ctx.type}' is not supported")
+        return result
 
 
 class ReturnException(Exception):
