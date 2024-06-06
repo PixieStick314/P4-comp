@@ -5,6 +5,7 @@ import os
 from antlr4 import *
 from grammar_files.generated.DungeonLexer import DungeonLexer
 from grammar_files.generated.DungeonParser import DungeonParser
+from modules.AST.ASTBuilder import ASTBuilder
 from modules.Interpreter.Interpreter import Interpreter
 
 # Add the path to the generated files so they can be imported
@@ -19,9 +20,12 @@ def executor(file_path, verbose):
     parser = DungeonParser(stream)
     tree = parser.prog()
 
-    visitor = Interpreter()  # Create Interpreter instance
-    visitor.set_verbose(verbose)  # Set verbosity flag
-    output = visitor.visit(tree)
+    ast_builder = ASTBuilder()
+    ast = ast_builder.visit(tree)
+
+    visitor = Interpreter()
+    visitor.set_verbose(verbose)
+    output = visitor.visit(ast)
 
     return output
 
