@@ -228,13 +228,15 @@ class ASTBuilder(DungeonVisitor):
         if ctx.inner():
             if ctx.DOT():
                 inner = self.visit(ctx.inner())
-                indices = (self.visit(ctx.structField()),) + inner
+                field = self.visit(ctx.structField())
+                indices = (ValueExpr(field, "STRING"),) + inner
             elif ctx.index():
                 inner = self.visit(ctx.inner())
                 indices = (self.visit(ctx.index()),) + inner
         else:
             if ctx.DOT():
-                indices = (self.visit(ctx.structField()),)
+                field = self.visit(ctx.structField())
+                indices = (ValueExpr(field, "STRING"),)
             elif ctx.index():
                 indices = (self.visit(ctx.index()),)
         return indices

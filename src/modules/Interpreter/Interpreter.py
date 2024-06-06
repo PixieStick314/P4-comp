@@ -128,14 +128,15 @@ class Interpreter:
 
         if ctx.inner:
             variable = self.environment.get(name)
-            if isinstance(self.environment.get(name), Layer):
+            if isinstance(variable, Layer):
                 variable = variable.rows
             index_list = tuple(self.visit(index) for index in ctx.inner)
             value = self.environment.unpack_and_assign(variable, index_list, value)
 
         if isinstance(self.environment.get(name), Layer):
             layer = self.environment.get(name)
-            if isinstance(value, Layer):
+            if isinstance(value, list):
+                layer.rows = value
                 value = layer
             else:
                 raise TypeError(f"Layer {name} cannot be assigned to {value}.")
@@ -201,9 +202,8 @@ class Interpreter:
 
     def visitHashTableExpr(self, ctx):
         hash_table = {}
-        for key_value_pair in ctx.keyValuePair():
-            key, value = self.visit(key_value_pair)
-            hash_table[key] = value
+        for i in range(len(ctx.keys)):
+            hash_table[self.visit(ctx.keys[i])] = self.visit(ctx.values[i])
 
         return hash_table
 
@@ -285,7 +285,7 @@ class Interpreter:
         self.environment = Environment(previous)
         iterator = ctx.iterator
         if isinstance(ctx.iterable, list):
-            iterable = range(ctx.iterable[0], ctx.iterable[1])
+            iterable = range(self.visit(ctx.iterable[0]), self.visit(ctx.iterable[1]))
         else:
             iterable = self.environment.get(ctx.iterable)
         self.environment.define(iterator, iterable[0])
