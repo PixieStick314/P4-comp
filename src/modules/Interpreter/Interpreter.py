@@ -442,7 +442,10 @@ class Interpreter:
         return result
 
     def visitVarExpr(self, ctx):
-        return self.environment.get(ctx.id)
+        value = self.environment.get(ctx.id)
+        if isinstance(value, Layer):
+            value = value.rows
+        return value
 
     def visitValueExpr(self, ctx):
         match ctx.type:
