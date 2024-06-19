@@ -53,20 +53,11 @@ class Environment:
 
     def get_inner(self, variable, index):
         if isinstance(variable, list):
-            if isinstance(index, int):
-                return variable[index]
-            elif isinstance(index, list):
-                return variable[self.get(index[1])]
+            return variable[index]
         elif isinstance(variable, dict):
-            if isinstance(index, list):
-                return variable[self.get(index[1])]
-            else:
-                return variable[index]
+            return variable[index]
         elif isinstance(variable, StructInstance):
-            if isinstance(index, list):
-                return variable.get_field(index[1])
-            else:
-                return variable.get_field(index)
+            return variable.get_field(index)
         elif isinstance(variable, Layer):
             return variable.rows
 
@@ -82,15 +73,9 @@ class Environment:
 
     def assign_inner(self, variable, index, value):
         if isinstance(variable, list):
-            if isinstance(index, int):
-                variable[index] = value
-            elif isinstance(variable, list):
-                variable[self.get(index[1])] = value
+            variable[index] = value
         elif isinstance(variable, dict):
-            if isinstance(index, str):
-                variable[index] = value
-            elif isinstance(index, list):
-                variable[self.get(index[1])] = value
+            variable[index] = value
         elif isinstance(variable, StructInstance):
             variable.fields[index] = value
         elif isinstance(variable, Layer):
