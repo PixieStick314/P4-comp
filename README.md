@@ -22,6 +22,12 @@ In order for you to use Dungeon, you first need to install the required dependen
         pip install -r requirements.txt
     into your terminal. This is assuming that you have correctly downloaded and installed Python and pip.
 
+- [4: Generate files]
+    To generate the lexer and parser, run the command:
+    `./antlr4_run.bat`
+    When prompted for the name of the grammar file, type in:
+    `Dungeon.g4`
+
 #   2: Using the language
 Firstly, create a new .dngn file. This file can be created where you want, but you need to be able acces the file path of the file. 
 
