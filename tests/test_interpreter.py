@@ -975,3 +975,28 @@ def test_full_dungeon():
     ast = ast_builder.visit(tree)
     visitor = Interpreter()
     output = visitor.visit(ast)
+
+def test_string_add():
+    code = '''
+    Map(2, 2) map {
+    let x = 0
+    procedure{
+    x = "Hello"
+    x = x + " world!"
+    }
+    }
+    '''
+
+    run_test_prog(code, {"map": {"data": {"x": "Hello world!"}}})
+
+def test_div_type():
+    code = '''
+    Map(2, 2) map {
+    let x = 4
+    procedure{
+    x = x / 2
+    }
+    }
+    '''
+
+    run_test_prog(code, {"map": {"data": {"x": 2}}})
