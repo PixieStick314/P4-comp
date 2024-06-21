@@ -415,6 +415,9 @@ class Interpreter:
         left = self.visit(ctx.left)
         right = self.visit(ctx.right)
 
+        if type(left) != type(right):
+            raise RuntimeError(f"Type mismatch for operation {ctx.op}.")
+
         match ctx.op:
             case '+': result = left + right
             case '-': result = left - right
