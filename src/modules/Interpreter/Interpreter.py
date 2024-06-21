@@ -416,7 +416,7 @@ class Interpreter:
         right = self.visit(ctx.right)
 
         if type(left) != type(right):
-            raise RuntimeError(f"Type mismatch for binary operation: {left} != {right}")
+            raise RuntimeError(f"Type mismatch for binary operation {ctx.op}: {left} != {right}")
 
         match ctx.op:
             case '+': result = left + right
