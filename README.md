@@ -24,8 +24,11 @@ In order for you to use Dungeon, you first need to install the required dependen
 
 - [4: Generate files]
     To generate the lexer and parser, run the command:
+
     `./antlr4_run.bat`
+
     When prompted for the name of the grammar file, type in:
+
     `Dungeon.g4`
 
 #   2: Using the language
