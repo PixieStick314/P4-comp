@@ -429,6 +429,7 @@ class Interpreter:
             case 'and': result = left and right
             case 'or': result = left or right
             case '/': result = left / right
+            case '//': result = left // right
             case '^': result = pow(left, right)
             case _: raise RuntimeError(f"Operation '{ctx.op}' is not supported")
 

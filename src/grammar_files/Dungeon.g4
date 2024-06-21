@@ -91,7 +91,7 @@ expr              : functionCall
                   | listLength
                   | random
                   | POW OPEN_PARENTH expr COMMA expr CLOSED_PARENTH
-                  | expr op=(MULT | DIV | MOD) expr
+                  | expr op=(MULT | DIV | FLOOR_DIV | MOD) expr
                   | expr op=(PLUS| MINUS) expr
                   | expr op=(GT | GTE | LT | LTE | EQ | NEQ) expr
                   | expr op=(AND | OR) expr
@@ -130,6 +130,7 @@ PLUS              : '+' ;
 MINUS             : '-' ;
 MULT              : '*' ;
 DIV               : '/' ;
+FLOOR_DIV         : '//';
 GT                : '>' ;
 GTE               : '>=';
 LT                : '<' ;
