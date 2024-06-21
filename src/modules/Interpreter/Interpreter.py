@@ -415,9 +415,6 @@ class Interpreter:
         left = self.visit(ctx.left)
         right = self.visit(ctx.right)
 
-        if type(left) != type(right):
-            raise RuntimeError(f"Type mismatch for binary operation {ctx.op}: {left} != {right}")
-
         match ctx.op:
             case '+': result = left + right
             case '-': result = left - right
@@ -434,9 +431,6 @@ class Interpreter:
             case '/': result = left / right
             case '^': result = pow(left, right)
             case _: raise RuntimeError(f"Operation '{ctx.op}' is not supported")
-
-        if isinstance(left, int) and isinstance(right, int):
-            result = int(result)
 
         return result
 

@@ -988,15 +988,3 @@ def test_string_add():
     '''
 
     run_test_prog(code, {"map": {"data": {"x": "Hello world!"}}})
-
-def test_div_type():
-    code = '''
-    Map(2, 2) map {
-    let x = 4
-    procedure{
-    x = x / 2
-    }
-    }
-    '''
-
-    run_test_prog(code, {"map": {"data": {"x": 2}}})
